@@ -1,0 +1,50 @@
+﻿@model Microsoft.Xrm.Sdk.Entity
+
+@{
+    ViewData["Title"] = "Mettre à jour l'Enregistrement";
+}
+
+<h2>Mettre à jour l'Enregistrement</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="UpdateRecord" method="post">
+                <!-- Champ caché pour l'ID de l'enregistrement -->
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Champ caché pour le nom de l'entité -->
+                <input type="hidden" name="entityName" value="@ViewData["EntityName"]" />
+
+                <div class="form-group">
+                    <label for="name">Nom</label>
+                    <input type="text" class="form-control" id="name" name="name" value="@(Model.Attributes.TryGetValue("name", out var nameValue) ? nameValue : "")" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description">@(Model.Attributes.TryGetValue("description", out var descriptionValue) ? descriptionValue : "")</textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="createdon">Créé le</label>
+                    <input type="text" class="form-control" id="createdon" name="createdon" value="@(Model.Attributes.TryGetValue("createdon", out var createdOnValue) ? ((DateTime)createdOnValue).ToString("yyyy-MM-dd") : "")" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label for="modifiedon">Modifié le</label>
+                    <input type="text" class="form-control" id="modifiedon" name="modifiedon" value="@(Model.Attributes.TryGetValue("modifiedon", out var modifiedOnValue) ? ((DateTime)modifiedOnValue).ToString("yyyy-MM-dd") : "")" readonly />
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Enregistrer les modifications
+                    </button>
+                    <a href="@Url.Action("GetRecords", "Crm", new { entityName = ViewData["EntityName"] })" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Annuler
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,6 @@
+# Ignore le dossier .vs de Visual Studio
+.vs/
+
+# Ignore les fichiers de build
+bin/
+obj/

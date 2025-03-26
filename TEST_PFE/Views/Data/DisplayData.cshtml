@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Résultat de l'exécution du package SSIS";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <h3>Message :</h3>
+    <p class="message">@ViewBag.Message</p>  <!-- Affichage du message passé depuis le contrôleur -->
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div>
+        <h4>Détails de l'exécution :</h4>
+        <pre>@ViewBag.Message</pre> <!-- Affichage des détails d'exécution -->
+    </div>
+}
+
+<style>
+    .message {
+        font-size: 1.2em;
+        color: #333;
+    }
+    .success {
+        color: green;
+    }
+    .error {
+        color: red;
+    }
+</style>

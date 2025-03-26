@@ -1,0 +1,92 @@
+﻿@using TEST_PFE.Models
+@{
+    ViewData["Title"] = "KPI Prediction";
+    var kpis = ViewData["KPIs"] as List<KPI>;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Prédiction des KPIs</h2>
+
+        <!-- Onglets pour afficher les KPIs -->
+        <ul class="nav nav-tabs mt-4">
+            @foreach (var kpi in kpis)
+            {
+                <li class="nav-item">
+                    <button class="nav-link" id="btn-@kpi.Name" onclick="showKPI('@kpi.Name')">@kpi.Name</button>
+                </li>
+            }
+        </ul>
+
+        <!-- Contenu dynamique -->
+        <div class="tab-content mt-3">
+            @foreach (var kpi in kpis)
+            {
+                <div class="tab-pane fade" id="kpi-@kpi.Name">
+                    <h3>@kpi.Name</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                @foreach (var att in kpi.Data.Attributes)
+                                {
+                                    <th>@att</th> <!-- Affichage des attributs en en-têtes de colonne -->
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var record in kpi.Data.Records)
+                            {
+                                <tr>
+                                    @foreach (var att in kpi.Data.Attributes)
+                                    {
+                                        @* Vérification si record contient l'attribut et afficher les valeurs *@
+                                        @if (record.ContainsKey(att))
+                                        {
+                                            <td>@record[att]</td> <!-- Affichage de la valeur de l'attribut pour cet enregistrement -->
+                                        }
+                                        else
+                                        {
+                                            <td>-</td> <!-- Si l'attribut n'est pas présent dans l'enregistrement, afficher un tiret -->
+                                        }
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script>
+        // Fonction pour afficher les KPIs lorsqu'un onglet est sélectionné
+        function showKPI(kpiName) {
+            // Cacher tous les onglets
+            var allTabs = document.querySelectorAll('.tab-pane');
+            allTabs.forEach(function(tab) {
+                tab.classList.remove('show', 'active');
+            });
+
+            // Montrer le bon onglet
+            var selectedTab = document.getElementById('kpi-' + kpiName);
+            selectedTab.classList.add('show', 'active');
+        }
+
+        // Initialiser l'onglet actif (afficher le premier KPI par défaut)
+        document.addEventListener("DOMContentLoaded", function() {
+            showKPI('@kpis[0].Name');
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

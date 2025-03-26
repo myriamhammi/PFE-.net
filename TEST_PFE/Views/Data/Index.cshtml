@@ -1,0 +1,105 @@
+﻿@using TEST_PFE.Models
+@{
+    ViewData["Title"] = "Index";
+    var accounts = ViewData["Accounts"] as List<Account>;
+    var products = ViewData["Products"] as List<Product>;
+    var configurations = ViewData["Configurations"] as List<ConfigurationTable>;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Configuration</h2>
+
+
+        <!-- ONGLET POUR ACCOUNT ET PRODUCT -->
+        <ul class="nav nav-tabs mt-4">
+            <li class="nav-item">
+                <button class="nav-link active" id="btn-account">Accounts</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" id="btn-product">Products</button>
+            </li>
+        </ul>
+
+        <!-- CONTENU DYNAMIQUE -->
+        <div class="tab-content mt-3">
+            <!-- Table Account -->
+            <div id="table-account">
+                <h3>Liste des Accounts</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Open Deals</th>
+                            <th>Open Revenue</th>
+                            <th>Open Revenue Base</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var account in accounts)
+                        {
+                            <tr>
+                                <td>@account.AccountId</td>
+                                <td>@account.Opendeals</td>
+                                <td>@account.OpenRevenue</td>
+                                <td>@account.OpenRevenueBase</td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Table Product (cachée par défaut) -->
+            <div id="table-product" style="display: none;">
+                <h3>Liste des Products</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom</th>
+                            <th>Prix</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in products)
+                        {
+                            <tr>
+                                <td>@product.ProductId</td>
+                                <td>@product.Name</td>
+                                <td>@product.Price</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("btn-account").addEventListener("click", function() {
+            document.getElementById("table-account").style.display = "block";
+            document.getElementById("table-product").style.display = "none";
+            this.classList.add("active");
+            document.getElementById("btn-product").classList.remove("active");
+        });
+
+        document.getElementById("btn-product").addEventListener("click", function() {
+            document.getElementById("table-account").style.display = "none";
+            document.getElementById("table-product").style.display = "block";
+            this.classList.add("active");
+            document.getElementById("btn-account").classList.remove("active");
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

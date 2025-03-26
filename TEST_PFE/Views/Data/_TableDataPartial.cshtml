@@ -1,0 +1,25 @@
+﻿@model TEST_PFE.Models.TableData
+
+<h4>Données pour la table @Model.TableName</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            @foreach (var att in Model.Attributes)
+            {
+                <th>@att</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model.Records)
+        {
+            <tr>
+                @foreach (var attribute in Model.Attributes)
+                {
+                    <td>@record[attribute]</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
