@@ -1,0 +1,202 @@
+﻿@model List<Dictionary<string, object>>
+@{
+    Layout = "~/Pages/Shared/_CRMLayout.cshtml";
+    ViewData["Title"] = "Liste des Enregistrements";
+    var entityName = ViewData["EntityName"] as string;
+    var totalRecords = Model?.Count ?? 0;
+    var totalColumns = Model?.FirstOrDefault()?.Count ?? 0;
+    var nullCount = Model?.SelectMany(d => d.Values).Count(v => v == null) ?? 0;
+}
+
+<!-- CSS Bootstrap intégré -->
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Enregistrements - @entityName</h1>
+
+    <!-- Cartes récapitulatives -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total des Enregistrements</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">@totalRecords</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Nombre de Colonnes</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">@totalColumns</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Valeurs nulles détectées</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">@nullCount</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bouton Retour + Export -->
+    <div class="mb-3 d-flex justify-content-between">
+        <a href="@Url.Action("GetEntities", "Crm")" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Retour aux entités
+        </a>
+        <div>
+            <button id="exportExcel" class="btn btn-outline-success me-2">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </button>
+            <button id="exportCSV" class="btn btn-outline-primary">
+                <i class="fas fa-file-csv"></i> Export CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- Formulaire d'ajout -->
+    <div class="mb-3">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+            <i class="fas fa-plus"></i> Ajouter un Enregistrement
+        </button>
+    </div>
+
+    <!-- Modal Ajouter un enregistrement -->
+    <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addRecordModalLabel">Ajouter un Enregistrement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulaire d'ajout -->
+                    <form id="addRecordForm">
+                        @foreach (var key in Model.First().Keys)
+                        {
+                            <div class="mb-3">
+                                <label for="add_@key" class="form-label">@key</label>
+                                <input type="text" class="form-control" id="add_@key" name="add_@key" required>
+                            </div>
+                        }
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sélecteur de Colonnes avec Scroll -->
+    <div class="mb-3">
+        <label for="columnSelector" class="form-label fw-bold">Colonnes à afficher :</label>
+        <select id="columnSelector" multiple class="form-select" style="height: 200px; overflow-y: scroll;">
+            @if (Model.Any())
+            {
+                var index = 0;
+                foreach (var key in Model.First().Keys)
+                {
+                    <option value="@index" selected>@key</option>
+                    index++;
+                }
+            }
+        </select>
+    </div>
+
+    <!-- Table -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive" style="overflow-x: auto;">
+                <table class="table table-bordered" id="recordsTable" cellspacing="0">
+                    <thead class="table-primary">
+                        <tr>
+                            @if (Model.Any())
+                            {
+                                foreach (var key in Model.First().Keys)
+                                {
+                                    <th>@key</th>
+                                    <th>Actions</th> <!-- Ajout des colonnes d'action -->
+                                }
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model)
+                        {
+                            <tr>
+                                @foreach (var value in row.Values)
+                                {
+                                    <td>@(value ?? "")</td>
+                                }
+                                <!-- Colonnes d'action pour la modification et la suppression -->
+                                <td>
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateRecordModal" onclick="editRecord(@row.Keys.First())">
+                                        <i class="fas fa-edit"></i> Modifier
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteRecord(@row.Keys.First())">
+                                        <i class="fas fa-trash"></i> Supprimer
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Export Excel
+        document.getElementById("exportExcel").addEventListener("click", () => {
+            const table = document.getElementById("recordsTable");
+            const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
+            XLSX.writeFile(wb, `${entityName}.xlsx`);
+        });
+
+        // Export CSV
+        document.getElementById("exportCSV").addEventListener("click", () => {
+            const table = document.getElementById("recordsTable");
+            const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
+            XLSX.writeFile(wb, `${entityName}.csv`);
+        });
+
+        // Fonction pour modifier un enregistrement
+        function editRecord(recordId) {
+            // Logique pour pré-remplir les champs du formulaire de mise à jour
+            console.log("Modifier l'enregistrement : " + recordId);
+        }
+
+        // Fonction pour supprimer un enregistrement
+        function deleteRecord(recordId) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cet enregistrement ?")) {
+                // Logique pour supprimer l'enregistrement
+                console.log("Supprimer l'enregistrement : " + recordId);
+            }
+        }
+         // Liste déroulante qui te permet de sélectionner dynamiquement les colonnes à afficher ou masquer dans le tableau
+        const columnSelector = document.getElementById("columnSelector");
+        const table = document.getElementById("recordsTable");
+
+        columnSelector.addEventListener("change", () => {
+            const selected = Array.from(columnSelector.selectedOptions).map(opt => parseInt(opt.value));
+            const allCols = table.querySelectorAll("thead th");
+
+            // Afficher/masquer les en-têtes
+            allCols.forEach((th, i) => {
+                th.style.display = selected.includes(i) ? "" : "none";
+            });
+
+            // Afficher/masquer les cellules
+            const rows = table.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                row.querySelectorAll("td").forEach((td, i) => {
+                    td.style.display = selected.includes(i) ? "" : "none";
+                });
+            });
+        });
+
+        // Déclencher au chargement pour forcer l'état initial
+        columnSelector.dispatchEvent(new Event("change"));
+    </script>
+}

@@ -1,150 +1,74 @@
 ﻿@model IEnumerable<string>
-
 @{
     ViewData["Title"] = "Liste des Entités";
+    Layout = "~/Pages/Shared/_CRMLayout.cshtml";
 }
 
-<!-- Inclusion de Bootstrap et Font Awesome -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<div class="container-fluid">
 
-<style>
-    /* Arrière-plan blanc pour un design épuré */
-    body {
-        background: #f3f3f3;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    <!-- Titre -->
+    <h1 class="h3 mb-4 text-gray-800 text-center">Liste des Entités</h1>
 
-    /* Conteneur principal */
-    .table-container {
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
-        margin-top: 30px;
-    }
+    <!-- Barre de recherche -->
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-3">
+            <input type="text" class="form-control shadow-sm" id="entitySearchInput" placeholder="🔍 Rechercher une entité..." />
+        </div>
+    </div>
 
-    /* Titre stylisé */
-    h2 {
-        font-weight: bold;
-        text-transform: uppercase;
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 26px;
-        background: linear-gradient(to right, #F25022, #7FBA00, #00A4EF, #FFB900);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    /* Style du tableau */
-    table {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    thead {
-        background-color: #0078D7; /* Bleu Microsoft */
-        color: white;
-    }
-
-    tbody tr:nth-child(odd) {
-        background-color: #f9f9f9;
-    }
-
-    tbody tr:nth-child(even) {
-        background-color: #ffffff;
-    }
-
-    /* Style des boutons (Couleurs Microsoft) */
-    .btn-view {
-        background-color: #0078D7; /* Bleu Microsoft */
-        border: none;
-        color: white;
-        padding: 10px 15px;
-        font-size: 14px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-
-        .btn-view:hover {
-            background-color: #005A9E;
-            transform: scale(1.05);
-        }
-
-    /* Petits badges de couleurs Microsoft */
-    .microsoft-badge {
-        width: 10px;
-        height: 10px;
-        display: inline-block;
-        margin-right: 5px;
-        border-radius: 50%;
-    }
-
-    .red {
-        background-color: #F25022;
-    }
-
-    .green {
-        background-color: #7FBA00;
-    }
-
-    .blue {
-        background-color: #00A4EF;
-    }
-
-    .yellow {
-        background-color: #FFB900;
-    }
-</style>
-
-<div class="container">
-    <h2>
-        <span class="microsoft-badge red"></span>
-        <span class="microsoft-badge green"></span>
-        <span class="microsoft-badge blue"></span>
-        <span class="microsoft-badge yellow"></span>
-        Liste des Entités
-    </h2>
-
-    <div class="table-container">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nom de l'Entité</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model == null || !Model.Any())
-                {
-                    <tr>
-                        <td colspan="2" class="text-center text-muted">
-                            Aucune entité disponible
-                        </td>
-                    </tr>
-                }
-                else
-                {
-                    @foreach (var entityName in Model)
-                    {
+    <!-- Tableau des entités -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Entités disponibles</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="entitiesTable" width="100%" cellspacing="0">
+                    <thead class="thead-dark">
                         <tr>
-                            <td>@entityName</td>
-                            <td class="text-center">
-                                <form action="@Url.Action("GetRecords", "Crm", new { entityName = entityName })"
-                                      method="get"
-                                      class="d-inline">
-                                    <button type="submit" class="btn btn-view">
-                                        <i class="fas fa-list"></i> Voir les enregistrements
-                                    </button>
-                                </form>
-                            </td>
+                            <th>Nom de l'Entité</th>
+                            <th class="text-center">Actions</th>
                         </tr>
-                    }
-                }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        @if (Model == null || !Model.Any())
+                        {
+                            <tr>
+                                <td colspan="2" class="text-center text-muted">Aucune entité disponible</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var entityName in Model)
+                            {
+                                <tr>
+                                    <td>@entityName</td>
+                                    <td class="text-center">
+                                        <form action="@Url.Action("GetRecords", "Crm", new { entityName = entityName })" method="get" class="d-inline">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fas fa-list"></i> Voir les enregistrements
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Inclusion du JS Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Script de recherche -->
+<script>
+    document.getElementById("entitySearchInput").addEventListener("keyup", function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#entitiesTable tbody tr");
+
+        rows.forEach(row => {
+            const entityName = row.cells[0].textContent.toLowerCase();
+            row.style.display = entityName.includes(filter) ? "" : "none";
+        });
+    });
+</script>
