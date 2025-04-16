@@ -1,544 +1,696 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Business Frontpage - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container px-5">
-                <a class="navbar-brand" href="#!">BI 360°</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
-                    </ul>
-                </div>
+<head>
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Business Frontpage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+
+
+    <style>
+        header {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* derrière tout le contenu */
+        }
+
+        header .container,
+        header .row,
+        header .col-lg-6,
+        header .text-center {
+            position: relative;
+            z-index: 1; /* au-dessus des particules */
+        }
+    </style>
+
+</head>
+<body>
+
+    <!-- Responsive navbar-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container px-5">
+            <a class="navbar-brand" href="#!">BI 360°</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-5">
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-6">
-                        <div class="text-center my-5">
-                            <img src="https://localhost:44365/images/logo.png" alt="logo" class="img-fluid mb-2" />
-                            <p class="lead text-white-50 mb-4">
-                                Plateforme intégrée d'intelligence d'affaire pour la gestion des données et la prédiction des ventes
-                            </p>
+    <!-- Header-->
+    <header class="bg-dark py-5 position-relative">
+        <!-- fond animé -->
+        <div id="particles-js"></div>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-                            <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                                <!-- Le bouton "Get Started" déclenche maintenant le défilement vers les KPIs -->
-                                <a class="btn btn-primary btn-lg px-5 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
-                                <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-                                <button class="btn btn-primary btn-lg px-4 me-sm-4" id="launchETLBtn">Lancer l’ETL 🚀</button>
-                            </div>
+        <div class="container px-5">
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <div class="text-center my-5">
+                        <img src="https://localhost:44365/images/logo.png" alt="logo" class="img-fluid mb-2 fade-in-up fade-in-delay-1" />
+                        <p class="lead text-white-50 mb-4 fade-in-up fade-in-delay-2">
+                            Plateforme intégrée d'intelligence d'affaire pour la gestion des données et la prédiction des ventes
+                        </p>
 
-                            <!-- Progress bar (masquée au début) -->
-                            <div class="progress mt-4" style="height: 25px; display: none;" id="etlProgressContainer">
-                                <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
-                                     role="progressbar" style="width: 0%">0%</div>
-                            </div>
-
-                            <!-- Message de retour -->
-                            <div id="etlMessage" class="mt-3 text-white fw-bold fs-6"></div>
+                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up fade-in-delay-3">
+                            <!-- Le bouton "Get Started" déclenche maintenant le défilement vers les KPIs -->
+                            <a class="btn btn-primary btn-lg px-5 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
+                            <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+                            <button class="btn btn-primary btn-lg px-4 me-sm-4" id="launchETLBtn">Lancer l’ETL🚀</button>
                         </div>
+
+                        <!-- Progress bar (masquée au début) -->
+                        <div class="progress mt-4 fade-in-up fade-in-delay-4" style="height: 25px; display: none;" id="etlProgressContainer">
+                            <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                 role="progressbar" style="width: 0%">0%</div>
+                        </div>
+
+                        <!-- Message de retour -->
+                        <div id="etlMessage" class="mt-3 text-white fw-bold fs-6"></div>
                     </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
 
-        
 
-        <style>
-            /* Amélioration de l'apparence de la barre de progression */
-            #etlProgressContainer {
-                background-color: #f4f4f4;
-                border-radius: 10px;
-            }
 
-            #etlProgressBar {
-                height: 100%;
-                text-align: center;
-                line-height: 25px; /* Alignement vertical du texte */
-            }
 
-            #message {
-                font-size: 1.1rem;
-                font-weight: bold;
-            }
-        </style>
 
-        <script>
-            
-            document.getElementById("launchETLBtn").addEventListener("click", async () => {
-                const launchBtn = document.getElementById("launchETLBtn");
-                const progressBar = document.getElementById("etlProgressBar");
-                const progressContainer = document.getElementById("etlProgressContainer");
-                const message = document.getElementById("etlMessage");
+    <style>
+        /* Amélioration de l'apparence de la barre de progression */
+        #etlProgressContainer {
+            background-color: #f4f4f4;
+            border-radius: 10px;
+        }
 
-                // 🔒 Désactiver le bouton pendant l’exécution
-                launchBtn.disabled = true;
-                launchBtn.textContent = "En cours...";
+        #etlProgressBar {
+            height: 100%;
+            text-align: center;
+            line-height: 25px; /* Alignement vertical du texte */
+        }
 
-                // Reset
-                progressContainer.style.display = "block";
-                progressBar.style.width = "0%";
-                progressBar.textContent = "0%";
-                message.textContent = "";
-                progressBar.classList.remove("bg-danger", "bg-success");
+        #message {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
 
-                // Faux chargement
-                let progress = 0;
-                const interval = setInterval(() => {
-                    if (progress < 95) {
-                        progress += 5;
-                        progressBar.style.width = `${progress}%`;
-                        progressBar.textContent = `${progress}%`;
-                    }
-                }, 200);
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+    </style>
 
-                try {
-                    const response = await fetch('/SsisRunner/RunETL', {
-                        method: 'POST'
-                    });
+    <script>
 
-                    const result = await response.text();
-                    clearInterval(interval);
-                    progressBar.style.width = "100%";
-                    progressBar.textContent = "100%";
-                    message.textContent = result;
+        document.getElementById("launchETLBtn").addEventListener("click", async () => {
+            const launchBtn = document.getElementById("launchETLBtn");
+            const progressBar = document.getElementById("etlProgressBar");
+            const progressContainer = document.getElementById("etlProgressContainer");
+            const message = document.getElementById("etlMessage");
 
-                    if (result.includes("✅")) {
-                        progressBar.classList.add("bg-success");
-                    } else {
-                        progressBar.classList.add("bg-danger");
-                    }
+            // 🔒 Désactiver le bouton pendant l’exécution
+            launchBtn.disabled = true;
+            launchBtn.textContent = "En cours...";
 
-                } catch (error) {
-                    clearInterval(interval);
+            // Reset
+            progressContainer.style.display = "block";
+            progressBar.style.width = "0%";
+            progressBar.textContent = "0%";
+            message.textContent = "";
+            progressBar.classList.remove("bg-danger", "bg-success");
+
+            // Faux chargement
+            let progress = 0;
+            const interval = setInterval(() => {
+                if (progress < 95) {
+                    progress += 5;
+                    progressBar.style.width = `${progress}%`;
+                    progressBar.textContent = `${progress}%`;
+                }
+            }, 200);
+
+            try {
+                const response = await fetch('/SsisRunner/RunETL', {
+                    method: 'POST'
+                });
+
+                const result = await response.text();
+                clearInterval(interval);
+                progressBar.style.width = "100%";
+                progressBar.textContent = "100%";
+                message.textContent = result;
+
+                if (result.includes("✅")) {
+                    progressBar.classList.add("bg-success");
+                } else {
                     progressBar.classList.add("bg-danger");
-                    progressBar.style.width = "100%";
-                    progressBar.textContent = "Erreur";
-                    message.textContent = "❌ Une erreur est survenue pendant l’exécution.";
                 }
 
-                // 🔓 Réactiver le bouton après 3 secondes
-                setTimeout(() => {
-                    launchBtn.disabled = false;
-                    launchBtn.textContent = "Lancer l’ETL 🚀";
-                }, 3000);
-            });
+            } catch (error) {
+                clearInterval(interval);
+                progressBar.classList.add("bg-danger");
+                progressBar.style.width = "100%";
+                progressBar.textContent = "Erreur";
+                message.textContent = "❌ Une erreur est survenue pendant l’exécution.";
+            }
+
+            // 🔓 Réactiver le bouton après 3 secondes
+            setTimeout(() => {
+                launchBtn.disabled = false;
+                launchBtn.textContent = "Lancer l’ETL 🚀";
+            }, 3000);
+        });
 
 
 
-        </script>
+    </script>
 
 
 
-        <!-- Section des KPIs -->
-        <section class="py-5 border-bottom" id="kpis">
-            <div class="container px-5 my-5">
-                <div class="text-center mb-5">
-                    <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
-                        KPIs Descriptifs, Explicatifs et Prédictifs
-                    </h2>
 
-                    <div class="row gx-4 gy-4 text-center">
-                        <div class="col-lg-4 d-flex flex-column align-items-center">
-                            <div class="feature bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-bar-chart-line fs-2"></i>
-                            </div>
-                            <h3 class="h5 fw-bolder">KPIs Descriptifs</h3>
-                            <p>Analyse des performances passées avec des indicateurs comme le chiffre d'affaires et le taux de conversion.</p>
-                            <a class="text-decoration-none mx-10 mt-3 d-inline-block" href="#">Voir les KPIs Descriptifs <i class="bi bi-arrow-right"></i></a>
+    <!-- Section des KPIs -->
+    <section class="py-5 " id="kpis">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
+                    KPIs Descriptifs, Explicatifs et Prédictifs
+                </h2>
+
+                <div class="row gx-4 gy-4 text-center">
+                    <div class="col-lg-4 d-flex flex-column align-items-center">
+                        <div class="feature bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-bar-chart-line fs-2"></i>
                         </div>
-                        <div class="col-lg-4 d-flex flex-column align-items-center">
-                            <div class="feature bg-info text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-graph-up fs-2"></i>
-                            </div>
-                            <h3 class="h5 fw-bolder">KPIs Explicatifs</h3>
-                            <p>Analyse des relations entre différentes variables pour comprendre les causes des variations des performances.</p>
-                            <a class="text-decoration-none mx-3" href="#">Voir les KPIs Explicatifs <i class="bi bi-arrow-right"></i></a>
+
+                        <h3 class="h5 fw-bolder">KPIs Descriptifs</h3>
+                        <p>Analyse des performances passées avec des indicateurs comme le chiffre d'affaires et le taux de conversion.</p>
+                        <a class="text-decoration-none mx-3 " href="#">Voir les KPIs Descriptifs <i class="bi bi-arrow-right"></i></a>
+
+                    </div>
+                    <div class="col-lg-4 d-flex flex-column align-items-center">
+                        <div class="feature bg-info text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-graph-up fs-2"></i>
                         </div>
-                        <div class="col-lg-4 d-flex flex-column align-items-center">
-                            <div class="feature bg-warning text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-lightbulb fs-2"></i>
-                            </div>
-                            <h3 class="h5 fw-bolder">KPIs Prédictifs</h3>
-                            <p>Utilisation de modèles de machine learning pour prévoir les tendances futures et anticiper les performances.</p>
-                            <a class="text-decoration-none mx-3" href="/SalesKPI/Index">Voir les KPIs Prédictifs <i class="bi bi-arrow-right"></i></a>
+                        <h3 class="h5 fw-bolder">KPIs Explicatifs</h3>
+                        <p>Analyse des relations entre différentes variables pour comprendre les causes des variations des performances.</p>
+                        <a class="text-decoration-none mx-3" href="#">Voir les KPIs Explicatifs <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                    <div class="col-lg-4 d-flex flex-column align-items-center">
+                        <div class="feature bg-warning text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-lightbulb fs-2"></i>
                         </div>
+                        <h3 class="h5 fw-bolder">KPIs Prédictifs</h3>
+                        <p>Utilisation de modèles de machine learning pour prévoir les tendances futures et anticiper les performances.</p>
+                        <a class="text-decoration-none mx-3" href="/SalesKPI/Index">Voir les KPIs Prédictifs <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Section Système ETL -->
-        <section class="py-5 border-bottom bg-light" id="etl">
-            <div class="container px-5 my-5">
-                <div class="text-center mb-5">
-                    <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
-                        Système
-                    </h2>
-                    <div class="row gx-5 text-center">
-                        <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                            <div class="feature bg-secondary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-arrow-down-up fs-2"></i>
-                            </div>
-                            <h3 class="h5 fw-bolder">Extraction & Transformation</h3>
-                            <p class="text-center">Récupération des données brutes depuis différentes sources et nettoyage pour assurer leur qualité.</p>
-                            <!-- Le lien "Cliquer ici" qui affiche le formulaire d'upload -->
-                            <a class="text-decoration-none mt-3 d-inline-block" href="#" id="extractTransformLink">Cliquer ici <i class="bi bi-arrow-right"></i></a>
+    <!-- Séparateur vague (effet vague vers le haut) -->
+    <div style="position: relative; height: 100px; overflow: hidden;">
+        <svg viewBox="0 0 500 150" preserveAspectRatio="none"
+             style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;">
+            <path d="M0.00,49.98 C150.00,150.00 349.15,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
+                  style="stroke: none; fill: #f8f9fa;"></path>
+        </svg>
+    </div>
 
-                            <!-- Conteneur pour afficher le formulaire d'upload au clic sur le lien "Cliquer ici" -->
-                            <div id="uploadFormContainer" class="mt-4"></div>
+
+
+    <!-- Section Système ETL -->
+    <section class="py-5 bg-light" id="etl">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
+                    Système ETL
+                </h2>
+                <div class="row gx-5 text-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
+                        <div class="feature bg-secondary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-arrow-down-up fs-2"></i>
                         </div>
-                        <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                            <div class="feature bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-box-arrow-down fs-2"></i>
-                            </div>
-                            <h3 class="h5 fw-bolder">Chargement & Stockage</h3>
-                            <p>Intégration des données transformées dans un data warehouse pour une exploitation optimale.</p>
-                            <a class="text-decoration-none mt-3 d-inline-block" href="#">Cliquer ici <i class="bi bi-arrow-right"></i></a>
+                        <h3 class="h5 fw-bolder">Extraction & Transformation</h3>
+                        <p class="text-center">Récupération des données brutes depuis différentes sources et nettoyage pour assurer leur qualité.</p>
+                        <!-- Le lien "Cliquer ici" qui affiche le formulaire d'upload -->
+                        <a class="text-decoration-none mt-3 d-inline-block" href="#" id="extractTransformLink">Cliquer ici <i class="bi bi-arrow-right"></i></a>
+
+                        <!-- Conteneur pour afficher le formulaire d'upload au clic sur le lien "Cliquer ici" -->
+                        <div id="uploadFormContainer" class="mt-4"></div>
+                    </div>
+                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
+                        <div class="feature bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-box-arrow-down fs-2"></i>
                         </div>
+                        <h3 class="h5 fw-bolder">Chargement & Stockage</h3>
+                        <p>Intégration des données transformées dans un data warehouse pour une exploitation optimale.</p>
+                        <a class="text-decoration-none mt-3 d-inline-block" href="#">Cliquer ici <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+
+    </section>
 
 
 
-        <script>
-            // Ajout de l'événement pour le bouton "Get Started" pour faire défiler vers la section des KPIs
-            document.getElementById("getStartedButton").addEventListener("click", function (e) {
-                e.preventDefault(); // Empêche le comportement par défaut du lien
+
+
+
+    <script>
+        // Ajout de l'événement pour le bouton "Get Started" pour faire défiler vers la section des KPIs
+        document.getElementById("getStartedButton").addEventListener("click", function (e) {
+            e.preventDefault(); // Empêche le comportement par défaut du lien
             // Défilement vers la section des KPIs
-            document.getElementById("kpis").scrollIntoView({behavior: "smooth" });
-                });
-        </script>
+            document.getElementById("kpis").scrollIntoView({ behavior: "smooth" });
+        });
+    </script>
+
+    <!-- Séparateur vague (vers le bas, diminution côté droit) -->
+    <div style="position: relative; height: 100px; overflow: hidden;">
+        <svg viewBox="0 0 500 150" preserveAspectRatio="none"
+             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+            <path d="M0,0
+                 C100,100 300,50 500,100
+                 L500,0 L0,0 Z"
+                  style="stroke: none; fill: #f8f9fa;"></path>
+        </svg>
+    </div>
 
 
-        <!-- Section CRM -->
-        <section class="py-5 border-bottom" id="crm">
-            <div class="container px-5 my-5">
-                <div class="text-center mb-5">
-                    <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">CRM - Gestion de la Relation Client</h2>
 
-                    <div class="row gx-5 text-center">
-                        <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                            <div class="feature bg-success text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-person-check fs-2"></i>
-                            </div>
-                            <h3 class="h5 fw-bolder">Gestion des clients</h3>
-                            <p>Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
-                            <a class="text-decoration-none mt-3 d-inline-block" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
+
+    <!-- Section CRM -->
+    <section class="py-5" id="crm">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">CRM - Gestion de la Relation Client</h2>
+
+                <div class="row gx-5 text-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
+                        <div class="feature bg-success text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-person-check fs-2"></i>
                         </div>
-                        <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                            <div class="feature bg-danger text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                                <i class="bi bi-chat-square-text fs-2"></i>
+                        <h3 class="h5 fw-bolder">Gestion des clients</h3>
+                        <p>Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
+                        <a class="text-decoration-none mt-3 d-inline-block" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
+                        <div class="feature bg-danger text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
+                            <i class="bi bi-chat-square-text fs-2"></i>
+                        </div>
+                        <h3 class="h5 fw-bolder">Automatisation & Reporting</h3>
+                        <p>Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
+                        <a class="text-decoration-none mt-3 d-inline-block" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
+                        <!-- Intégration du tableau de bord Power BI -->
+                        <!--<iframe title="Dashboard Power BI" width="100%" height="500px" src="https://app.powerbi.com/view?r=TON-LIEN-DU-RAPPORT" frameborder="0" allowFullScreen="true"></iframe>-->
+                    </div>
+                </div>
+            </div>
+    </section>
+
+
+
+
+    <!-- Pricing section-->
+    <section class="bg-light py-5 border-bottom">
+        <div class="container px-5 my-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder">Pay as you grow</h2>
+                <p class="lead mb-0">With our no hassle pricing plans</p>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <!-- Pricing card free-->
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card mb-5 mb-xl-0">
+                        <div class="card-body p-5">
+                            <div class="small text-uppercase fw-bold text-muted">Free</div>
+                            <div class="mb-3">
+                                <span class="display-4 fw-bold">$0</span>
+                                <span class="text-muted">/ mo.</span>
                             </div>
-                            <h3 class="h5 fw-bolder">Automatisation & Reporting</h3>
-                            <p>Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
-                            <a class="text-decoration-none mt-3 d-inline-block" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
-                            <!-- Intégration du tableau de bord Power BI -->
-                            <!--<iframe title="Dashboard Power BI" width="100%" height="500px" src="https://app.powerbi.com/view?r=TON-LIEN-DU-RAPPORT" frameborder="0" allowFullScreen="true"></iframe>-->
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    <strong>1 users</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    5GB storage
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Unlimited public projects
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Community access
+                                </li>
+                                <li class="mb-2 text-muted">
+                                    <i class="bi bi-x"></i>
+                                    Unlimited private projects
+                                </li>
+                                <li class="mb-2 text-muted">
+                                    <i class="bi bi-x"></i>
+                                    Dedicated support
+                                </li>
+                                <li class="mb-2 text-muted">
+                                    <i class="bi bi-x"></i>
+                                    Free linked domain
+                                </li>
+                                <li class="text-muted">
+                                    <i class="bi bi-x"></i>
+                                    Monthly status reports
+                                </li>
+                            </ul>
+                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
                         </div>
                     </div>
                 </div>
-        </section>
-
-
-
-
-        <!-- Pricing section-->
-        <section class="bg-light py-5 border-bottom">
-            <div class="container px-5 my-5">
-                <div class="text-center mb-5">
-                    <h2 class="fw-bolder">Pay as you grow</h2>
-                    <p class="lead mb-0">With our no hassle pricing plans</p>
+                <!-- Pricing card pro-->
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card mb-5 mb-xl-0">
+                        <div class="card-body p-5">
+                            <div class="small text-uppercase fw-bold">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                Pro
+                            </div>
+                            <div class="mb-3">
+                                <span class="display-4 fw-bold">$9</span>
+                                <span class="text-muted">/ mo.</span>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    <strong>5 users</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    5GB storage
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Unlimited public projects
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Community access
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Unlimited private projects
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Dedicated support
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Free linked domain
+                                </li>
+                                <li class="text-muted">
+                                    <i class="bi bi-x"></i>
+                                    Monthly status reports
+                                </li>
+                            </ul>
+                            <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row gx-5 justify-content-center">
-                    <!-- Pricing card free-->
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="card mb-5 mb-xl-0">
-                            <div class="card-body p-5">
-                                <div class="small text-uppercase fw-bold text-muted">Free</div>
-                                <div class="mb-3">
-                                    <span class="display-4 fw-bold">$0</span>
-                                    <span class="text-muted">/ mo.</span>
+                <!-- Pricing card enterprise-->
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card">
+                        <div class="card-body p-5">
+                            <div class="small text-uppercase fw-bold text-muted">Enterprise</div>
+                            <div class="mb-3">
+                                <span class="display-4 fw-bold">$49</span>
+                                <span class="text-muted">/ mo.</span>
+                            </div>
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    <strong>Unlimited users</strong>
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    5GB storage
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Unlimited public projects
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Community access
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Unlimited private projects
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Dedicated support
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-check text-primary"></i>
+                                    <strong>Unlimited</strong>
+                                    linked domains
+                                </li>
+                                <li class="text-muted">
+                                    <i class="bi bi-check text-primary"></i>
+                                    Monthly status reports
+                                </li>
+                            </ul>
+                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Testimonials section-->
+    <section class="py-5 border-bottom">
+        <div class="container px-5 my-5 px-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bolder">Customer testimonials</h2>
+                <p class="lead mb-0">Our customers love working with us</p>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <!-- Testimonial 1-->
+                    <div class="card mb-4">
+                        <div class="card-body p-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
+                                <div class="ms-4">
+                                    <p class="mb-1">Thank you for putting together such a great product. We loved working with you and the whole team, and we will be recommending you to others!</p>
+                                    <div class="small text-muted">- Client Name, Location</div>
                                 </div>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        <strong>1 users</strong>
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        5GB storage
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Unlimited public projects
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Community access
-                                    </li>
-                                    <li class="mb-2 text-muted">
-                                        <i class="bi bi-x"></i>
-                                        Unlimited private projects
-                                    </li>
-                                    <li class="mb-2 text-muted">
-                                        <i class="bi bi-x"></i>
-                                        Dedicated support
-                                    </li>
-                                    <li class="mb-2 text-muted">
-                                        <i class="bi bi-x"></i>
-                                        Free linked domain
-                                    </li>
-                                    <li class="text-muted">
-                                        <i class="bi bi-x"></i>
-                                        Monthly status reports
-                                    </li>
-                                </ul>
-                                <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
                             </div>
                         </div>
                     </div>
-                    <!-- Pricing card pro-->
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="card mb-5 mb-xl-0">
-                            <div class="card-body p-5">
-                                <div class="small text-uppercase fw-bold">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    Pro
+                    <!-- Testimonial 2-->
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
+                                <div class="ms-4">
+                                    <p class="mb-1">The whole team was a huge help with putting things together for our company and brand. We will be hiring them again in the near future for additional work!</p>
+                                    <div class="small text-muted">- Client Name, Location</div>
                                 </div>
-                                <div class="mb-3">
-                                    <span class="display-4 fw-bold">$9</span>
-                                    <span class="text-muted">/ mo.</span>
-                                </div>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        <strong>5 users</strong>
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        5GB storage
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Unlimited public projects
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Community access
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Unlimited private projects
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Dedicated support
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Free linked domain
-                                    </li>
-                                    <li class="text-muted">
-                                        <i class="bi bi-x"></i>
-                                        Monthly status reports
-                                    </li>
-                                </ul>
-                                <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Pricing card enterprise-->
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="card">
-                            <div class="card-body p-5">
-                                <div class="small text-uppercase fw-bold text-muted">Enterprise</div>
-                                <div class="mb-3">
-                                    <span class="display-4 fw-bold">$49</span>
-                                    <span class="text-muted">/ mo.</span>
-                                </div>
-                                <ul class="list-unstyled mb-4">
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        <strong>Unlimited users</strong>
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        5GB storage
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Unlimited public projects
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Community access
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Unlimited private projects
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Dedicated support
-                                    </li>
-                                    <li class="mb-2">
-                                        <i class="bi bi-check text-primary"></i>
-                                        <strong>Unlimited</strong>
-                                        linked domains
-                                    </li>
-                                    <li class="text-muted">
-                                        <i class="bi bi-check text-primary"></i>
-                                        Monthly status reports
-                                    </li>
-                                </ul>
-                                <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- Testimonials section-->
-        <section class="py-5 border-bottom">
-            <div class="container px-5 my-5 px-5">
-                <div class="text-center mb-5">
-                    <h2 class="fw-bolder">Customer testimonials</h2>
-                    <p class="lead mb-0">Our customers love working with us</p>
-                </div>
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-6">
-                        <!-- Testimonial 1-->
-                        <div class="card mb-4">
-                            <div class="card-body p-4">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
-                                    <div class="ms-4">
-                                        <p class="mb-1">Thank you for putting together such a great product. We loved working with you and the whole team, and we will be recommending you to others!</p>
-                                        <div class="small text-muted">- Client Name, Location</div>
-                                    </div>
-                                </div>
+        </div>
+    </section>
+    <!-- Contact section-->
+    <section class="bg-light py-5">
+        <div class="container px-5 my-5 px-5">
+            <div class="text-center mb-5">
+                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
+                <h2 class="fw-bolder">Get in touch</h2>
+                <p class="lead mb-0">We'd love to hear from you</p>
+            </div>
+            <div class="row gx-5 justify-content-center">
+                <div class="col-lg-6">
+                    <!-- * * * * * * * * * * * * * * *-->
+                    <!-- * * SB Forms Contact Form * *-->
+                    <!-- * * * * * * * * * * * * * * *-->
+                    <!-- This form is pre-integrated with SB Forms.-->
+                    <!-- To make this form functional, sign up at-->
+                    <!-- https://startbootstrap.com/solution/contact-forms-->
+                    <!-- to get an API token!-->
+                    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <!-- Name input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
+                            <label for="name">Full name</label>
+                            <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                        </div>
+                        <!-- Email address input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
+                            <label for="email">Email address</label>
+                            <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
+                            <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                        </div>
+                        <!-- Phone number input-->
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
+                            <label for="phone">Phone number</label>
+                            <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                        </div>
+                        <!-- Message input-->
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
+                            <label for="message">Message</label>
+                            <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                        </div>
+                        <!-- Submit success message-->
+                        <!---->
+                        <!-- This is what your users will see when the form-->
+                        <!-- has successfully submitted-->
+                        <div class="d-none" id="submitSuccessMessage">
+                            <div class="text-center mb-3">
+                                <div class="fw-bolder">Form submission successful!</div>
+                                To activate this form, sign up at
+                                <br />
+                                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                             </div>
                         </div>
-                        <!-- Testimonial 2-->
-                        <div class="card">
-                            <div class="card-body p-4">
-                                <div class="d-flex">
-                                    <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
-                                    <div class="ms-4">
-                                        <p class="mb-1">The whole team was a huge help with putting things together for our company and brand. We will be hiring them again in the near future for additional work!</p>
-                                        <div class="small text-muted">- Client Name, Location</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <!-- Submit error message-->
+                        <!---->
+                        <!-- This is what your users will see when there is-->
+                        <!-- an error submitting the form-->
+                        <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                        <!-- Submit Button-->
+                        <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                    </form>
                 </div>
             </div>
-        </section>
-        <!-- Contact section-->
-        <section class="bg-light py-5">
-            <div class="container px-5 my-5 px-5">
-                <div class="text-center mb-5">
-                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-                    <h2 class="fw-bolder">Get in touch</h2>
-                    <p class="lead mb-0">We'd love to hear from you</p>
-                </div>
-                <div class="row gx-5 justify-content-center">
-                    <div class="col-lg-6">
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- * * SB Forms Contact Form * *-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- This form is pre-integrated with SB Forms.-->
-                        <!-- To make this form functional, sign up at-->
-                        <!-- https://startbootstrap.com/solution/contact-forms-->
-                        <!-- to get an API token!-->
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                            <!-- Name input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                <label for="name">Full name</label>
-                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
-                            </div>
-                            <!-- Email address input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                                <label for="email">Email address</label>
-                                <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
-                            </div>
-                            <!-- Phone number input-->
-                            <div class="form-floating mb-3">
-                                <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                                <label for="phone">Phone number</label>
-                                <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
-                            </div>
-                            <!-- Message input-->
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                                <label for="message">Message</label>
-                                <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-                            </div>
-                            <!-- Submit success message-->
-                            <!---->
-                            <!-- This is what your users will see when the form-->
-                            <!-- has successfully submitted-->
-                            <div class="d-none" id="submitSuccessMessage">
-                                <div class="text-center mb-3">
-                                    <div class="fw-bolder">Form submission successful!</div>
-                                    To activate this form, sign up at
-                                    <br />
-                                    <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                                </div>
-                            </div>
-                            <!-- Submit error message-->
-                            <!---->
-                            <!-- This is what your users will see when there is-->
-                            <!-- an error submitting the form-->
-                            <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                            <!-- Submit Button-->
-                            <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
-        </footer>
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-        <script src="/js/fileUpload.js"></script>
+        </div>
+    </section>
+    <!-- Footer-->
+    <footer class="py-5 bg-dark">
+        <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <!-- * *                               SB Forms JS                               * *-->
+    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+    <script src="/js/fileUpload.js"></script>
 
-    </body>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS("particles-js", {
+            particles: {
+                number: { value: 60 },
+                color: { value: "#ffffff" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5 },
+                size: { value: 3 },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+    </script>
+
+
+    <style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fade-in-delay-1 {
+            animation-delay: 0.3s;
+        }
+
+        .fade-in-delay-2 {
+            animation-delay: 0.6s;
+        }
+
+        .fade-in-delay-3 {
+            animation-delay: 0.9s;
+        }
+
+        .fade-in-delay-4 {
+            animation-delay: 1.2s;
+        }
+    </style>
+
+
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800, // durée de l’animation
+            once: true     // ne s’anime qu'une fois
+        });
+    </script>
+
+
+
+</body>
 </html>
