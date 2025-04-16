@@ -6,6 +6,8 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using Microsoft.SqlServer.Management.Smo.Wmi;
+using TEST_PFE.Models;
 
 namespace TEST_PFE.Ser
 {
@@ -74,6 +76,35 @@ namespace TEST_PFE.Ser
 
 
 
+
+
+        //public Dictionary<string, string> GetAllEntitiesWithDisplayNames()
+        //{
+        //    var request = new RetrieveAllEntitiesRequest
+        //    {
+        //        EntityFilters = EntityFilters.Entity,
+        //        RetrieveAsIfPublished = true
+        //    };
+
+        //    var response = (RetrieveAllEntitiesResponse)_serviceClient.Execute(request);
+
+        //    var entityDict = new Dictionary<string, string>();
+
+        //    foreach (var metadata in response.EntityMetadata)
+        //    {
+        //        var logicalName = metadata.LogicalName;
+        //        var displayName = metadata.DisplayName?.UserLocalizedLabel?.Label ?? logicalName;
+
+        //        if (!entityDict.ContainsKey(logicalName))
+        //        {
+        //            entityDict.Add(logicalName, displayName);
+        //        }
+        //    }
+
+        //    return entityDict.OrderBy(e => e.Value).ToDictionary(kv => kv.Key, kv => kv.Value);
+        //}
+
+
         public IEnumerable<Entity> GetEntitiesByLogicalName(string entityName)
         {
             try
@@ -106,6 +137,20 @@ namespace TEST_PFE.Ser
             }
 
         }
+
+
+        public EntityMetadata GetEntityMetadata(string entityLogicalName)
+        {
+            var request = new RetrieveEntityRequest
+            {
+                EntityFilters = EntityFilters.Attributes,
+                LogicalName = entityLogicalName
+            };
+
+            var response = (RetrieveEntityResponse)_serviceClient.Execute(request);
+            return response.EntityMetadata;
+        }
+
 
 
 

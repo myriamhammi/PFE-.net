@@ -1,4 +1,6 @@
-﻿@model List<Dictionary<string, object>>
+﻿
+
+  @model List<Dictionary<string, object>>
 @{
     Layout = "~/Pages/Shared/_CRMLayout.cshtml";
     ViewData["Title"] = "Liste des Enregistrements";
@@ -8,7 +10,6 @@
     var nullCount = Model?.SelectMany(d => d.Values).Count(v => v == null) ?? 0;
 }
 
-<!-- CSS Bootstrap intégré -->
 <div class="container-fluid">
     <h1 class="h3 mb-4 text-gray-800">Enregistrements - @entityName</h1>
 
@@ -86,6 +87,7 @@
             </div>
         </div>
     </div>
+
     <!-- Sélecteur de Colonnes avec Scroll -->
     <div class="mb-3">
         <label for="columnSelector" class="form-label fw-bold">Colonnes à afficher :</label>
@@ -114,32 +116,100 @@
                                 foreach (var key in Model.First().Keys)
                                 {
                                     <th>@key</th>
-                                    <th>Actions</th> <!-- Ajout des colonnes d'action -->
                                 }
                             }
+                            <th>Actions</th> <!-- Colonne pour les boutons -->
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var row in Model)
                         {
-                            <tr>
+                            <tr id="row-@row.Keys.First()">
                                 @foreach (var value in row.Values)
                                 {
-                                    <td>@(value ?? "")</td>
+                                    <td>
+                                        @{
+                                            string displayValue = "";
+
+                                            if (value is Microsoft.Xrm.Sdk.Money money)
+                                            {
+                                                displayValue = money.Value.ToString("N2");
+                                            }
+                                            else if (value is Microsoft.Xrm.Sdk.OptionSetValue option)
+                                            {
+                                                displayValue = option.Value.ToString(); 
+                                            }
+                                            else if (value is Microsoft.Xrm.Sdk.EntityReference er)
+                                            {
+                                                displayValue = er.Name ?? er.Id.ToString();
+                                            }
+                                            else if (value is DateTime date)
+                                            {
+                                                displayValue = date.ToString("yyyy-MM-dd HH:mm");
+                                            }
+                                            else
+                                            {
+                                                displayValue = value?.ToString() ?? "";
+                                            }
+                                        }
+                                        @displayValue
+                                    </td>
                                 }
+
                                 <!-- Colonnes d'action pour la modification et la suppression -->
                                 <td>
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateRecordModal" onclick="editRecord(@row.Keys.First())">
+                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateRecordModal"
+                                            onclick="openEditModal('@row.Keys.First()')">
                                         <i class="fas fa-edit"></i> Modifier
                                     </button>
-                                    <button class="btn btn-danger btn-sm" onclick="deleteRecord(@row.Keys.First())">
+                                    <button class="btn btn-danger btn-sm"
+                                            onclick="openDeleteModal('@row.Keys.First()')">
                                         <i class="fas fa-trash"></i> Supprimer
                                     </button>
                                 </td>
                             </tr>
                         }
                     </tbody>
+
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modifier un enregistrement -->
+<div class="modal fade" id="updateRecordModal" tabindex="-1" aria-labelledby="updateRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateRecordModalLabel">Modifier l'Enregistrement</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateRecordForm">
+                    <div id="modalFields"></div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Supprimer un enregistrement -->
+<div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-labelledby="deleteRecordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteRecordModalLabel">Confirmer la suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer cet enregistrement ?</p>
+                <div id="deleteRecordMessage"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" id="confirmDeleteButton" class="btn btn-danger">Supprimer</button>
             </div>
         </div>
     </div>
@@ -161,42 +231,109 @@
             XLSX.writeFile(wb, `${entityName}.csv`);
         });
 
-        // Fonction pour modifier un enregistrement
-        function editRecord(recordId) {
-            // Logique pour pré-remplir les champs du formulaire de mise à jour
-            console.log("Modifier l'enregistrement : " + recordId);
-        }
+       
+                // Fonction pour ouvrir le modal d'édition
+        function openEditModal(recordId) {
+            const row = document.getElementById('row-' + recordId);
+            const modalFields = document.getElementById('modalFields');
+            modalFields.innerHTML = ''; // Réinitialiser les champs du modal
 
-        // Fonction pour supprimer un enregistrement
-        function deleteRecord(recordId) {
-            if (confirm("Êtes-vous sûr de vouloir supprimer cet enregistrement ?")) {
-                // Logique pour supprimer l'enregistrement
-                console.log("Supprimer l'enregistrement : " + recordId);
+            const cells = row.getElementsByTagName('td');
+            const recordData = {};
+            let index = 0;
+
+            // Remplir les champs du modal avec les données de la ligne
+            for (const cell of cells) {
+                if (index < cells.length - 1) { // On ignore la dernière colonne (actions)
+                    const fieldName = `field_${index}`;
+                    recordData[fieldName] = cell.textContent.trim();
+
+                    const div = document.createElement('div');
+                    div.classList.add('mb-3');
+                    const label = document.createElement('label');
+                    label.setAttribute('for', fieldName);
+                    label.classList.add('form-label');
+                    label.textContent = `Champ ${index + 1}`;
+
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'text');
+                    input.classList.add('form-control');
+                    input.setAttribute('id', fieldName);
+                    input.setAttribute('name', fieldName);
+                    input.value = recordData[fieldName];
+                    input.required = true;
+
+                    div.appendChild(label);
+                    div.appendChild(input);
+                    modalFields.appendChild(div);
+                }
+                index++;
             }
+
+            // Optionnel : gérer l'ID d'enregistrement pour une mise à jour spécifique
+            const recordIdField = document.createElement('input');
+            recordIdField.setAttribute('type', 'hidden');
+            recordIdField.setAttribute('name', 'recordId');
+            recordIdField.setAttribute('value', recordId);
+            modalFields.appendChild(recordIdField);
         }
-         // Liste déroulante qui te permet de sélectionner dynamiquement les colonnes à afficher ou masquer dans le tableau
-        const columnSelector = document.getElementById("columnSelector");
-        const table = document.getElementById("recordsTable");
 
-        columnSelector.addEventListener("change", () => {
-            const selected = Array.from(columnSelector.selectedOptions).map(opt => parseInt(opt.value));
-            const allCols = table.querySelectorAll("thead th");
+        // Fonction pour ouvrir le modal de suppression
+        function openDeleteModal(recordId) {
+            const row = document.getElementById('row-' + recordId);
+            const cells = row.getElementsByTagName('td');
+            const recordData = [];
 
-            // Afficher/masquer les en-têtes
-            allCols.forEach((th, i) => {
-                th.style.display = selected.includes(i) ? "" : "none";
+            let index = 0;
+            for (const cell of cells) {
+                if (index < cells.length - 1) { // On ignore la dernière colonne (actions)
+                    recordData.push(cell.textContent.trim());
+                }
+                index++;
+            }
+
+            // Afficher le message dans le modal
+            const message = `Êtes-vous sûr de vouloir supprimer l'enregistrement suivant ?<br><br><strong>${recordData.join(' | ')}</strong>`;
+            const messageDiv = document.getElementById('deleteRecordMessage');
+            messageDiv.innerHTML = message;
+
+            // Associer l'action de suppression à un bouton
+            const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+            confirmDeleteButton.onclick = function () {
+                // Logique de suppression ici, par exemple, via une requête AJAX
+                deleteRecord(recordId);
+            };
+        }
+
+        // Fonction pour supprimer un enregistrement (envoi de la requête de suppression)
+        function deleteRecord(recordId) {
+            // Par exemple, envoi d'une requête AJAX pour supprimer l'enregistrement
+            fetch(`/deleteRecord/${recordId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ recordId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Si la suppression est réussie, on retire la ligne de la table
+                    const row = document.getElementById('row-' + recordId);
+                    row.remove();
+                    // Fermer le modal après suppression
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteRecordModal'));
+                    modal.hide();
+                } else {
+                    alert('Erreur lors de la suppression de l\'enregistrement.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur de communication avec le serveur.');
             });
-
-            // Afficher/masquer les cellules
-            const rows = table.querySelectorAll("tbody tr");
-            rows.forEach(row => {
-                row.querySelectorAll("td").forEach((td, i) => {
-                    td.style.display = selected.includes(i) ? "" : "none";
-                });
-            });
-        });
-
-        // Déclencher au chargement pour forcer l'état initial
-        columnSelector.dispatchEvent(new Event("change"));
+        }
     </script>
 }
+
+       
+

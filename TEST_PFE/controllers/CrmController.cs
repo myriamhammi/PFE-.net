@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Xrm.Sdk.Messages;
+using Microsoft.Xrm.Sdk.Metadata;
+using Microsoft.Xrm.Sdk;
 
 namespace TEST_PFE.controllers
 {
@@ -19,6 +22,7 @@ namespace TEST_PFE.controllers
             _crmService = crmService ?? throw new ArgumentNullException(nameof(crmService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
         [HttpGet("entities")]
         public async Task<IActionResult> GetEntities()
         {
@@ -41,40 +45,11 @@ namespace TEST_PFE.controllers
             }
         }
 
+
+
+
         [HttpGet("records/{entityName}")]
-        //public IActionResult GetRecords(string entityName)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(entityName))
-        //        {
-        //            return BadRequest(new { message = "Le nom de l'entité est requis." });
-        //        }
 
-        //        var records = _crmService.GetEntitiesByLogicalName(entityName);
-        //        var recordList = records as IEnumerable<dynamic>;
-
-        //        if (recordList == null || !recordList.Any())
-        //        {
-        //            _logger.LogWarning($"No records found for entity: {entityName}");
-        //            return NotFound(new { message = $"Aucun enregistrement trouvé pour l'entité {entityName}." });
-        //        }
-
-        //        return View("~/Views/Data/RecordsList.cshtml", recordList);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, $"Error retrieving records for entity {entityName}");
-        //        return StatusCode(500, new { message = "Erreur lors de la récupération des enregistrements", error = ex.Message });
-        //    }
-        //}
-
-        //public IActionResult GetRecords(string entityName)
-        //{
-        //    var records = _crmService.GetEntitiesByLogicalName(entityName);
-        //    ViewData["EntityName"] = entityName; // Passer entityName à la vue
-        //    return View("~/Views/Data/Records.cshtml", records);
-        //}
         public IActionResult GetRecords(string entityName)
         {
             var entities = _crmService.GetEntitiesByLogicalName(entityName);
@@ -87,6 +62,9 @@ namespace TEST_PFE.controllers
             ViewData["EntityName"] = entityName;
             return View("~/Views/Data/Records.cshtml", records);
         }
+
+
+
 
 
 
