@@ -43,14 +43,112 @@
 
                             <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
                                 <!-- Le bouton "Get Started" déclenche maintenant le défilement vers les KPIs -->
-                                <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
+                                <a class="btn btn-primary btn-lg px-5 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
                                 <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+                                <button class="btn btn-primary btn-lg px-4 me-sm-4" id="launchETLBtn">Lancer l’ETL 🚀</button>
                             </div>
+
+                            <!-- Progress bar (masquée au début) -->
+                            <div class="progress mt-4" style="height: 25px; display: none;" id="etlProgressContainer">
+                                <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                     role="progressbar" style="width: 0%">0%</div>
+                            </div>
+
+                            <!-- Message de retour -->
+                            <div id="etlMessage" class="mt-3 text-white fw-bold fs-6"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
+
+        
+
+        <style>
+            /* Amélioration de l'apparence de la barre de progression */
+            #etlProgressContainer {
+                background-color: #f4f4f4;
+                border-radius: 10px;
+            }
+
+            #etlProgressBar {
+                height: 100%;
+                text-align: center;
+                line-height: 25px; /* Alignement vertical du texte */
+            }
+
+            #message {
+                font-size: 1.1rem;
+                font-weight: bold;
+            }
+        </style>
+
+        <script>
+            
+            document.getElementById("launchETLBtn").addEventListener("click", async () => {
+                const launchBtn = document.getElementById("launchETLBtn");
+                const progressBar = document.getElementById("etlProgressBar");
+                const progressContainer = document.getElementById("etlProgressContainer");
+                const message = document.getElementById("etlMessage");
+
+                // 🔒 Désactiver le bouton pendant l’exécution
+                launchBtn.disabled = true;
+                launchBtn.textContent = "En cours...";
+
+                // Reset
+                progressContainer.style.display = "block";
+                progressBar.style.width = "0%";
+                progressBar.textContent = "0%";
+                message.textContent = "";
+                progressBar.classList.remove("bg-danger", "bg-success");
+
+                // Faux chargement
+                let progress = 0;
+                const interval = setInterval(() => {
+                    if (progress < 95) {
+                        progress += 5;
+                        progressBar.style.width = `${progress}%`;
+                        progressBar.textContent = `${progress}%`;
+                    }
+                }, 200);
+
+                try {
+                    const response = await fetch('/SsisRunner/RunETL', {
+                        method: 'POST'
+                    });
+
+                    const result = await response.text();
+                    clearInterval(interval);
+                    progressBar.style.width = "100%";
+                    progressBar.textContent = "100%";
+                    message.textContent = result;
+
+                    if (result.includes("✅")) {
+                        progressBar.classList.add("bg-success");
+                    } else {
+                        progressBar.classList.add("bg-danger");
+                    }
+
+                } catch (error) {
+                    clearInterval(interval);
+                    progressBar.classList.add("bg-danger");
+                    progressBar.style.width = "100%";
+                    progressBar.textContent = "Erreur";
+                    message.textContent = "❌ Une erreur est survenue pendant l’exécution.";
+                }
+
+                // 🔓 Réactiver le bouton après 3 secondes
+                setTimeout(() => {
+                    launchBtn.disabled = false;
+                    launchBtn.textContent = "Lancer l’ETL 🚀";
+                }, 3000);
+            });
+
+
+
+        </script>
+
+
 
         <!-- Section des KPIs -->
         <section class="py-5 border-bottom" id="kpis">
@@ -95,7 +193,7 @@
             <div class="container px-5 my-5">
                 <div class="text-center mb-5">
                     <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
-                        Système ETL
+                        Système
                     </h2>
                     <div class="row gx-5 text-center">
                         <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
@@ -123,15 +221,15 @@
             </div>
         </section>
 
-       
+
 
         <script>
             // Ajout de l'événement pour le bouton "Get Started" pour faire défiler vers la section des KPIs
             document.getElementById("getStartedButton").addEventListener("click", function (e) {
                 e.preventDefault(); // Empêche le comportement par défaut du lien
-                // Défilement vers la section des KPIs
-                document.getElementById("kpis").scrollIntoView({ behavior: "smooth" });
-            });
+            // Défilement vers la section des KPIs
+            document.getElementById("kpis").scrollIntoView({behavior: "smooth" });
+                });
         </script>
 
 

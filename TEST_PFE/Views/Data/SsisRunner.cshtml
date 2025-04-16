@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Exécution de l'ETL";
+}
+
+<h2>Exécuter les packages SSIS</h2>
+
+<form method="post" asp-antiforgery="true" asp-controller="SsisRunner" asp-action="RunETL" id="etlForm">
+    @Html.AntiForgeryToken()
+    <button type="submit">Lancer l’ETL 🚀</button>
+</form>
+
+
+<div id="message" style="margin-top: 20px; font-weight: bold;"></div>
+
+<script>
+        document.getElementById("etlForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const token = document.querySelector('input[name="__RequestVerificationToken"]').value;
+
+        const res = await fetch("/SsisRunner/RunETL", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `__RequestVerificationToken=${encodeURIComponent(token)}`
+        });
+
+        const msg = await res.text();
+        const messageDiv = document.getElementById("message");
+
+        messageDiv.innerText = msg;
+        messageDiv.style.color = res.ok ? "darkgreen" : "red";
+    });
+
+</script>
