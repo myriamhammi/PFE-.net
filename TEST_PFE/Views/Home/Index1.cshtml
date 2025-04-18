@@ -1,0 +1,31 @@
+﻿@* @{
+    ViewData["Title"] = "Page d'accueil";
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - Mon Application MVC</title>
+
+    <!-- Lien vers le fichier CSS -->
+    <link rel="stylesheet" href="~/css/styles.css" />
+</head>
+<body>
+
+
+    <!-- Contenu principal -->
+    <div class="container mt-4">
+
+
+        <!-- Utilisation d'un iframe pour afficher le fichier index.html -->
+        <iframe src="@Url.Content("~/index.html")" width="100%" height="100%" style="border: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"></iframe>
+
+    </div>
+
+    <!-- Scripts JS -->
+    <script src="~/js/scripts.js"></script>
+</body>
+</html>
+ *@

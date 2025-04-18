@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- AOS CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Business Frontpage - Start Bootstrap Template</title>
-    <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Bootstrap icons-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <!-- Google Fonts - Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
 
     <style>
@@ -42,50 +30,182 @@
     </style>
 
 </head>
-<body>
+<body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70" tabindex="0">
 
-    <!-- Responsive navbar-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+    <!-- Navbar moderne et interactive -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top py-3">
         <div class="container px-5">
-            <a class="navbar-brand" href="#!">BI 360°</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <a class="navbar-brand fw-bold fs-4" href="#">BI 360°</a>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarContent"
+                    aria-controls="navbarContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-light nav-hover" href="#home">Accueil</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-light nav-hover" href="#kpis">KPIs</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-light nav-hover" href="#etl">Système ETL</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-light nav-hover" href="#crm">CRM</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-light nav-hover" href="#team">Notre équipe</a>
+                    </li>
                 </ul>
+
+                <!-- Call-to-action -->
+                <a href="#login" class="btn btn-warning ms-4 fw-bold shadow-sm">Se connecter</a>
             </div>
         </div>
     </nav>
 
+
+    <!-- Style personnalisé -->
+    <style>
+        .nav-hover {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+            .nav-hover::after {
+                content: '';
+                position: absolute;
+                bottom: -6px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: #ffe600;
+                transition: width 0.3s ease;
+            }
+
+            .nav-hover:hover::after {
+                width: 100%;
+            }
+
+            .nav-hover:hover {
+                color: #ffe600 !important;
+            }
+
+        .navbar .btn-warning:hover {
+            background-color: #e6cd00;
+            color: #000;
+        }
+    </style>
+
+
+
+
     <!-- Header-->
+    <!--<header class="bg-dark py-5 position-relative">
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Agency - Start Bootstrap Theme</title>-->
+    <!--Favicon-->
+    <!--<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />-->
+    <!--Font Awesome icons (free version)-->
+    <!--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>-->
+    <!--Google fonts-->
+    <!--<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />-->
+    <!--Core theme CSS (includes Bootstrap)-->
+    <!--<link href="css/styles1.css" rel="stylesheet" />-->
+    <!-- fond animé
+    <!--<div id="particles-js"></div>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">-->
+    <!--<div class="container px-5">
+        <div class="row gx-5 justify-content-center">
+            <div class="col-lg-6">
+                <div class="text-center my-5">
+                    <img src="https://localhost:44365/images/logo_2.png" alt="logo" class="img-fluid mb-2 fade-in-up fade-in-delay-1" />
+                    <p class="lead text-white-50 mb-4 fade-in-up fade-in-delay-2">
+                        Plateforme intégrée d'intelligence d'affaire pour la gestion des données et la prédiction des ventes
+                    </p>
+
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up fade-in-delay-3">-->
+    <!-- Le bouton "Get Started" déclenche maintenant le défilement vers les KPIs -->
+    <!--<a class="btn btn-primary btn-lg px-5 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
+        <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
+        <button class="btn btn-primary btn-lg px-4 me-sm-4" id="launchETLBtn">Lancer l’ETL🚀</button>
+    </div>-->
+    <!-- Progress bar (masquée au début) -->
+    <!--<div class="progress mt-4 fade-in-up fade-in-delay-4" style="height: 25px; display: none;" id="etlProgressContainer">
+        <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+             role="progressbar" style="width: 0%">0%</div>
+    </div>-->
+    <!-- Message de retour -->
+    <!--<div id="etlMessage" class="mt-3 text-white fw-bold fs-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>-->
+
     <header class="bg-dark py-5 position-relative">
-        <!-- fond animé -->
-        <div id="particles-js"></div>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Plateforme d'Intelligence d'Affaires</title>
+
+        <!--Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+        <!--Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+        <!--Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+
+        <!--Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles1.css" rel="stylesheet" />
 
         <div class="container px-5">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
-                        <img src="https://localhost:44365/images/logo.png" alt="logo" class="img-fluid mb-2 fade-in-up fade-in-delay-1" />
+                        <!-- Logo -->
+                        <img src="https://localhost:44365/images/logo_2.png" alt="logo" class="img-fluid mb-4 fade-in-up fade-in-delay-1" />
+
+                        <!-- Description -->
                         <p class="lead text-white-50 mb-4 fade-in-up fade-in-delay-2">
                             Plateforme intégrée d'intelligence d'affaire pour la gestion des données et la prédiction des ventes
                         </p>
 
-                        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up fade-in-delay-3">
-                            <!-- Le bouton "Get Started" déclenche maintenant le défilement vers les KPIs -->
-                            <a class="btn btn-primary btn-lg px-5 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
-                            <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-                            <button class="btn btn-primary btn-lg px-4 me-sm-4" id="launchETLBtn">Lancer l’ETL🚀</button>
+                        <!-- Call to Action Buttons (modifiés pour être légèrement plus grands et alignés sur une seule ligne) -->
+                        <div class="d-flex gap-3 justify-content-center fade-in-up fade-in-delay-3">
+                            <!-- Premier bouton -->
+                            <a class="btn btn-primary btn-md px-5 me-sm-3" href="#kpis" id="getStartedButton" style="white-space: nowrap;">Commencer</a>
+
+                            <!-- Deuxième bouton -->
+                            <a class="btn btn-outline-light btn-md px-5" href="#!" style="white-space: nowrap;">En savoir plus</a>
+
+                            <!-- Troisième bouton -->
+                            <button class="btn btn-primary btn-md px-5 me-sm-4" id="launchETLBtn" style="white-space: nowrap;">Lancer l’ETL🚀</button>
                         </div>
 
-                        <!-- Progress bar (masquée au début) -->
+                        <!-- Barre de progression masquée au début -->
                         <div class="progress mt-4 fade-in-up fade-in-delay-4" style="height: 25px; display: none;" id="etlProgressContainer">
-                            <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
-                                 role="progressbar" style="width: 0%">0%</div>
+                            <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
                         </div>
 
                         <!-- Message de retour -->
@@ -95,6 +215,10 @@
             </div>
         </div>
     </header>
+
+
+
+
 
 
 
@@ -188,93 +312,90 @@
 
     </script>
 
-
-
-
-    <!-- Section des KPIs -->
-    <section class="py-5 " id="kpis">
-        <div class="container px-5 my-5">
+    <section class="py-5" id="kpis">
+        <div class="container">
             <div class="text-center mb-5">
-                <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
-                    KPIs Descriptifs, Explicatifs et Prédictifs
-                </h2>
-
-                <div class="row gx-4 gy-4 text-center">
-                    <div class="col-lg-4 d-flex flex-column align-items-center">
-                        <div class="feature bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-bar-chart-line fs-2"></i>
-                        </div>
-
-                        <h3 class="h5 fw-bolder">KPIs Descriptifs</h3>
-                        <p>Analyse des performances passées avec des indicateurs comme le chiffre d'affaires et le taux de conversion.</p>
-                        <a class="text-decoration-none mx-3 " href="#">Voir les KPIs Descriptifs <i class="bi bi-arrow-right"></i></a>
-
-                    </div>
-                    <div class="col-lg-4 d-flex flex-column align-items-center">
-                        <div class="feature bg-info text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-graph-up fs-2"></i>
-                        </div>
-                        <h3 class="h5 fw-bolder">KPIs Explicatifs</h3>
-                        <p>Analyse des relations entre différentes variables pour comprendre les causes des variations des performances.</p>
-                        <a class="text-decoration-none mx-3" href="#">Voir les KPIs Explicatifs <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                    <div class="col-lg-4 d-flex flex-column align-items-center">
-                        <div class="feature bg-warning text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-lightbulb fs-2"></i>
-                        </div>
-                        <h3 class="h5 fw-bolder">KPIs Prédictifs</h3>
-                        <p>Utilisation de modèles de machine learning pour prévoir les tendances futures et anticiper les performances.</p>
-                        <a class="text-decoration-none mx-3" href="/SalesKPI/Index">Voir les KPIs Prédictifs <i class="bi bi-arrow-right"></i></a>
-                    </div>
+                <h2 class="section-heading text-uppercase" style="font-style: italic;">KPIs Descriptifs, Explicatifs et Prédictifs</h2>
+                <h3 class="section-subheading text-muted">Une lecture complète des données pour guider vos décisions stratégiques</h3>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-4 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-chart-line fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">KPIs Descriptifs</h4>
+                    <p class="text-muted">Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.</p>
+                    <a class="text-decoration-none" href="#">Explorer <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-project-diagram fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">KPIs Explicatifs</h4>
+                    <p class="text-muted">Compréhension des relations entre les variables pour expliquer les fluctuations de performance.</p>
+                    <a class="text-decoration-none" href="#">Explorer <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="col-md-4 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-brain fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">KPIs Prédictifs</h4>
+                    <p class="text-muted">Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.</p>
+                    <a class="text-decoration-none" href="/SalesKPI/Index">Explorer <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Séparateur vague (effet vague vers le haut) -->
+
+
+
+    <!--Séparateur vague (effet vague vers le haut)-->
+
     <div style="position: relative; height: 100px; overflow: hidden;">
         <svg viewBox="0 0 500 150" preserveAspectRatio="none"
              style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;">
             <path d="M0.00,49.98 C150.00,150.00 349.15,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
-                  style="stroke: none; fill: #f8f9fa;"></path>
+                  style="stroke: none; fill: #f4f4f4;"></path>
         </svg>
     </div>
 
 
 
     <!-- Section Système ETL -->
-    <section class="py-5 bg-light" id="etl">
-        <div class="container px-5 my-5">
+    <section class="py-5" id="etl" style="background-color: #f4f4f4;">
+        <div class="container">
             <div class="text-center mb-5">
-                <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">
-                    Système ETL
-                </h2>
-                <div class="row gx-5 text-center">
-                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                        <div class="feature bg-secondary bg-gradient text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-arrow-down-up fs-2"></i>
-                        </div>
-                        <h3 class="h5 fw-bolder">Extraction & Transformation</h3>
-                        <p class="text-center">Récupération des données brutes depuis différentes sources et nettoyage pour assurer leur qualité.</p>
-                        <!-- Le lien "Cliquer ici" qui affiche le formulaire d'upload -->
-                        <a class="text-decoration-none mt-3 d-inline-block" href="#" id="extractTransformLink">Cliquer ici <i class="bi bi-arrow-right"></i></a>
-
-                        <!-- Conteneur pour afficher le formulaire d'upload au clic sur le lien "Cliquer ici" -->
-                        <div id="uploadFormContainer" class="mt-4"></div>
-                    </div>
-                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                        <div class="feature bg-dark text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-box-arrow-down fs-2"></i>
-                        </div>
-                        <h3 class="h5 fw-bolder">Chargement & Stockage</h3>
-                        <p>Intégration des données transformées dans un data warehouse pour une exploitation optimale.</p>
-                        <a class="text-decoration-none mt-3 d-inline-block" href="#">Cliquer ici <i class="bi bi-arrow-right"></i></a>
-                    </div>
+                <h2 class="section-heading text-uppercase" style="font-style: italic;">Système ETL</h2>
+                <h3 class="section-subheading text-muted">De la donnée brute à la valeur décisionnelle</h3>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-6 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-cogs fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">Extraction & Transformation</h4>
+                    <p class="text-muted">Collecte des données issues de sources variées, nettoyage, normalisation et enrichissement pour garantir leur qualité.</p>
+                    <a class="text-decoration-none d-inline-block mt-2" href="#" id="extractTransformLink">Découvrir <i class="bi bi-arrow-right"></i></a>
+                    <div id="uploadFormContainer" class="mt-4"></div>
+                </div>
+                <div class="col-md-6 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-database fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">Chargement & Stockage</h4>
+                    <p class="text-muted">Insertion des données dans un entrepôt centralisé pour faciliter l’analyse et la visualisation.</p>
+                    <a class="text-decoration-none d-inline-block mt-2" href="#">Découvrir <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </div>
-
     </section>
+
 
 
 
@@ -290,159 +411,228 @@
         });
     </script>
 
-    <!-- Séparateur vague (vers le bas, diminution côté droit) -->
-    <div style="position: relative; height: 100px; overflow: hidden;">
+
+    <!-- Séparateur vague fluide (vers le bas, pour transition grise -> blanche) -->
+    <div style="position: relative; height: 120px; overflow: hidden; background-color: #f4f4f4;">
         <svg viewBox="0 0 500 150" preserveAspectRatio="none"
              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-            <path d="M0,0
-                 C100,100 300,50 500,100
-                 L500,0 L0,0 Z"
-                  style="stroke: none; fill: #f8f9fa;"></path>
+            <path d="M0,0 C150,100 350,0 500,100 L500,150 L0,150 Z"
+                  style="stroke: none; fill: #ffffff;"></path>
         </svg>
     </div>
 
 
 
 
-    <!-- Section CRM -->
-    <section class="py-5" id="crm">
-        <div class="container px-5 my-5">
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder" style="margin-top: -60px; font-style: italic">CRM - Gestion de la Relation Client</h2>
 
-                <div class="row gx-5 text-center">
-                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                        <div class="feature bg-success text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-person-check fs-2"></i>
+    <!-- Section CRM - Harmonisée -->
+    <section class="py-5" id="crm" style="background-color: #ffffff;">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase" style="font-style: italic">CRM - Gestion de la Relation Client</h2>
+            </div>
+
+            <div class="row text-center mt-5">
+                <!-- Gestion des clients -->
+                <div class="col-md-6 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-user-check fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">Gestion des clients</h4>
+                    <p class="text-muted">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
+                    <a class="text-decoration-none mt-3 d-inline-block" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
+                </div>
+
+                <!-- Automatisation & Reporting -->
+                <div class="col-md-6 mb-5">
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
+                        <i class="fas fa-chart-bar fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <h4 class="my-3">Automatisation & Reporting</h4>
+                    <p class="text-muted">Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
+                    <a class="text-decoration-none mt-3 d-inline-block" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
+                    <!-- Intégration du tableau de bord Power BI -->
+                    <!--<iframe title="Dashboard Power BI" width="100%" height="500px" src="https://app.powerbi.com/view?r=TON-LIEN-DU-RAPPORT" frameborder="0" allowFullScreen="true"></iframe>-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Team-->
+    <section class="page-section" id="team" style="background-color: #cccccc;">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="section-heading text-uppercase fw-bold" style="font-style: italic;">Notre Équipe</h2>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Membre 1 -->
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="team-member bg-white rounded-4 shadow-sm p-4 text-center h-100">
+                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/1.jpg" alt="Parveen Anand" style="width: 150px; height: 150px; object-fit: cover;" />
+                        <h4 class="fw-semibold">Parveen Anand</h4>
+                        <p class="text-muted">Développeur Front-End / Intégrateur Web</p>
+                        <div>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         </div>
-                        <h3 class="h5 fw-bolder">Gestion des clients</h3>
-                        <p>Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
-                        <a class="text-decoration-none mt-3 d-inline-block" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
                     </div>
-                    <div class="col-lg-6 mb-5 mb-lg-0 text-center d-flex flex-column align-items-center">
-                        <div class="feature bg-danger text-white rounded-circle d-flex align-items-center justify-content-center mb-2" style="width:70px; height:70px;">
-                            <i class="bi bi-chat-square-text fs-2"></i>
+                </div>
+
+                <!-- Membre 2 -->
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="team-member bg-white rounded-4 shadow-sm p-4 text-center h-100">
+                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/2.jpg" alt="Myriem El Hammi" style="width: 150px; height: 150px; object-fit: cover;" />
+                        <h4 class="fw-semibold">Myriem El Hammi</h4>
+                        <p class="text-muted">Cheffe de projet / Data Analyst</p>
+                        <div>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         </div>
-                        <h3 class="h5 fw-bolder">Automatisation & Reporting</h3>
-                        <p>Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
-                        <a class="text-decoration-none mt-3 d-inline-block" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
-                        <!-- Intégration du tableau de bord Power BI -->
-                        <!--<iframe title="Dashboard Power BI" width="100%" height="500px" src="https://app.powerbi.com/view?r=TON-LIEN-DU-RAPPORT" frameborder="0" allowFullScreen="true"></iframe>-->
+                    </div>
+                </div>
+
+                <!-- Membre 3 -->
+                <div class="col-md-6 col-lg-4 mb-5">
+                    <div class="team-member bg-white rounded-4 shadow-sm p-4 text-center h-100">
+                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/3.jpg" alt="Larry Parker" style="width: 150px; height: 150px; object-fit: cover;" />
+                        <h4 class="fw-semibold">Larry Parker</h4>
+                        <p class="text-muted">Data Engineer / Back-End Developer</p>
+                        <div>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Citation -->
+            <div class="row">
+                <div class="col-lg-10 mx-auto text-center">
+                    <p class="lead fst-italic mt-3 text-dark">
+                        "L’union fait la force. Ensemble, nous créons des solutions innovantes et durables."
+                    </p>
+                </div>
+            </div>
+        </div>
     </section>
 
 
 
 
+
     <!-- Pricing section-->
-    <section class="bg-light py-5 border-bottom">
+    <!--<section class="bg-light py-5 border-bottom">
         <div class="container px-5 my-5">
             <div class="text-center mb-5">
                 <h2 class="fw-bolder">Pay as you grow</h2>
                 <p class="lead mb-0">With our no hassle pricing plans</p>
             </div>
-            <div class="row gx-5 justify-content-center">
-                <!-- Pricing card free-->
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">Free</div>
-                            <div class="mb-3">
-                                <span class="display-4 fw-bold">$0</span>
-                                <span class="text-muted">/ mo.</span>
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    <strong>1 users</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    5GB storage
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Unlimited public projects
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Community access
-                                </li>
-                                <li class="mb-2 text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Unlimited private projects
-                                </li>
-                                <li class="mb-2 text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Dedicated support
-                                </li>
-                                <li class="mb-2 text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Free linked domain
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Monthly status reports
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
-                        </div>
-                    </div>
+            <div class="row gx-5 justify-content-center">-->
+    <!-- Pricing card free-->
+    <!--<div class="col-lg-6 col-xl-4">
+        <div class="card mb-5 mb-xl-0">
+            <div class="card-body p-5">
+                <div class="small text-uppercase fw-bold text-muted">Free</div>
+                <div class="mb-3">
+                    <span class="display-4 fw-bold">$0</span>
+                    <span class="text-muted">/ mo.</span>
                 </div>
-                <!-- Pricing card pro-->
-                <div class="col-lg-6 col-xl-4">
-                    <div class="card mb-5 mb-xl-0">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold">
-                                <i class="bi bi-star-fill text-warning"></i>
-                                Pro
-                            </div>
-                            <div class="mb-3">
-                                <span class="display-4 fw-bold">$9</span>
-                                <span class="text-muted">/ mo.</span>
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    <strong>5 users</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    5GB storage
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Unlimited public projects
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Community access
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Unlimited private projects
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Dedicated support
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Free linked domain
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-x"></i>
-                                    Monthly status reports
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
-                        </div>
-                    </div>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        <strong>1 users</strong>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        5GB storage
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Unlimited public projects
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Community access
+                    </li>
+                    <li class="mb-2 text-muted">
+                        <i class="bi bi-x"></i>
+                        Unlimited private projects
+                    </li>
+                    <li class="mb-2 text-muted">
+                        <i class="bi bi-x"></i>
+                        Dedicated support
+                    </li>
+                    <li class="mb-2 text-muted">
+                        <i class="bi bi-x"></i>
+                        Free linked domain
+                    </li>
+                    <li class="text-muted">
+                        <i class="bi bi-x"></i>
+                        Monthly status reports
+                    </li>
+                </ul>
+                <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Pricing card pro-->
+    <!--<div class="col-lg-6 col-xl-4">
+        <div class="card mb-5 mb-xl-0">
+            <div class="card-body p-5">
+                <div class="small text-uppercase fw-bold">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    Pro
                 </div>
-                <!-- Pricing card enterprise-->
-                <div class="col-lg-6 col-xl-4">
+                <div class="mb-3">
+                    <span class="display-4 fw-bold">$9</span>
+                    <span class="text-muted">/ mo.</span>
+                </div>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        <strong>5 users</strong>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        5GB storage
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Unlimited public projects
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Community access
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Unlimited private projects
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Dedicated support
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-check text-primary"></i>
+                        Free linked domain
+                    </li>
+                    <li class="text-muted">
+                        <i class="bi bi-x"></i>
+                        Monthly status reports
+                    </li>
+                </ul>
+                <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Pricing card enterprise-->
+    <!--<div class="col-lg-6 col-xl-4">
                     <div class="card">
                         <div class="card-body p-5">
                             <div class="small text-uppercase fw-bold text-muted">Enterprise</div>
@@ -491,114 +681,112 @@
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Testimonials section-->
-    <section class="py-5 border-bottom">
-        <div class="container px-5 my-5 px-5">
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder">Customer testimonials</h2>
-                <p class="lead mb-0">Our customers love working with us</p>
+    </section>-->
+    <!-- Clients-->
+    <!-- Section Logos Centralisée -->
+    <div class="py-5" style="background-color: #f9f9f9;">
+
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-2 col-sm-4 col-6 my-3">
+                <a href="#!">
+                    <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/microsoft.svg" alt="Logo Microsoft" aria-label="Microsoft Logo" />
+                </a>
             </div>
-            <div class="row gx-5 justify-content-center">
-                <div class="col-lg-6">
-                    <!-- Testimonial 1-->
-                    <div class="card mb-4">
-                        <div class="card-body p-4">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
-                                <div class="ms-4">
-                                    <p class="mb-1">Thank you for putting together such a great product. We loved working with you and the whole team, and we will be recommending you to others!</p>
-                                    <div class="small text-muted">- Client Name, Location</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Testimonial 2-->
-                    <div class="card">
-                        <div class="card-body p-4">
-                            <div class="d-flex">
-                                <div class="flex-shrink-0"><i class="bi bi-chat-right-quote-fill text-primary fs-1"></i></div>
-                                <div class="ms-4">
-                                    <p class="mb-1">The whole team was a huge help with putting things together for our company and brand. We will be hiring them again in the near future for additional work!</p>
-                                    <div class="small text-muted">- Client Name, Location</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-2 col-sm-4 col-6 my-3">
+                <a href="#!">
+                    <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="Logo Google" aria-label="Google Logo" />
+                </a>
+            </div>
+            <div class="col-md-2 col-sm-4 col-6 my-3">
+                <a href="#!">
+                    <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/ibm.svg" alt="Logo IBM" aria-label="IBM Logo" />
+                </a>
             </div>
         </div>
-    </section>
-    <!-- Contact section-->
-    <section class="bg-light py-5">
-        <div class="container px-5 my-5 px-5">
-            <div class="text-center mb-5">
-                <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-                <h2 class="fw-bolder">Get in touch</h2>
-                <p class="lead mb-0">We'd love to hear from you</p>
+
+    </div>
+
+
+    <!-- Contact-->
+    <section class="page-section" id="contact">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Contactez nous</h2>
+                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
             </div>
-            <div class="row gx-5 justify-content-center">
-                <div class="col-lg-6">
-                    <!-- * * * * * * * * * * * * * * *-->
-                    <!-- * * SB Forms Contact Form * *-->
-                    <!-- * * * * * * * * * * * * * * *-->
-                    <!-- This form is pre-integrated with SB Forms.-->
-                    <!-- To make this form functional, sign up at-->
-                    <!-- https://startbootstrap.com/solution/contact-forms-->
-                    <!-- to get an API token!-->
-                    <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                        <!-- Name input-->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                            <label for="name">Full name</label>
-                            <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+            <!-- * * * * * * * * * * * * * * *-->
+            <!-- * * SB Forms Contact Form * *-->
+            <!-- * * * * * * * * * * * * * * *-->
+            <!-- This form is pre-integrated with SB Forms.-->
+            <!-- To make this form functional, sign up at-->
+            <!-- https://startbootstrap.com/solution/contact-forms-->
+            <!-- to get an API token!-->
+            <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                <div class="row align-items-stretch mb-5">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <!-- Name input-->
+                            <input class="form-control" id="name" type="text" placeholder="Votre Nom *" data-sb-validations="required" />
+                            <div class="invalid-feedback" data-sb-feedback="name:required">Nom obligatoire.</div>
                         </div>
-                        <!-- Email address input-->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                            <label for="email">Email address</label>
-                            <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                            <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                        <div class="form-group">
+                            <!-- Email address input-->
+                            <input class="form-control" id="email" type="email" placeholder="Votre Email *" data-sb-validations="required,email" />
+                            <div class="invalid-feedback" data-sb-feedback="email:required">email obligatoire.</div>
+                            <div class="invalid-feedback" data-sb-feedback="email:email">Email non valide.</div>
                         </div>
-                        <!-- Phone number input-->
-                        <div class="form-floating mb-3">
-                            <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                            <label for="phone">Phone number</label>
-                            <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                        <div class="form-group mb-md-0">
+                            <!-- Phone number input-->
+                            <input class="form-control" id="phone" type="tel" placeholder="Votre numéro de téléphone *" data-sb-validations="required" />
+                            <div class="invalid-feedback" data-sb-feedback="phone:required">Numréro de téléphone obligatoire.</div>
                         </div>
-                        <!-- Message input-->
-                        <div class="form-floating mb-3">
-                            <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                            <label for="message">Message</label>
-                            <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group form-group-textarea mb-md-0">
+                            <!-- Message input-->
+                            <textarea class="form-control" id="message" placeholder="Votre Message *" data-sb-validations="required"></textarea>
+                            <div class="invalid-feedback" data-sb-feedback="message:required">Insérez votre message.</div>
                         </div>
-                        <!-- Submit success message-->
-                        <!---->
-                        <!-- This is what your users will see when the form-->
-                        <!-- has successfully submitted-->
-                        <div class="d-none" id="submitSuccessMessage">
-                            <div class="text-center mb-3">
-                                <div class="fw-bolder">Form submission successful!</div>
-                                To activate this form, sign up at
-                                <br />
-                                <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                            </div>
-                        </div>
-                        <!-- Submit error message-->
-                        <!---->
-                        <!-- This is what your users will see when there is-->
-                        <!-- an error submitting the form-->
-                        <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                        <!-- Submit Button-->
-                        <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+                <!-- Submit success message-->
+                <!---->
+                <!-- This is what your users will see when the form-->
+                <!-- has successfully submitted-->
+                <div class="d-none" id="submitSuccessMessage">
+                    <div class="text-center text-white mb-3">
+                        <div class="fw-bolder">Le formulaire a été soumis avec succès!</div>
+                        Pour activer ce formulaire, inscrivez-vous.
+                        <br />
+                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                    </div>
+                </div>
+                <!-- Submit error message-->
+                <!---->
+                <!-- This is what your users will see when there is-->
+                <!-- an error submitting the form-->
+                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                <!-- Submit Button-->
+                <div class="text-center"><button class="btn btn-primary btn-xl text-uppercase disabled" id="submitButton" type="submit">Send Message</button></div>
+            </form>
         </div>
     </section>
     <!-- Footer-->
-    <footer class="py-5 bg-dark">
-        <div class="container px-5"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                    <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                </div>
+            </div>
+        </div>
     </footer>
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -689,6 +877,15 @@
             once: true     // ne s’anime qu'une fois
         });
     </script>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts1.js"></script>
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <!-- * *                               SB Forms JS                               * *-->
+    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
 
 
