@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 
   @model List<Dictionary<string, object>>
 @{
@@ -137,7 +137,7 @@
                                             }
                                             else if (value is Microsoft.Xrm.Sdk.OptionSetValue option)
                                             {
-                                                displayValue = option.Value.ToString(); 
+                                                displayValue = option.Value.ToString();
                                             }
                                             else if (value is Microsoft.Xrm.Sdk.EntityReference er)
                                             {
@@ -215,12 +215,18 @@
     </div>
 </div>
 
+
+
 @section Scripts {
+
     <script>
-        // Export Excel
+            const entityName = '@ViewData["EntityName"]';
+        console.log("Entity Name:", entityName);  // Vérifiez si entityName est bien défini
+        //Export Excel
         document.getElementById("exportExcel").addEventListener("click", () => {
             const table = document.getElementById("recordsTable");
             const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
+           
             XLSX.writeFile(wb, `${entityName}.xlsx`);
         });
 
@@ -228,10 +234,12 @@
         document.getElementById("exportCSV").addEventListener("click", () => {
             const table = document.getElementById("recordsTable");
             const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
+              
             XLSX.writeFile(wb, `${entityName}.csv`);
         });
 
-       
+
+
                 // Fonction pour ouvrir le modal d'édition
         function openEditModal(recordId) {
             const row = document.getElementById('row-' + recordId);
@@ -332,8 +340,22 @@
                 alert('Erreur de communication avec le serveur.');
             });
         }
-    </script>
-}
 
-       
+                document.getElementById("columnSelector").addEventListener("change", function () {
+            const selectedIndexes = Array.from(this.selectedOptions).map(option => parseInt(option.value));
+            const table = document.getElementById("recordsTable");
+
+            // Parcourir toutes les lignes
+            for (let row of table.rows) {
+                for (let i = 0; i < row.cells.length - 1; i++) { // ignorer colonne "Actions"
+                    row.cells[i].style.display = selectedIndexes.includes(i) ? '' : 'none';
+                }
+            }
+        });
+        
+
+    </script>
+  
+
+}
 
