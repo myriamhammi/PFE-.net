@@ -1,30 +1,60 @@
-﻿<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+﻿
 
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
-        @* <div class="sidebar-brand-icon">
-            <img src="~/images/logo.png" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%;">
-        </div> *@
-        <div class="sidebar-brand-text mx-3">BI 360°</div>
+<ul class="navbar-nav sidebar sidebar-dark accordion shadow" id="accordionSidebar"
+    style="background-color: #212529; font-family: 'Poppins', sans-serif; min-height: 100vh;">
 
+    <!-- ✅ Logo -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center py-4" href="/">
+        <div class="sidebar-brand-icon me-2">
+            <img src="~/images/logo-4.png" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%;">
+
+        </div>
     </a>
 
+    <hr class="sidebar-divider my-0" style="border-top: 1px solid #495057;" />
 
-    <hr class="sidebar-divider my-0" />
+    <!-- ✅ Accueil -->
+    @{
+        string currentPath = Context.Request.Path;
+    }
 
-    <li class="nav-item">
-        <a class="nav-link" href="/Home/Index">
-            <i class="fas fa-home"></i>
-            <span>Accueil</span>
+    <li class="nav-item @(currentPath == "/Home/Index" ? "active" : "")">
+        <a class="nav-link d-flex align-items-center py-3 px-4" href="/Home/Index">
+            <i class="fas fa-home me-2"></i>
+            <span class="fw-medium">Accueil</span>
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="/Crm/EntitiesList">
-            <i class="fas fa-database"></i>
-            <span>Entités CRM</span>
+    <li class="nav-item @(currentPath == "/Crm/EntitiesList" ? "active" : "")">
+        <a class="nav-link d-flex align-items-center py-3 px-4" href="/Crm/EntitiesList">
+            <i class="fas fa-database me-2"></i>
+            <span class="fw-medium">Entités CRM</span>
         </a>
     </li>
 
-    <hr class="sidebar-divider d-none d-md-block" />
+
+    <hr class="sidebar-divider d-none d-md-block mt-3" style="border-top: 1px solid #495057;" />
 
 </ul>
+
+<!-- ✅ Amélioration hover EY-friendly -->
+<style>
+    .nav-item .nav-link:hover {
+        background-color: #ffe600 !important;
+        color: #212529 !important;
+    }
+
+    .nav-item .nav-link i {
+        width: 20px;
+
+    }
+
+    .sidebar .nav-item.active > .nav-link {
+        background-color: var(--ey-yellow);
+        color: var(--ey-dark) !important;
+        font-weight: 700;
+    }
+
+</style>
+
+

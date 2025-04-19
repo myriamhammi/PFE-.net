@@ -1,4 +1,4 @@
-﻿<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+﻿@* <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
@@ -12,4 +12,45 @@
             </a>
         </li>
     </ul>
+</nav>
+ *@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 shadow-sm" style="font-family: 'Poppins', sans-serif;">
+    <a class="navbar-brand d-flex align-items-center" href="/Home/Index">
+        <span class="navbar-brand fw-bold fs-4" href="#">BI 360°</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarMenu" aria-controls="topbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="topbarMenu">
+        <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
+            <li class="nav-item d-flex align-items-center px-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="themeToggle">
+                    <label class="form-check-label text-dark ms-2" for="themeToggle">🌙 Mode nuit</label>
+                </div>
+            </li>
+
+            <!-- Exemple : bouton de notification -->
+            <li class="nav-item mx-2">
+                <a class="nav-link text-white" href="#"><i class="fas fa-bell"></i></a>
+            </li>
+
+            <!-- Exemple : profil utilisateur -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="~/images/user.png" class="rounded-circle me-2" width="32" height="32" alt="Utilisateur" />
+                    <span class="d-none d-lg-inline small">Mon Compte</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="#">Profil</a></li>
+                    <li><a class="dropdown-item" href="#">Paramètres</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="#">Déconnexion</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
 </nav>

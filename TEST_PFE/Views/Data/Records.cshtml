@@ -1,6 +1,7 @@
-﻿﻿
+﻿
 
-  @model List<Dictionary<string, object>>
+ 
+ @model List<Dictionary<string, object>>
 @{
     Layout = "~/Pages/Shared/_CRMLayout.cshtml";
     ViewData["Title"] = "Liste des Enregistrements";
@@ -11,87 +12,64 @@
 }
 
 <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">Enregistrements - @entityName</h1>
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 text-gray-800">
+            <i class="fas fa-database me-2 text-primary"></i>Enregistrements - @entityName
+        </h1>
+    </div>
 
-    <!-- Cartes récapitulatives -->
+    <!-- Statistiques Résumées -->
     <div class="row mb-4">
         <div class="col-md-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card shadow-sm border-left-primary h-100 py-2 rounded">
                 <div class="card-body">
                     <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total des Enregistrements</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">@totalRecords</div>
+                    <div class="h5 mb-0 font-weight-bold text-dark">@totalRecords</div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card border-left-info shadow h-100 py-2">
+            <div class="card shadow-sm border-left-info h-100 py-2 rounded">
                 <div class="card-body">
                     <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Nombre de Colonnes</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">@totalColumns</div>
+                    <div class="h5 mb-0 font-weight-bold text-dark">@totalColumns</div>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card shadow-sm border-left-danger h-100 py-2 rounded">
                 <div class="card-body">
-                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Valeurs nulles détectées</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">@nullCount</div>
+                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Valeurs Nulles Détectées</div>
+                    <div class="h5 mb-0 font-weight-bold text-dark">@nullCount</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bouton Retour + Export -->
-    <div class="mb-3 d-flex justify-content-between">
-        <a href="@Url.Action("GetEntities", "Crm")" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Retour aux entités
-        </a>
+    <!-- Actions principales -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <button id="exportExcel" class="btn btn-outline-success me-2">
-                <i class="fas fa-file-excel"></i> Export Excel
-            </button>
-            <button id="exportCSV" class="btn btn-outline-primary">
+            <a href="@Url.Action("GetEntities", "Crm")" class="btn btn-outline-secondary shadow-sm me-2 rounded">
+                <i class="fas fa-arrow-left"></i> Retour
+            </a>
+            <button class="btn btn-outline-primary shadow-sm me-2 rounded" id="exportCSV">
                 <i class="fas fa-file-csv"></i> Export CSV
             </button>
+            <button class="btn btn-outline-success shadow-sm rounded" id="exportExcel">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </button>
         </div>
-    </div>
-
-    <!-- Formulaire d'ajout -->
-    <div class="mb-3">
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRecordModal">
-            <i class="fas fa-plus"></i> Ajouter un Enregistrement
+        <button class="btn btn-primary shadow-sm rounded" data-bs-toggle="modal" data-bs-target="#addRecordModal">
+            <i class="fas fa-plus me-1"></i> Ajouter un Enregistrement
         </button>
     </div>
 
-    <!-- Modal Ajouter un enregistrement -->
-    <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addRecordModalLabel">Ajouter un Enregistrement</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Formulaire d'ajout -->
-                    <form id="addRecordForm">
-                        @foreach (var key in Model.First().Keys)
-                        {
-                            <div class="mb-3">
-                                <label for="add_@key" class="form-label">@key</label>
-                                <input type="text" class="form-control" id="add_@key" name="add_@key" required>
-                            </div>
-                        }
-                        <button type="submit" class="btn btn-primary">Ajouter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sélecteur de Colonnes avec Scroll -->
-    <div class="mb-3">
-        <label for="columnSelector" class="form-label fw-bold">Colonnes à afficher :</label>
-        <select id="columnSelector" multiple class="form-select" style="height: 200px; overflow-y: scroll;">
+    <!-- Sélecteur de colonnes -->
+    <div class="mb-4">
+        <label class="fw-bold mb-2" for="columnSelector">
+            <i class="fas fa-columns me-1 text-secondary"></i> Colonnes à afficher :
+        </label>
+        <select id="columnSelector" multiple class="form-select border rounded shadow-sm" style="height: 200px; overflow-y: auto;">
             @if (Model.Any())
             {
                 var index = 0;
@@ -104,12 +82,13 @@
         </select>
     </div>
 
-    <!-- Table -->
-    <div class="card shadow mb-4">
+    <!-- Table des enregistrements -->
+    <div class="card shadow mb-5 rounded">
         <div class="card-body">
-            <div class="table-responsive" style="overflow-x: auto;">
-                <table class="table table-bordered" id="recordsTable" cellspacing="0">
-                    <thead class="table-primary">
+            <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                <table class="table table-hover table-bordered table-striped align-middle text-center sticky-header" id="recordsTable">
+
+                    <thead class="table-light text-primary">
                         <tr>
                             @if (Model.Any())
                             {
@@ -118,7 +97,7 @@
                                     <th>@key</th>
                                 }
                             }
-                            <th>Actions</th> <!-- Colonne pour les boutons -->
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -129,148 +108,157 @@
                                 {
                                     <td>
                                         @{
-                                            string displayValue = "";
-
-                                            if (value is Microsoft.Xrm.Sdk.Money money)
+                                            string displayValue = value switch
                                             {
-                                                displayValue = money.Value.ToString("N2");
-                                            }
-                                            else if (value is Microsoft.Xrm.Sdk.OptionSetValue option)
-                                            {
-                                                displayValue = option.Value.ToString();
-                                            }
-                                            else if (value is Microsoft.Xrm.Sdk.EntityReference er)
-                                            {
-                                                displayValue = er.Name ?? er.Id.ToString();
-                                            }
-                                            else if (value is DateTime date)
-                                            {
-                                                displayValue = date.ToString("yyyy-MM-dd HH:mm");
-                                            }
-                                            else
-                                            {
-                                                displayValue = value?.ToString() ?? "";
-                                            }
+                                                Microsoft.Xrm.Sdk.Money money => money.Value.ToString("N2"),
+                                                Microsoft.Xrm.Sdk.OptionSetValue option => option.Value.ToString(),
+                                                Microsoft.Xrm.Sdk.EntityReference er => er.Name ?? er.Id.ToString(),
+                                                DateTime date => date.ToString("yyyy-MM-dd HH:mm"),
+                                                _ => value?.ToString() ?? ""
+                                            };
                                         }
                                         @displayValue
                                     </td>
                                 }
-
-                                <!-- Colonnes d'action pour la modification et la suppression -->
                                 <td>
-                                    <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#updateRecordModal"
+                                    <button class="btn btn-warning btn-sm rounded me-1" data-bs-toggle="modal" data-bs-target="#updateRecordModal"
                                             onclick="openEditModal('@row.Keys.First()')">
-                                        <i class="fas fa-edit"></i> Modifier
+                                        <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-danger btn-sm"
+                                    <button class="btn btn-danger btn-sm rounded" data-bs-toggle="modal" data-bs-target="#deleteRecordModal"
                                             onclick="openDeleteModal('@row.Keys.First()')">
-                                        <i class="fas fa-trash"></i> Supprimer
+                                        <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
                             </tr>
                         }
                     </tbody>
-
                 </table>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal Modifier un enregistrement -->
-<div class="modal fade" id="updateRecordModal" tabindex="-1" aria-labelledby="updateRecordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="updateRecordModalLabel">Modifier l'Enregistrement</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Modal Ajout -->
+    <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ajouter un Enregistrement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addRecordForm">
+                        @foreach (var key in Model.First().Keys)
+                        {
+                            <div class="mb-3">
+                                <label for="add_@key" class="form-label">@key</label>
+                                <input type="text" class="form-control" id="add_@key" name="add_@key" required />
+                            </div>
+                        }
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </form>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="updateRecordForm">
-                    <div id="modalFields"></div>
-                    <button type="submit" class="btn btn-primary">Enregistrer</button>
-                </form>
+        </div>
+    </div>
+
+    <!-- Modal Édition -->
+    <div class="modal fade" id="updateRecordModal" tabindex="-1" aria-labelledby="updateRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modifier l'Enregistrement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="updateRecordForm">
+                        <div id="modalFields"></div>
+                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Suppression -->
+    <div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-labelledby="deleteRecordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmer la Suppression</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body" id="deleteRecordMessage">
+                    <!-- Message de confirmation ici -->
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" id="confirmDeleteButton">Supprimer</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal Supprimer un enregistrement -->
-<div class="modal fade" id="deleteRecordModal" tabindex="-1" aria-labelledby="deleteRecordModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteRecordModalLabel">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer cet enregistrement ?</p>
-                <div id="deleteRecordMessage"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" id="confirmDeleteButton" class="btn btn-danger">Supprimer</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+<style>
+    .sticky-header thead th {
+        position: sticky;
+        top: 0;
+        background-color: #cccccc;
+        z-index: 1;
+    }
+</style>
 
 @section Scripts {
-
     <script>
-            const entityName = '@ViewData["EntityName"]';
-        console.log("Entity Name:", entityName);  // Vérifiez si entityName est bien défini
-        //Export Excel
+        const entityName = '@ViewData["EntityName"]';
+
         document.getElementById("exportExcel").addEventListener("click", () => {
             const table = document.getElementById("recordsTable");
             const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
-           
             XLSX.writeFile(wb, `${entityName}.xlsx`);
         });
 
-        // Export CSV
         document.getElementById("exportCSV").addEventListener("click", () => {
             const table = document.getElementById("recordsTable");
             const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
-              
             XLSX.writeFile(wb, `${entityName}.csv`);
         });
 
+        document.getElementById("columnSelector").addEventListener("change", function () {
+            const selectedIndexes = Array.from(this.selectedOptions).map(option => parseInt(option.value));
+            const table = document.getElementById("recordsTable");
 
+            for (let row of table.rows) {
+                for (let i = 0; i < row.cells.length - 1; i++) {
+                    row.cells[i].style.display = selectedIndexes.includes(i) ? '' : 'none';
+                }
+            }
+        });
 
-                // Fonction pour ouvrir le modal d'édition
         function openEditModal(recordId) {
             const row = document.getElementById('row-' + recordId);
             const modalFields = document.getElementById('modalFields');
-            modalFields.innerHTML = ''; // Réinitialiser les champs du modal
+            modalFields.innerHTML = '';
 
             const cells = row.getElementsByTagName('td');
-            const recordData = {};
             let index = 0;
 
-            // Remplir les champs du modal avec les données de la ligne
             for (const cell of cells) {
-                if (index < cells.length - 1) { // On ignore la dernière colonne (actions)
+                if (index < cells.length - 1) {
                     const fieldName = `field_${index}`;
-                    recordData[fieldName] = cell.textContent.trim();
-
                     const div = document.createElement('div');
                     div.classList.add('mb-3');
                     const label = document.createElement('label');
                     label.setAttribute('for', fieldName);
                     label.classList.add('form-label');
                     label.textContent = `Champ ${index + 1}`;
-
                     const input = document.createElement('input');
                     input.setAttribute('type', 'text');
                     input.classList.add('form-control');
                     input.setAttribute('id', fieldName);
                     input.setAttribute('name', fieldName);
-                    input.value = recordData[fieldName];
+                    input.value = cell.textContent.trim();
                     input.required = true;
-
                     div.appendChild(label);
                     div.appendChild(input);
                     modalFields.appendChild(div);
@@ -278,7 +266,6 @@
                 index++;
             }
 
-            // Optionnel : gérer l'ID d'enregistrement pour une mise à jour spécifique
             const recordIdField = document.createElement('input');
             recordIdField.setAttribute('type', 'hidden');
             recordIdField.setAttribute('name', 'recordId');
@@ -286,7 +273,9 @@
             modalFields.appendChild(recordIdField);
         }
 
-        // Fonction pour ouvrir le modal de suppression
+             
+
+
         function openDeleteModal(recordId) {
             const row = document.getElementById('row-' + recordId);
             const cells = row.getElementsByTagName('td');
@@ -294,68 +283,25 @@
 
             let index = 0;
             for (const cell of cells) {
-                if (index < cells.length - 1) { // On ignore la dernière colonne (actions)
+                if (index < cells.length - 1) {
                     recordData.push(cell.textContent.trim());
                 }
                 index++;
             }
 
-            // Afficher le message dans le modal
             const message = `Êtes-vous sûr de vouloir supprimer l'enregistrement suivant ?<br><br><strong>${recordData.join(' | ')}</strong>`;
             const messageDiv = document.getElementById('deleteRecordMessage');
             messageDiv.innerHTML = message;
 
-            // Associer l'action de suppression à un bouton
             const confirmDeleteButton = document.getElementById('confirmDeleteButton');
             confirmDeleteButton.onclick = function () {
-                // Logique de suppression ici, par exemple, via une requête AJAX
                 deleteRecord(recordId);
             };
         }
 
-        // Fonction pour supprimer un enregistrement (envoi de la requête de suppression)
         function deleteRecord(recordId) {
-            // Par exemple, envoi d'une requête AJAX pour supprimer l'enregistrement
-            fetch(`/deleteRecord/${recordId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ recordId })
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Si la suppression est réussie, on retire la ligne de la table
-                    const row = document.getElementById('row-' + recordId);
-                    row.remove();
-                    // Fermer le modal après suppression
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('deleteRecordModal'));
-                    modal.hide();
-                } else {
-                    alert('Erreur lors de la suppression de l\'enregistrement.');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Erreur de communication avec le serveur.');
-            });
+            console.log("Suppression de l'enregistrement avec ID : " + recordId);
+            // Appel AJAX ici si besoin
         }
-
-                document.getElementById("columnSelector").addEventListener("change", function () {
-            const selectedIndexes = Array.from(this.selectedOptions).map(option => parseInt(option.value));
-            const table = document.getElementById("recordsTable");
-
-            // Parcourir toutes les lignes
-            for (let row of table.rows) {
-                for (let i = 0; i < row.cells.length - 1; i++) { // ignorer colonne "Actions"
-                    row.cells[i].style.display = selectedIndexes.includes(i) ? '' : 'none';
-                }
-            }
-        });
-        
-
     </script>
-  
-
 }
-

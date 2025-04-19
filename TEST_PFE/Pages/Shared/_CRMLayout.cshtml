@@ -1,44 +1,4 @@
-﻿@* @{
-    Layout = null;
-}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"] - CRM</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" /> 
-
-    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" rel="stylesheet" />
-
-   
-
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</head>
-<body id="page-top">
-
-    <div id="wrapper">
-        @Html.Partial("~/Pages/Shared/_SidebarCRM.cshtml")
-
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                @Html.Partial("~/Pages/Shared/_TopbarCRM.cshtml")
-
-                <div class="container-fluid mt-4">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-    </div>
-    @RenderSection("Scripts", required: false)
-
-</body>
-</html>
- *@
+﻿@* 
 @{
     Layout = null;
 }
@@ -81,5 +41,179 @@
 
     @RenderSection("Scripts", required: false)
 
+</body>
+</html>
+ *@
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - BI 360° CRM</title>
+
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- SB Admin CSS (structure générale) -->
+    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css" rel="stylesheet" />
+
+    <!-- ✅ Custom styles -->
+    <style>
+        :root {
+            --ey-yellow: #ffe600;
+            --ey-yellow-hover: #ffd700;
+            --ey-dark: #212529;
+            --ey-light: #f8f9fa;
+            --ey-gray: #495057;
+        }
+
+        html, body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--ey-light);
+            height: 100%;
+        }
+
+        #wrapper {
+            background-color: #fff;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background-color: var(--ey-dark) !important;
+        }
+
+            .sidebar .nav-link {
+                color: var(--ey-light) !important;
+                font-weight: 500;
+                transition: background-color 0.2s ease;
+            }
+
+                .sidebar .nav-link:hover {
+                    background-color: var(--ey-yellow) !important;
+                    color: var(--ey-dark) !important;
+                }
+
+        .navbar {
+            background-color: #fff;
+            border-bottom: 1px solid var(--ey-gray);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+            .navbar .nav-link {
+                color: var(--ey-dark);
+                font-weight: 500;
+            }
+
+        .btn-primary {
+            background-color: var(--ey-yellow);
+            border-color: var(--ey-yellow);
+            color: var(--ey-dark);
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: var(--ey-yellow-hover);
+                border-color: var(--ey-yellow-hover);
+            }
+
+        .content-wrapper {
+            background-color: var(--ey-light);
+        }
+
+        .container-fluid {
+            padding-top: 1.5rem;
+        }
+
+        body.dark-mode {
+            --ey-yellow: #ffe600;
+            --ey-yellow-hover: #fff176;
+            --ey-dark: #1b1b1b;
+            --ey-light: #343a40;
+            --ey-gray: #adb5bd;
+            background-color: var(--ey-dark);
+            color: #fff;
+        }
+
+            body.dark-mode .sidebar {
+                background-color: #121212 !important;
+            }
+
+                body.dark-mode .sidebar .nav-link {
+                    color: #ccc !important;
+                }
+
+                    body.dark-mode .sidebar .nav-link:hover,
+                    body.dark-mode .sidebar .nav-item.active > .nav-link {
+                        background-color: var(--ey-yellow);
+                        color: var(--ey-dark) !important;
+                    }
+
+            body.dark-mode .navbar {
+                background-color: #1f1f1f;
+                border-color: #2c2c2c;
+            }
+
+                body.dark-mode .navbar .nav-link {
+                    color: #f1f1f1;
+                }
+
+            body.dark-mode .container-fluid {
+                background-color: #1e1e1e;
+            }
+
+    </style>
+
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        @Html.Partial("~/Pages/Shared/_SidebarCRM.cshtml")
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                @Html.Partial("~/Pages/Shared/_TopbarCRM.cshtml")
+
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const toggle = document.getElementById("themeToggle");
+        const root = document.documentElement;
+
+        // Appliquer thème en fonction du localStorage au chargement
+        if (localStorage.getItem("eyTheme") === "dark") {
+            document.body.classList.add("dark-mode");
+            toggle.checked = true;
+        }
+
+        toggle.addEventListener("change", () => {
+            if (toggle.checked) {
+                document.body.classList.add("dark-mode");
+                localStorage.setItem("eyTheme", "dark");
+            } else {
+                document.body.classList.remove("dark-mode");
+                localStorage.setItem("eyTheme", "light");
+            }
+        });
+    </script>
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
