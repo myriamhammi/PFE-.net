@@ -18,6 +18,8 @@ builder.Services.AddSingleton<CrmService>();
 
 // Autres services nécessaires
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IDataTransformationService, DataTransformationService>();
+
 
 // Configuration de l'accès à la base de données et aux services nécessaires
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration); // Si tu n'as pas déjà injecté IConfiguration

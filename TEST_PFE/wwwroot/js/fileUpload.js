@@ -1,16 +1,14 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    const extractBtn = document.querySelector("#extractTransformLink");  // Sélection correcte de l'élément
+    const extractBtn = document.querySelector("#extractTransformLink");
     const uploadFormContainer = document.getElementById("uploadFormContainer");
 
-    // Vérification si l'élément existe
     if (!extractBtn) {
         console.error("Le lien 'Cliquer ici' n'a pas été trouvé !");
-        return; // Sort de la fonction si l'élément n'existe pas
+        return;
     }
 
     extractBtn.addEventListener("click", function (event) {
-        event.preventDefault(); // Empêche le comportement par défaut du lien
-        console.log("Lien cliqué, affichage du formulaire...");
+        event.preventDefault();
         showUploadForm();
     });
 
@@ -21,26 +19,44 @@
                 <input type="file" id="fileInput" class="form-control my-2" />
                 <button id="extractDataBtn" class="btn btn-success mt-2">Extraire les données</button>
                 <p id="fileName" class="mt-2 text-muted"></p>
+                <div id="statusMessage" class="mt-2"></div>
             </div>
         `;
 
         const fileInput = document.getElementById("fileInput");
         const extractDataBtn = document.getElementById("extractDataBtn");
-        const fileNameDisplay = document.getElementById("fileName");
-
-        fileInput.addEventListener("change", function () {
-            if (fileInput.files.length > 0) {
-                fileNameDisplay.textContent = `Fichier sélectionné : ${fileInput.files[0].name}`;
-            }
-        });
 
         extractDataBtn.addEventListener("click", function () {
             if (!fileInput.files.length) {
-                alert("Veuillez sélectionner un fichier avant d'extraire les données !");
+                alert("Veuillez sélectionner un fichier !");
                 return;
             }
-            alert(`Extraction des données du fichier : ${fileInput.files[0].name}`);
-            // Vous pouvez ajouter un envoi de fichier ici
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            fetch('https://localhost:44365/ETL/ChargerDonnees', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP : ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(result => {
+                    console.log("✅ Données envoyées et traitées avec succès :", result);
+                    document.getElementById("statusMessage").innerHTML =
+                        `<div class="alert alert-success">✅ ${result.message}</div>`;
+                })
+
+                .catch(error => {
+                    console.error("❌ Erreur lors de l'envoi ou du traitement : ", error);
+                    document.getElementById("statusMessage").innerHTML =
+                        `<div class="alert alert-danger">❌ Une erreur s'est produite lors du traitement.</div>`;
+                });
         });
     }
 });
