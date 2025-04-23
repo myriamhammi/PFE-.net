@@ -37,24 +37,20 @@ namespace TEST_PFE.Controllers
 
             try
             {
-                // Lire le fichier en mémoire
                 using var memoryStream = new MemoryStream();
                 await file.CopyToAsync(memoryStream);
                 var fileBytes = memoryStream.ToArray();
 
-                // Désérialiser le mapping (clé: nom de colonne, valeur: type)
                 var mappingDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(mapping);
                 if (mappingDict == null || mappingDict.Count == 0)
                 {
                     return BadRequest(new { message = "Le mapping fourni est invalide ou vide." });
                 }
 
-                // Transformer les données et convertir au format dynamique
-                var transformedData = await _transformationService.TransformDataAsync(fileBytes, mappingDict);
-                var dynamicData = ConvertToDynamic(transformedData);
+                // Utilisation directe de la méthode de transformation + nettoyage
+                var dynamicData = await _transformationService.TransformAndNormalizeDataAsync(fileBytes, mappingDict);
 
-                // Création de la table puis insertion des données
-                await _chargementService.CreateTableDynamically(dynamicData, tableName, mappingDict); // Ajout de mappingDict ici
+                await _chargementService.CreateTableDynamically(dynamicData, tableName, mappingDict);
                 await _chargementService.InsertDataDynamically(dynamicData, tableName);
 
                 return Ok(new
@@ -68,6 +64,7 @@ namespace TEST_PFE.Controllers
                 return StatusCode(500, new { message = $"Erreur lors du chargement : {ex.Message}" });
             }
         }
+
 
 
 

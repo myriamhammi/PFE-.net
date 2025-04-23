@@ -18,27 +18,7 @@ public class ChargementService : IChargementService
         _connectionString = configuration.GetConnectionString("SQL_Connection");
     }
 
-    //public async Task CreateTableDynamically(List<dynamic> transformedData, string tableName, Dictionary<string, string> mapping)
-    //{
-    //    var columnDefinitions = new List<string>();
-
-    //    if (mapping == null || mapping.Count == 0)
-    //    {
-    //        throw new Exception("Le mapping des colonnes est vide ou invalide.");
-    //    }
-
-    //    foreach (var column in mapping)
-    //    {
-    //        var columnName = column.Key;
-    //        var columnType = ConvertToSqlType(column.Value); // à ajouter ci-dessous
-
-    //        columnDefinitions.Add($"[{columnName}] {columnType}");
-    //    }
-
-    //    var createTableQuery = $"CREATE TABLE [{tableName}] ({string.Join(", ", columnDefinitions)});";
-
-    //    await ExecuteSqlAsync(createTableQuery);
-    //}
+   
     public async Task CreateTableDynamically(List<dynamic> transformedData, string tableName, Dictionary<string, string> mapping)
     {
         var columnDefinitions = new List<string>();
