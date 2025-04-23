@@ -1,62 +1,69 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    const extractBtn = document.querySelector("#extractTransformLink");
-    const uploadFormContainer = document.getElementById("uploadFormContainer");
+﻿document.getElementById("extractTransformLink").addEventListener("click", function (e) {
+    e.preventDefault();
 
-    if (!extractBtn) {
-        console.error("Le lien 'Cliquer ici' n'a pas été trouvé !");
-        return;
-    }
-
-    extractBtn.addEventListener("click", function (event) {
-        event.preventDefault();
-        showUploadForm();
-    });
-
-    function showUploadForm() {
-        uploadFormContainer.innerHTML = `
-            <div class="card p-4 mt-3 shadow">
-                <h2 class="h5">Télécharger un fichier</h2>
-                <input type="file" id="fileInput" class="form-control my-2" />
-                <button id="extractDataBtn" class="btn btn-success mt-2">Extraire les données</button>
-                <p id="fileName" class="mt-2 text-muted"></p>
-                <div id="statusMessage" class="mt-2"></div>
+    // Formulaire de chargement de fichier
+    const uploadForm = `
+        <form id="fileUploadForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Choisir un fichier Excel :</label>
+                <input type="file" class="form-control" id="file" name="file" accept=".xls,.xlsx" required />
             </div>
-        `;
+            
+            <div class="form-group">
+                <label for="mapping" class="text-muted">Mappage des Colonnes (JSON)</label>
+                <textarea class="form-control" id="mapping" name="mapping" rows="6" placeholder='{"Nom": "LastName", "Prénom": "FirstName", "Âge": "Age"}' required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+    `;
+    document.getElementById("uploadFormContainer").innerHTML = uploadForm;
 
-        const fileInput = document.getElementById("fileInput");
-        const extractDataBtn = document.getElementById("extractDataBtn");
+    // Gestion du formulaire de soumission
+    document.getElementById("fileUploadForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-        extractDataBtn.addEventListener("click", function () {
-            if (!fileInput.files.length) {
-                alert("Veuillez sélectionner un fichier !");
-                return;
-            }
+        const fileInput = document.getElementById("file");
+        const file = fileInput.files[0];
 
-            const file = fileInput.files[0];
-            const formData = new FormData();
-            formData.append("file", file);
+        if (!file) {
+            alert("Veuillez sélectionner un fichier Excel.");
+            return;
+        }
 
-            fetch('https://localhost:44365/ETL/ChargerDonnees', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Erreur HTTP : ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    console.log("✅ Données envoyées et traitées avec succès :", result);
-                    document.getElementById("statusMessage").innerHTML =
-                        `<div class="alert alert-success">✅ ${result.message}</div>`;
-                })
+        const mappingInput = document.getElementById("mapping");
+        const mapping = mappingInput.value.trim();
 
-                .catch(error => {
-                    console.error("❌ Erreur lors de l'envoi ou du traitement : ", error);
-                    document.getElementById("statusMessage").innerHTML =
-                        `<div class="alert alert-danger">❌ Une erreur s'est produite lors du traitement.</div>`;
-                });
-        });
-    }
+        if (!mapping) {
+            alert("Veuillez fournir un mappage valide.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("mapping", mapping);  // Envoi du mappage en JSON
+
+        try {
+            const response = await fetch("/ETL/ChargerDonnees", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) throw new Error("Erreur lors du chargement des données.");
+
+            const message = await response.text();
+            afficherMessage("✅ " + message, "success");
+        } catch (error) {
+            afficherMessage("❌ " + error.message, "danger");
+        }
+    });
 });
+
+function afficherMessage(message, type) {
+    const statusDiv = document.getElementById("statusMessage");
+    statusDiv.innerHTML = `
+        <div class="alert alert-${type}" role="alert">
+            ${message}
+        </div>
+    `;
+}

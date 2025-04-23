@@ -1,13 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Data.SqlClient;
-using System.Text;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System;
+﻿using Microsoft.AspNetCore.Mvc;
 using TEST_PFE.Ser;
+using Newtonsoft.Json;
+using System.Dynamic;
 
 namespace TEST_PFE.Controllers
 {
@@ -15,103 +9,144 @@ namespace TEST_PFE.Controllers
     [ApiController]
     public class ETLController : ControllerBase
     {
-        private readonly string _connectionString = "Server=LAPTOP-A8G9933C;Database=Data_TRY;Trusted_Connection=True;TrustServerCertificate=True";
-        private readonly string _nomTable = "DonneesETL";
         private readonly IDataTransformationService _transformationService;
-
-        public ETLController(IDataTransformationService transformationService)
+        private readonly IChargementService _chargementService;
+        public ETLController(IDataTransformationService transformationService, IChargementService chargementService)
         {
             _transformationService = transformationService;
+            _chargementService = chargementService;
         }
 
-        /// <summary>
-        /// Endpoint pour charger un fichier Excel, le transformer et insérer les données dans SQL Server
-        /// </summary>
-        [HttpPost("ChargerDonnees")]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> ChargerDonneesDepuisFichier([FromForm] IFormFile file)
+        [HttpPost("ChargerDonneesTransformees")]
+        public async Task<IActionResult> ChargerDonneesTransformees([FromForm] IFormFile file, [FromForm] string tableName, [FromForm] string mapping)
         {
             if (file == null || file.Length == 0)
-                return BadRequest("Aucun fichier reçu.");
+            {
+                return BadRequest(new { message = "Le fichier est vide ou manquant." });
+            }
+
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                return BadRequest(new { message = "Le nom de la table est requis." });
+            }
+
+            if (string.IsNullOrWhiteSpace(mapping))
+            {
+                return BadRequest(new { message = "Le mapping est requis." });
+            }
 
             try
             {
+                // Lire le fichier en mémoire
                 using var memoryStream = new MemoryStream();
                 await file.CopyToAsync(memoryStream);
-                byte[] fileBytes = memoryStream.ToArray();
+                var fileBytes = memoryStream.ToArray();
 
-                var transformedData = await _transformationService.TransformDataAsync(fileBytes);
-
-                var convertedData = transformedData
-                    .Select(d => d.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value))
-                    .ToList();
-
-                return InsererDonneesDansSql(convertedData);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Erreur lors du traitement du fichier : {ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// Méthode privée pour insérer des lignes dans la base de données SQL Server
-        /// </summary>
-        private IActionResult InsererDonneesDansSql(List<Dictionary<string, object>> donnees)
-        {
-            if (donnees == null || !donnees.Any())
-                return BadRequest("Aucune donnée à insérer.");
-
-            try
-            {
-                using SqlConnection conn = new SqlConnection(_connectionString);
-                conn.Open();
-
-                var premiereLigne = donnees.First();
-
-                // Création correcte de la table sans @ variables
-                string colonnesSql = string.Join(", ", premiereLigne.Select(kvp => $"[{kvp.Key}] NVARCHAR(MAX)"));
-                string createTableQuery = $@"
-            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='{_nomTable}' AND xtype='U')
-            BEGIN
-                CREATE TABLE [{_nomTable}] ({colonnesSql})
-            END";
-
-                using (SqlCommand createCmd = new SqlCommand(createTableQuery, conn))
-                    createCmd.ExecuteNonQuery();
-
-                // Insertion des données ligne par ligne
-                foreach (var ligne in donnees)
+                // Désérialiser le mapping (clé: nom de colonne, valeur: type)
+                var mappingDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(mapping);
+                if (mappingDict == null || mappingDict.Count == 0)
                 {
-                    var colonnes = string.Join(", ", ligne.Keys.Select(k => $"[{k}]"));
-
-                    // Remplacement des espaces pour les paramètres
-                    var parametres = ligne.Keys.Select(k => $"@{k.Replace(" ", "_")}");
-                    var valeurs = string.Join(", ", parametres);
-
-                    var insertQuery = $"INSERT INTO [{_nomTable}] ({colonnes}) VALUES ({valeurs})";
-
-                    using SqlCommand cmd = new SqlCommand(insertQuery, conn);
-                    foreach (var kvp in ligne)
-                    {
-                        // Remplacement identique ici
-                        string paramName = $"@{kvp.Key.Replace(" ", "_")}";
-                        cmd.Parameters.AddWithValue(paramName, kvp.Value ?? DBNull.Value);
-                    }
-
-                    cmd.ExecuteNonQuery();
+                    return BadRequest(new { message = "Le mapping fourni est invalide ou vide." });
                 }
 
+                // Transformer les données et convertir au format dynamique
+                var transformedData = await _transformationService.TransformDataAsync(fileBytes, mappingDict);
+                var dynamicData = ConvertToDynamic(transformedData);
 
-                return Ok(new { message = "Données chargées avec succès dans SQL Server." });
+                // Création de la table puis insertion des données
+                await _chargementService.CreateTableDynamically(dynamicData, tableName, mappingDict); // Ajout de mappingDict ici
+                await _chargementService.InsertDataDynamically(dynamicData, tableName);
+
+                return Ok(new
+                {
+                    message = "La table a été créée avec succès et les données ont été chargées.",
+                    data = dynamicData
+                });
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return StatusCode(500, $"Erreur : {ex.Message}");
+                return StatusCode(500, new { message = $"Erreur lors du chargement : {ex.Message}" });
             }
         }
 
 
+
+
+
+        // Méthode pour convertir les données en objets dynamiques (ExpandoObject)
+        private List<dynamic> ConvertToDynamic(List<Dictionary<string, string>> transformedData)
+        {
+            var dynamicData = new List<dynamic>();
+
+            foreach (var row in transformedData)
+            {
+                var expandoObject = new ExpandoObject() as IDictionary<string, object>;
+
+                foreach (var column in row)
+                {
+                    expandoObject.Add(column.Key, column.Value);
+                }
+
+                dynamicData.Add(expandoObject);
+            }
+
+            return dynamicData;
+        }
+
+
+
+
+
+        private List<dynamic> ApplyMapping(List<dynamic> data, Dictionary<string, string> mapping)
+        {
+            var mappedData = new List<dynamic>();
+
+            foreach (var item in data)
+            {
+                var mappedItem = new ExpandoObject() as IDictionary<string, object>;
+
+                // Appliquer le mappage à chaque propriété de l'élément
+                foreach (var kvp in item)
+                {
+                    if (mapping.ContainsKey(kvp.Key))
+                    {
+                        var mappedPropertyName = mapping[kvp.Key];
+                        mappedItem[mappedPropertyName] = kvp.Value;
+                    }
+                }
+
+                mappedData.Add(mappedItem);
+            }
+
+            return mappedData;
+        }
+
+        // Méthode de conversion : retourne une liste de dynamic (ExpandoObject)
+        private List<dynamic> ConvertToObjectList(List<Dictionary<string, string>> stringData)
+        {
+            var objectData = new List<dynamic>();
+
+            foreach (var row in stringData)
+            {
+                dynamic newRow = new ExpandoObject();
+                var rowDict = (IDictionary<string, object>)newRow;
+
+                // Convertir chaque ligne en dynamic (ExpandoObject)
+                foreach (var kvp in row)
+                {
+                    rowDict[kvp.Key] = kvp.Value;  // Ajouter à l'ExpandoObject
+                }
+
+                objectData.Add(newRow);
+            }
+
+            return objectData;
+        }
     }
 }
+
+
+
+
+
+

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper.Excel.Core" Version="27.2.1" />
     <PackageReference Include="ExcelDataReader" Version="3.7.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
     <PackageReference Include="FileHelpers" Version="3.5.2" />

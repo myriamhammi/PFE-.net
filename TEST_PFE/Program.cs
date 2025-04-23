@@ -2,10 +2,18 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.SqlServer.Management.Smo.Wmi;
-using TEST_PFE.Models;  // Assurez-vous que le namespace de vos modèles est correctement référencé
-using TEST_PFE.Ser;    // Assurez-vous d'ajouter ce namespace pour CrmService
+using System.ComponentModel;
+using TEST_PFE.Models;  
+using TEST_PFE.Ser;    
+
+
+System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 
 builder.Services.AddLogging(logging => logging.AddConsole());
 
@@ -13,12 +21,20 @@ builder.Services.AddLogging(logging => logging.AddConsole());
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Lire la chaîne de connexion depuis appsettings.json
+var connectionString = builder.Configuration.GetConnectionString("SQL_Connection");
+
+
+
+
 // Configure CrmService avec l'injection de la configuration
 builder.Services.AddSingleton<CrmService>();
 
 // Autres services nécessaires
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IDataTransformationService, DataTransformationService>();
+builder.Services.AddScoped<IChargementService, ChargementService>();
+builder.Services.AddScoped<IDataTransformationService, DataTransformationService>(); 
+
 
 
 // Configuration de l'accès à la base de données et aux services nécessaires

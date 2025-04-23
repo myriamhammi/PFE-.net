@@ -372,8 +372,8 @@
                 <h2 class="section-heading text-uppercase" style="font-style: italic;">Système ETL</h2>
                 <h3 class="section-subheading text-muted">De la donnée brute à la valeur décisionnelle</h3>
             </div>
-            <div class="row text-center">
-                <div class="col-md-6 mb-5">
+            <div class="row text-center d-flex justify-content-between">
+                <div class="col-md-5 mb-5">
                     <span class="fa-stack fa-4x">
                         <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
                         <i class="fas fa-cogs fa-stack-1x fa-inverse"></i>
@@ -381,9 +381,10 @@
                     <h4 class="my-3">Extraction & Transformation</h4>
                     <p class="text-muted">Collecte des données issues de sources variées, nettoyage, normalisation et enrichissement pour garantir leur qualité.</p>
                     <a class="text-decoration-none d-inline-block mt-2" href="#" id="extractTransformLink">Découvrir <i class="bi bi-arrow-right"></i></a>
-                    <div id="uploadFormContainer" class="mt-4"></div>
+                    <!-- Nouveau formulaire de mapping simplifié -->
+                    <div id="uploadFormContainer"></div>
                 </div>
-                <div class="col-md-6 mb-5">
+                <div class="col-md-5 mb-5">
                     <span class="fa-stack fa-4x">
                         <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
                         <i class="fas fa-database fa-stack-1x fa-inverse"></i>
@@ -395,6 +396,42 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal Bootstrap du tableau sql -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aperçu du tableau</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="tableContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #statusMessage {
+            margin-top: 10px;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
 
 
 
@@ -798,10 +835,12 @@
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
-    <script src="/js/fileUpload.js"></script>
 
+    <script src="js/mappingSimplifie.js"></script>
 
+    <!--<script src="/js/fileUpload.js"></script>-->
     <!--<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <script>
         particlesJS("particles-js", {
