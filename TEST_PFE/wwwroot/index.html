@@ -391,8 +391,28 @@
                     </span>
                     <h4 class="my-3">Chargement & Stockage</h4>
                     <p class="text-muted">Insertion des données dans un entrepôt centralisé pour faciliter l’analyse et la visualisation.</p>
-                    <a class="text-decoration-none d-inline-block mt-2" href="#">Découvrir <i class="bi bi-arrow-right"></i></a>
+
+                    <!-- Lien "Découvrir" déclencheur -->
+                    <a class="text-decoration-none d-inline-block mt-2" href="#" id="showTablesLink">
+                        Découvrir <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <!-- Tableau des tables extraites, masqué au départ -->
+                    <div id="tablesContainer" class="table-responsive mt-4 border rounded shadow-sm p-3 bg-white d-none">
+                        <h5 class="text-center mb-3" style="font-style: italic; color: #343a40;">Tables extraites</h5>
+                        <table class="table table-bordered table-hover align-middle text-center" id="sql-tables">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nom de la table</th>
+                                    <th>Action</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -843,6 +863,8 @@
 
 
     <script src="js/mappingSimplifie.js"></script>
+
+    <script src="js/SQL_CRM.js"></script>
 
     <!--<script src="/js/fileUpload.js"></script>-->
     <!--<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>

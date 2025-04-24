@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,8 +34,12 @@ builder.Services.AddSingleton<CrmService>();
 // Autres services nécessaires
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IChargementService, ChargementService>();
-builder.Services.AddScoped<IDataTransformationService, DataTransformationService>(); 
+builder.Services.AddScoped<IDataTransformationService, DataTransformationService>();
+builder.Services.AddScoped<DynamicsService>();
+builder.Services.AddScoped<DataSyncService>();
+builder.Services.AddScoped <OAuthHelper>();
 
+builder.Services.AddHttpClient();
 
 
 // Configuration de l'accès à la base de données et aux services nécessaires

@@ -6,6 +6,7 @@ using System.Dynamic;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using TEST_PFE.Ser;
 
@@ -130,16 +131,17 @@ public class DataTransformationService : IDataTransformationService
         return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
     }
 
-    // Normaliser les noms des colonnes
     private string NettoyerNomColonne(string colonne)
     {
-        if (string.IsNullOrEmpty(colonne)) return string.Empty;
+        if (string.IsNullOrWhiteSpace(colonne))
+            return string.Empty;
 
-        Console.WriteLine($"Nom de colonne avant nettoyage: '{colonne}'");
+        // On retire les accents uniquement
+        var withoutDiacritics = RemoveDiacritics(colonne);
 
-        var cleanedColumn = RemoveDiacritics(colonne)
+        // On remplace les caractères spéciaux et on nettoie
+        var cleaned = withoutDiacritics
             .Trim()
-            .ToUpperInvariant()
             .Replace(" ", "_")
             .Replace(".", "_")
             .Replace("-", "_")
@@ -147,13 +149,10 @@ public class DataTransformationService : IDataTransformationService
             .Replace(")", "")
             .Replace("/", "_");
 
-        // Supprimer les suffixes accidentels en "E" après transformation de lettres accentuées
-        if (cleanedColumn.EndsWith("E") && !cleanedColumn.EndsWith("SECTEURE")) // éviter de casser des vrais mots
-        {
-            cleanedColumn = cleanedColumn[..^1];
-        }
-
-        Console.WriteLine($"Nom de colonne après nettoyage: '{cleanedColumn}'");
-        return cleanedColumn;
+        return cleaned.ToUpperInvariant(); // Finalement on met en majuscule
     }
+
+
+
+
 }

@@ -18,7 +18,7 @@ public class ChargementService : IChargementService
         _connectionString = configuration.GetConnectionString("SQL_Connection");
     }
 
-   
+
     public async Task CreateTableDynamically(List<dynamic> transformedData, string tableName, Dictionary<string, string> mapping)
     {
         var columnDefinitions = new List<string>();
@@ -115,6 +115,37 @@ public class ChargementService : IChargementService
             }
         }
     }
+
+    public async Task<List<string>> GetTableNames()
+    {
+        var tables = new List<string>();
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var query = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'";
+
+                using (var command = new SqlCommand(query, connection))
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        tables.Add(reader.GetString(0));
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log the exception and return a more detailed error message
+            Console.WriteLine("Error: " + ex.Message);  // Tu peux loguer l'exception ici
+            throw new Exception("Erreur lors de la récupération des tables SQL", ex);  // Relance l'exception pour propagation
+        }
+        return tables;
+    }
+
+
 
 
 }

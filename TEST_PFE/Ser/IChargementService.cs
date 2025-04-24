@@ -9,5 +9,6 @@ namespace TEST_PFE.Ser
     {
         Task CreateTableDynamically(List<dynamic> transformedData, string tableName, Dictionary<string, string> mapping);
         Task InsertDataDynamically(List<dynamic> transformedData, string tableName);
+        Task<List<string>> GetTableNames();
     }
 }

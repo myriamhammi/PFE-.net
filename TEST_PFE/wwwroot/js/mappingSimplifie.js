@@ -62,15 +62,26 @@ function handleFile(e) {
     reader.readAsArrayBuffer(file);
 }
 
+
+
 function afficherMapping(headers) {
     const container = document.getElementById("mappingContainer");
     container.innerHTML = "<h5 class='text-muted mb-3'>Associez un type à chaque colonne :</h5>";
 
     let mappingData = {};
 
+    function removeDiacritics(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
     headers.forEach(header => {
-        // Nettoyer le nom de la colonne : remplacer les espaces par des underscores et enlever les caractères non valides
-        const cleanedHeader = header.trim().replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+        const cleanedHeader = removeDiacritics(header.trim())
+            .replace(/\s+/g, "_")
+            .replace(/[^a-zA-Z0-9_]/g, "")
+            .toUpperCase();
+
+    
+
 
         const div = document.createElement("div");
         div.classList.add("form-group", "row", "align-items-center");
