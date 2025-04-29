@@ -12,7 +12,7 @@ namespace TEST_PFE.Controllers
         }
 
         [HttpPost]
-       // [ValidateAntiForgeryToken]
+       //[ValidateAntiForgeryToken]
         public async Task<IActionResult> RunETL()
         {
             string package1 = @"C:\Users\meria\source\repos\PFE_EY\PFE_EY\Package1.dtsx";

@@ -46,22 +46,52 @@ public class DynamicsController : ControllerBase
             // Log de démarrage de la création
             _logger.LogInformation($"Demande de création de la table: {tableName}");
 
-            // Appel à la méthode SyncSqlTableToDataverse et récupération du message de réponse
-            string result = await _dataSyncService.SyncSqlTableToDataverse(tableName);
+            // Obtenir le token d'accès OAuth
+            string accessToken = await OAuthHelper.GetAccessTokenAsync();
 
-            // Log de succès
+            // Générer le nom au pluriel (exemple : "Customer" -> "Customers")
+            string pluralName = tableName + "s";  // Logique de base, tu peux l'adapter selon tes besoins
+
+            // Appel de la méthode de création de table
+            string result = await _dataSyncService.CreateTableInDataverse(
+                schemaName: tableName,           // nom technique de la table
+                displayName: tableName,          // nom visible dans l’interface
+                accessToken: accessToken        // Token d'accès
+            );
+
             _logger.LogInformation($"Table {tableName} créée avec succès.");
-
-            // Retourner la réponse avec le message du résultat
             return Ok(new { message = result });
         }
         catch (Exception ex)
         {
-            // Log d'erreur
             _logger.LogError($"Erreur lors de la création de la table {tableName}: {ex.Message}");
-
-            // Gestion des exceptions
             return StatusCode(500, new { message = "Une erreur est survenue lors de la création de la table.", error = ex.Message });
         }
     }
+
+    [HttpPost("create-table-from-sql/{tableName}")]
+    public async Task<IActionResult> CreateTableFromSqlToDynamics(string tableName)
+    {
+        try
+        {
+            _logger.LogInformation($"Demande de création de la table depuis SQL: {tableName}");
+
+            // Obtenir le token d'accès OAuth
+            string accessToken = await OAuthHelper.GetAccessTokenAsync();
+
+            // Appel de la méthode pour créer la table dans Dynamics
+            string result = await _dataSyncService.CreateTableFromSqlToDataverse(tableName, accessToken);
+
+            _logger.LogInformation($"Table {tableName} créée depuis SQL avec succès.");
+            return Ok(new { message = result });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Erreur lors de la création de la table {tableName} depuis SQL : {ex.Message}");
+            return StatusCode(500, new { message = "Une erreur est survenue lors de la création de la table.", error = ex.Message });
+        }
+    }
+
+
+
 }

@@ -8,6 +8,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using TEST_PFE.Ser;
 
+
+
+
+public class SqlColumn
+{
+    public string Name { get; set; }
+    public string DataType { get; set; }
+}
+
 public class ChargementService : IChargementService
 {
     private readonly string _connectionString;
@@ -144,6 +153,61 @@ public class ChargementService : IChargementService
         }
         return tables;
     }
+
+    public async Task<List<SqlColumn>> GetSqlTableStructure(string tableName)
+    {
+        var columns = new List<SqlColumn>();
+
+        using (var connection = new SqlConnection("Votre chaîne de connexion"))
+        {
+            await connection.OpenAsync();
+            var query = $"SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{tableName}'";
+
+            using (var command = new SqlCommand(query, connection))
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    columns.Add(new SqlColumn
+                    {
+                        Name = reader.GetString(0),
+                        DataType = reader.GetString(1)
+                    });
+                }
+            }
+        }
+
+        return columns;
+    }
+
+
+    public async Task<List<Dictionary<string, object>>> GetDataFromTable(string tableName)
+    {
+        var result = new List<Dictionary<string, object>>();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
+            var command = new SqlCommand($"SELECT * FROM {tableName}", connection);
+
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (await reader.ReadAsync())
+                {
+                    var row = new Dictionary<string, object>();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        row.Add(reader.GetName(i), reader.GetValue(i));
+                    }
+                    result.Add(row);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
 
 
 

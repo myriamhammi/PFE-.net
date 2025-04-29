@@ -1,0 +1,29 @@
+﻿/* Style personnalisé */
+.nav-hover {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+    .nav-hover::after {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: #ffe600;
+        transition: width 0.3s ease;
+    }
+
+    .nav-hover:hover::after {
+        width: 100%;
+    }
+
+    .nav-hover:hover {
+        color: #ffe600 !important;
+    }
+
+.navbar .btn-warning:hover {
+    background-color: #e6cd00;
+    color: #000;
+}

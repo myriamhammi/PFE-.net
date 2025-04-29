@@ -278,8 +278,13 @@
 
             try {
                 const response = await fetch('/SsisRunner/RunETL', {
-                    method: 'POST'
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({}) // ← on envoie un corps vide
                 });
+
 
                 const result = await response.text();
                 clearInterval(interval);
@@ -326,7 +331,7 @@
                     </span>
                     <h4 class="my-3">KPIs Descriptifs</h4>
                     <p class="text-muted">Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.</p>
-                    <a class="text-decoration-none" href="#">Explorer <i class="bi bi-arrow-right"></i></a>
+                    <a class="text-decoration-none" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="col-md-4 mb-5">
                     <span class="fa-stack fa-4x">
@@ -335,7 +340,7 @@
                     </span>
                     <h4 class="my-3">KPIs Explicatifs</h4>
                     <p class="text-muted">Compréhension des relations entre les variables pour expliquer les fluctuations de performance.</p>
-                    <a class="text-decoration-none" href="#">Explorer <i class="bi bi-arrow-right"></i></a>
+                    <a class="text-decoration-none" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
                 </div>
                 <div class="col-md-4 mb-5">
                     <span class="fa-stack fa-4x">
@@ -344,7 +349,7 @@
                     </span>
                     <h4 class="my-3">KPIs Prédictifs</h4>
                     <p class="text-muted">Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.</p>
-                    <a class="text-decoration-none" href="/SalesKPI/Index">Explorer <i class="bi bi-arrow-right"></i></a>
+                    <a class="text-decoration-none" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </div>
