@@ -1,0 +1,34 @@
+﻿/* styles.css */
+.file-upload-container {
+    margin-top: 50px;
+    text-align: center;
+}
+
+.progress-bar-container {
+    margin-top: 20px;
+    display: none;
+}
+
+.icon-process {
+    font-size: 50px;
+    color: #28a745;
+    animation: spin 1s infinite linear;
+}
+
+@keyframes progressBarAnimation {
+    0% {
+        width: 0%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+.progress-bar {
+    animation: progressBarAnimation 2s ease-out forwards;
+}
+
+.progress-bar-animated {
+    animation: progressBarAnimation 2s ease-out forwards;
+}

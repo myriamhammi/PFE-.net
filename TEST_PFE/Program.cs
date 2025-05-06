@@ -45,6 +45,21 @@ builder.Services.AddHttpClient();
 // Configuration de l'accès à la base de données et aux services nécessaires
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration); // Si tu n'as pas déjà injecté IConfiguration
 
+
+// Forcer la redirection HTTP vers HTTPS
+builder.Services.AddHttpsRedirection(options =>
+{
+    options.HttpsPort = 7190;  // Port HTTPS que vous utilisez
+});
+
+
+builder.Services.AddAntiforgery(options =>
+{
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // Toujours sécuriser les cookies
+    options.Cookie.SameSite = SameSiteMode.Strict;  // Prévenir l'envoi de cookies dans les requêtes inter-domaines
+});
+
+
 var app = builder.Build();
 
 // Configure le pipeline de requêtes HTTP

@@ -1,0 +1,460 @@
+﻿@{
+    ViewData["Title"] = "Upload ETL";
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload ETL</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            display: block;
+        }
+
+        select, input[type="file"] {
+            margin-bottom: 20px;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <h2>Lancer un processus ETL</h2>
+
+    <form method="post" enctype="multipart/form-data" action="/ETL/UploadFile">
+        @Html.AntiForgeryToken()
+
+        <label for="selectedTable">Choisir la table :</label>
+        <select id="selectedTable" name="selectedTable" required onchange="toggleFileInput()">
+            <option value="" disabled selected>-- Sélectionnez une table --</option>
+            <option value="Toutes">Toutes les tables</option>
+            <option value="Prospect">Prospect</option>
+            <option value="Compte">Account</option>
+            <option value="Contact">Contact</option>
+            <option value="Opportunity">Opportunities</option>
+            <option value="Quote">Devis</option>
+            <option value="Sales">Sales_Order</option>
+            <option value="QuoteProduct">Quote_Product</option>
+            <option value="OpportunityProduct">Opportunity_Product</option>
+            <option value="SalesProduct">Sales_Order_Product</option>
+        </select>
+
+        <label for="uploadedFile">Fichier CSV :</label>
+        <input id="uploadedFile" type="file" name="uploadedFile" accept=".csv" required />
+
+        <button type="submit">Lancer l'ETL</button>
+    </form>
+
+    @if (ViewBag.Message != null)
+    {
+        <div class="message @(ViewBag.Message.Contains("Erreur") ? "error" : "success")">
+            <strong>@ViewBag.Message</strong>
+        </div>
+    }
+
+    <script>
+        function toggleFileInput() {
+            const selectedTable = document.getElementById("selectedTable").value;
+            const fileInput = document.getElementById("uploadedFile");
+
+            if (selectedTable === "Toutes") {
+                fileInput.disabled = true;
+                fileInput.removeAttribute("required");
+            } else {
+                fileInput.disabled = false;
+                fileInput.setAttribute("required", "required");
+            }
+        }
+    </script>
+
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+</body>
+</html>
+
+
+
+@* @{
+    ViewData["Title"] = "Système ETL";
+    Layout = "~/Pages/Shared/_ETLLayout.cshtml";
+}
+
+<div id="loadingSpinner" style="display:none;" class="text-center mt-4">
+    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
+    <p>Traitement en cours...</p>
+</div>
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info mt-4 text-center">
+        <i class="fas fa-info-circle me-2"></i> @ViewBag.Message
+    </div>
+}
+
+<div class="container py-5">
+    <h2 class="text-center mb-5">Lancer un processus ETL</h2>
+
+    <div class="row g-3 mb-4">
+        @{
+            var tables = new[] {
+        ("Toutes", "fas fa-layer-group"),
+        ("Prospect", "fas fa-user-plus"),
+        ("Compte", "fas fa-building"),
+        ("Contact", "fas fa-address-book"),
+        ("Opportunity", "fas fa-bullseye"),
+        ("Quote", "fas fa-file-invoice"),
+        ("Sales", "fas fa-shopping-cart"),
+        ("QuoteProduct", "fas fa-box-open"),
+        ("OpportunityProduct", "fas fa-boxes"),
+        ("SalesProduct", "fas fa-box")
+        };
+
+            foreach (var table in tables)
+            {
+                <div class="col-md-4">
+                    <div class="card table-card p-3" onclick="selectTable('@table.Item1')">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="@table.Item2 card-icon me-3"></i>
+                            <h5 class="mb-0">@table.Item1</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <!-- Étapes du processus ETL -->
+    <div class="progress-steps mb-4">
+        <span id="step-upload" class="progress-step">Upload</span>
+        <span id="step-transform" class="progress-step">Transformation</span>
+        <span id="step-load" class="progress-step">Chargement</span>
+    </div>
+
+    <form id="etlForm" asp-action="UploadFile" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="selectedTable" id="selectedTable" value="" />
+
+        <div class="mb-3">
+            <label for="uploadedFile" class="form-label">Choisir un fichier</label>
+            <input type="file" class="form-control" name="uploadedFile" id="uploadedFile" required disabled />
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="startETLButton" disabled>
+            <i class="fas fa-play"></i> Lancer ETL
+        </button>
+    </form>
+
+    <!-- Fichiers récents -->
+    @{
+        var recentFiles = TempData["RecentFiles"] as List<string>;
+    }
+
+    <div class="recent-files mt-5">
+        <h5 class="section-title">Fichiers récents</h5>
+        <ul id="recentFilesList">
+            @if (recentFiles != null && recentFiles.Any())
+            {
+                foreach (var file in recentFiles)
+                {
+                    <li>
+                        <i class="fas fa-file-csv me-2 text-secondary"></i> @file
+                    </li>
+                }
+            }
+            else
+            {
+                <li>Aucun fichier récent disponible.</li>
+            }
+        </ul>
+    </div>
+
+
+    <!-- Message -->
+    @if (ViewBag.Message != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Message
+        </div>
+    }
+
+    @if (ViewBag.PackageOutput != null)
+    {
+        <div class="alert alert-info">
+            <strong>Sortie du package :</strong> @ViewBag.PackageOutput
+        </div>
+    }
+
+    @if (ViewBag.PackageError != null)
+    {
+        <div class="alert alert-warning">
+            <strong>Erreur du package :</strong> @ViewBag.PackageError
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script>
+        function selectTable(tableName) {
+            document.getElementById("selectedTable").value = tableName;
+
+            // Désactiver ou activer le fichier et le bouton en fonction de la sélection
+            if (tableName === "Toutes") {
+                document.getElementById("uploadedFile").disabled = true;
+                document.getElementById("startETLButton").disabled = false;
+                document.getElementById("startETLButton").innerHTML = `<i class="fas fa-play"></i> Lancer ETL`;
+            } else {
+                document.getElementById("uploadedFile").disabled = false;
+                document.getElementById("startETLButton").disabled = false;
+                document.getElementById("startETLButton").innerHTML = `<i class="fas fa-play"></i> Lancer ${tableName} ETL`;
+            }
+
+            // Reset progression
+            document.querySelectorAll('.progress-step').forEach(e => e.classList.remove('active'));
+            document.getElementById('step-upload').classList.add('active');
+        }
+
+        document.getElementById("etlForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the form from submitting the traditional way
+
+            // Désactiver le bouton et afficher le spinner
+            document.getElementById("startETLButton").disabled = true;
+            document.getElementById("loadingSpinner").style.display = "block";
+
+            // Lancer les étapes du processus ETL
+            document.getElementById("step-upload").classList.remove("active");
+            document.getElementById("step-transform").classList.add("active");
+
+            setTimeout(() => {
+                document.getElementById("step-transform").classList.remove("active");
+                document.getElementById("step-load").classList.add("active");
+            }, 2000);
+
+            // Soumettre le formulaire via AJAX
+            var formData = new FormData(document.getElementById("etlForm"));
+            $.ajax({
+                url: '@Url.Action("UploadFile", "ETL")',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    document.getElementById("loadingSpinner").style.display = "none";
+                    if (response.success) {
+                        document.getElementById("step-load").classList.remove("active");
+                        alert("ETL terminé avec succès !");
+                    } else {
+                        alert("Erreur : " + response.message);
+                    }
+                },
+                error: function () {
+                    alert("Erreur lors de l'exécution de l'ETL.");
+                    document.getElementById("loadingSpinner").style.display = "none";
+                }
+            });
+        });
+    </script>
+}
+
+ *@
+
+
+@* <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+
+
+    <!-- Lien vers le fichier CSS ETL -->
+    
+
+    
+</head>
+<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-agency-gh-pages/css/agency.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2-gh-pages/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css" rel="stylesheet"> <!-- Pour les icônes -->
+
+    <div class="container">
+        <div class="file-upload-container">
+            <h2 class="display-4">Téléchargez votre fichier pour ETL</h2>
+
+            <form method="post" enctype="multipart/form-data" id="uploadForm">
+                <div class="form-group">
+                    <label for="selectedTable">Choisissez la table :</label>
+                    <select class="form-control" name="selectedTable" id="selectedTable">
+                        <option value="Toutes">Toutes</option>
+                        <option value="Prospect">Prospect</option>
+                        <option value="Compte">Compte</option>
+                        <option value="Contact">Contact</option>
+                        <option value="Opportunity">Opportunity</option>
+                        <option value="Quote">Quote</option>
+                        <option value="Sales">Sales</option>
+                        <option value="QuoteProduct">QuoteProduct</option>
+                        <option value="OpportunityProduct">OpportunityProduct</option>
+                        <option value="SalesProduct">SalesProduct</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploadedFile">Sélectionner un fichier :</label>
+                    <input type="file" class="form-control" name="uploadedFile" id="uploadedFile" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Télécharger</button>
+            </form>
+
+            <div id="statusMessage"></div>
+
+            <div class="progress-bar-container" id="progressBarContainer">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="processIcons" class="mt-4" style="display: none;">
+                <div id="process1" class="icon-process">
+                    <i class="fa fa-spinner"></i>
+                </div>
+                <div id="process2" class="icon-process">
+                    <i class="fa fa-spinner"></i>
+                </div>
+                <div id="process3" class="icon-process">
+                    <i class="fa fa-spinner"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#uploadForm").submit(function(e) {
+                e.preventDefault();
+
+                var selectedTable = $("#selectedTable").val();
+
+                if (selectedTable === "Toutes") {
+                    startTransformation();
+                } else {
+                    var formData = new FormData(this);
+                    $("#progressBarContainer").show();
+                    $("#processIcons").show();
+
+                    $("#process1").html('<i class="fa fa-cloud-upload"></i>');
+                    updateProgress(20);
+
+                    $("#process2").html('<i class="fa fa-cloud-download"></i>');
+                    updateProgress(50);
+
+                    $("#process3").html('<i class="fa fa-cogs"></i>');
+                    updateProgress(80);
+
+                    $.ajax({
+                        url: '/ETL/UploadFile',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            updateProgress(100);
+                            $("#statusMessage").html('<div class="alert alert-success">Le processus ETL a été terminé avec succès !</div>');
+                        },
+                        error: function() {
+                            $("#statusMessage").html('<div class="alert alert-danger">Erreur pendant l\'exécution du processus ETL.</div>');
+                        }
+                    });
+                }
+            });
+
+            function updateProgress(percent) {
+                var progressBar = $("#progressBar");
+                progressBar.css("width", percent + "%");
+
+                if (percent > 0) {
+                    progressBar.addClass('progress-bar-animated');
+                }
+            }
+
+            function startTransformation() {
+                $("#progressBarContainer").show();
+                $("#processIcons").show();
+
+                $("#process1").html('<i class="fa fa-cogs"></i>');
+                updateProgress(20);
+
+                $("#process2").html('<i class="fa fa-check-circle"></i>');
+                updateProgress(60);
+
+                $("#process3").html('<i class="fa fa-thumbs-up"></i>');
+                updateProgress(100);
+
+                $("#statusMessage").html('<div class="alert alert-success">La transformation a été effectuée avec succès !</div>');
+            }
+        });
+    </script>
+
+</body>
+</html>
+ *@
