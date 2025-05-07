@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Upload ETL";
 }
 
@@ -129,7 +129,176 @@
 
     <script src="/_framework/aspnetcore-browser-refresh.js"></script>
 </body>
-</html>
+</html> *@
+
+@{
+    ViewData["Title"] = "Upload ETL";
+    var recentFiles = TempData["RecentFiles"] as List<string> ?? new List<string>(); // Toujours visible
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml"; // Même layout que ta vue descriptive
+}
+
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase">
+                <i class="fas fa-database me-2" style="color: #FFE600;"></i> Lancer le processus ETL
+            </h2>
+            <p class="text-muted">Importe un fichier CSV pour lancer le traitement et alimenter les données analytiques.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" action="/ETL/UploadFile">
+                            @Html.AntiForgeryToken()
+
+                            <div class="mb-3">
+                                <label for="selectedTable" class="form-label fw-semibold">
+                                    <i class="fas fa-table me-1" style="color: #FFE600;"></i> Choisir la table :
+                                </label>
+                                <select id="selectedTable" name="selectedTable" class="form-select" required onchange="toggleFileInput()">
+                                    <option value="" disabled selected>-- Sélectionnez une table --</option>
+                                    <option value="Toutes">Toutes les tables</option>
+                                    <option value="Prospect">Prospect</option>
+                                    <option value="Compte">Account</option>
+                                    <option value="Contact">Contact</option>
+                                    <option value="Opportunity">Opportunities</option>
+                                    <option value="Quote">Devis</option>
+                                    <option value="Sales">Sales_Order</option>
+                                    <option value="QuoteProduct">Quote_Product</option>
+                                    <option value="OpportunityProduct">Opportunity_Product</option>
+                                    <option value="SalesProduct">Sales_Order_Product</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="uploadedFile" class="form-label fw-semibold">
+                                    <i class="fas fa-file-csv me-1" style="color: #FFE600;"></i> Fichier CSV :
+                                </label>
+                                <input id="uploadedFile" type="file" name="uploadedFile" accept=".csv" class="form-control" required />
+                            </div>
+
+                            <div class="d-grid">
+                                <button id="submitBtn" type="submit" class="btn btn-warning text-dark fw-bold" disabled>
+                                    <span id="btnText"><i class="fas fa-play me-2"></i> Lancer l'ETL</span>
+                                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
+
+                        </form>
+
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert mt-4 @(ViewBag.Message.Contains("Erreur") ? "alert-danger" : "alert-success") text-center fw-semibold">
+                                @ViewBag.Message
+                            </div>
+                        }
+
+                        @if (ViewBag.PackageOutput != null)
+                        {
+                            <div class="alert alert-secondary mt-3">
+                                <strong>Sortie du package :</strong>
+                                <pre>@ViewBag.PackageOutput</pre>
+                            </div>
+                        }
+
+                        @if (ViewBag.PackageError != null)
+                        {
+                            <div class="alert alert-danger mt-3">
+                                <strong>Erreurs du package :</strong>
+                                <pre>@ViewBag.PackageError</pre>
+                            </div>
+                        }
+
+                        @* FICHIERS RÉCENTS REUTILISABLES *@
+                        @if (recentFiles.Any())
+                        {
+                            <div class="mt-5">
+                                <h5 class="fw-bold">📁 Fichiers récemment téléchargés :</h5>
+                                <div class="list-group">
+                                    @foreach (var file in recentFiles)
+                                    {
+                                        var fileName = System.IO.Path.GetFileName(file);
+                                        var tableGuess = fileName.Split('_').FirstOrDefault() ?? "Inconnue";
+
+                                        <button type="button" class="list-group-item list-group-item-action"
+                                                onclick="prefillForm('@fileName', '@tableGuess')">
+                                            <i class="fas fa-file-csv text-success me-2"></i> @fileName
+                                            <span class="badge bg-secondary ms-2">@tableGuess</span>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        function toggleFileInput() {
+            const selectedTable = document.getElementById("selectedTable").value;
+            const fileInput = document.getElementById("uploadedFile");
+            const submitBtn = document.getElementById("submitBtn");
+
+            if (selectedTable === "Toutes") {
+                fileInput.disabled = true;
+                fileInput.removeAttribute("required");
+            } else {
+                fileInput.disabled = false;
+                fileInput.setAttribute("required", "required");
+            }
+
+            // Activation du bouton si table sélectionnée
+            submitBtn.disabled = selectedTable === "";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form");
+            const btnText = document.getElementById("btnText");
+            const btnSpinner = document.getElementById("btnSpinner");
+            const submitBtn = document.getElementById("submitBtn");
+
+            // Activer le bouton si une table est sélectionnée au chargement
+            // toggleFileInput();
+
+            form.addEventListener("submit", function () {
+                // Affiche le spinner, désactive le bouton
+                btnText.innerText = "Traitement en cours...";
+                btnSpinner.classList.remove("d-none");
+                submitBtn.disabled = true;
+            });
+        });
+         function prefillForm(fileName, tableName) {
+            const tableSelect = document.getElementById("selectedTable");
+            const fileInput = document.getElementById("uploadedFile");
+
+            // Simule le choix de la table
+            for (let option of tableSelect.options) {
+                if (option.value.toLowerCase() === tableName.toLowerCase()) {
+                    option.selected = true;
+                    break;
+                }
+            }
+
+            toggleFileInput();
+
+            alert(`Veuillez sélectionner manuellement le fichier : ${fileName} dans votre système.`);
+
+            // Active le bouton
+            document.getElementById("submitBtn").disabled = false;
+        }
+    </script>
+}
+
+
 
 
 
