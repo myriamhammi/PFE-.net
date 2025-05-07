@@ -39,6 +39,8 @@ builder.Services.AddScoped<DynamicsService>();
 builder.Services.AddScoped<DataSyncService>();
 builder.Services.AddScoped <OAuthHelper>();
 
+builder.Services.AddSession();
+
 builder.Services.AddHttpClient();
 
 
@@ -73,6 +75,7 @@ else
     app.UseHsts();
 }
 
+app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

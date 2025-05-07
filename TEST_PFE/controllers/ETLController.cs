@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using TEST_PFE.Extensions;
 
 //public class TableRequest
 //{
@@ -33,6 +34,8 @@ namespace TEST_PFE.Controllers
         [HttpPost]
         public async Task<IActionResult> UploadFile(string selectedTable, IFormFile uploadedFile)
         {
+            var recentFiles = HttpContext.Session.GetObject<List<string>>("RecentFiles") ?? new List<string>();
+
 
             if (selectedTable == "Toutes")
             {
@@ -54,10 +57,10 @@ namespace TEST_PFE.Controllers
                     uploadedFile.CopyTo(fileStream);
                 }
 
-                // Stockage du nom de fichier pour l'afficher dans la vue
-                var recentFiles = GetRecentFiles();
-
-                TempData["RecentFiles"] = GetRecentFiles();
+                recentFiles.Remove(uploadedFile.FileName);
+                recentFiles.Insert(0, uploadedFile.FileName);
+                recentFiles = recentFiles.Take(5).ToList();
+                HttpContext.Session.SetObject("RecentFiles", recentFiles);
                 ViewBag.Message = "Fichier téléchargé avec succès.";
             }
 
@@ -150,22 +153,66 @@ namespace TEST_PFE.Controllers
 
 
             ViewBag.Message = "✅ ETL terminé avec succès !";
+            ViewBag.RecentFiles = recentFiles;
+
             return View("Upload");
 
         }
 
-        // Fonction pour récupérer les fichiers récents
-        public List<string> GetRecentFiles()
+        [HttpPost]
+        public IActionResult ReuseFile(string fileName, string selectedTable)
         {
-            var files = Directory.GetFiles(_fileUploadDirectory)
-                                 .Select(file => new FileInfo(file))
-                                 .OrderByDescending(file => file.CreationTime)
-                                 .Take(5) // Limiter à 5 fichiers récents
-                                 .Select(file => file.Name)
-                                 .ToList();
+            var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads");
+            var filePath = Path.Combine(uploadsPath, fileName);
 
-            return files;
+            if (!System.IO.File.Exists(filePath))
+            {
+                ViewBag.Message = "❌ Fichier introuvable.";
+                return View("Upload");
+            }
+
+            // Tu peux maintenant appeler directement le traitement ETL ici
+            try
+            {
+                bool loadResult = RunSSISPackage(selectedTable, "LoadToSA");
+                if (!loadResult)
+                {
+                    ViewBag.Message = "Erreur pendant le chargement vers SA.";
+                    return View("Upload");
+                }
+
+                string transformPackageTable = (selectedTable == "QuoteProduct" || selectedTable == "OpportunityProduct" || selectedTable == "SalesProduct") ? "Product" : selectedTable;
+                bool transformResult = RunSSISPackage(transformPackageTable, "TransformToDW");
+
+                if (!transformResult)
+                {
+                    ViewBag.Message = "Erreur pendant la transformation vers DW.";
+                    return View("Upload");
+                }
+
+                ViewBag.Message = "✅ ETL exécuté à partir d'un fichier existant avec succès !";
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = $"Erreur : {ex.Message}";
+            }
+
+            return View("Upload");
         }
+
+
+        // Fonction pour récupérer les fichiers récents
+        //public List<string> GetRecentFiles()
+        //{
+        //    var files = Directory.GetFiles(_fileUploadDirectory)
+        //                         .Select(file => new FileInfo(file))
+        //                         .OrderByDescending(file => file.CreationTime)
+        //                         .Take(5) // Limiter à 5 fichiers récents
+        //                         .Select(file => file.Name)
+        //                         .ToList();
+
+        //    return files;
+        //}
 
 
         //exécuter Package1 et Package2
