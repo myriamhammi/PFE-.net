@@ -132,13 +132,13 @@
 </body>
 </html> *@
 
-@{
+@* @{
     ViewData["Title"] = "Upload ETL";
     Layout = "~/Pages/Shared/_KPIsLayout.cshtml"; // Même layout que ta vue descriptive
-}
+} *@
 
 <!-- Font Awesome -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+@* <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <section class="py-5 bg-light">
     <div class="container">
@@ -212,10 +212,10 @@
                                 <strong>Erreurs du package :</strong>
                                 <pre>@ViewBag.PackageError</pre>
                             </div>
-                        }
+                        } *@
 
                         @* FICHIERS RÉCENTS REUTILISABLES *@
-                        @if (ViewBag.RecentFiles != null && (ViewBag.RecentFiles as List<string>).Any())
+                       @*  @if (ViewBag.RecentFiles != null && (ViewBag.RecentFiles as List<string>).Any())
                         {
                             <div class="card mt-4 shadow-sm">
                                 <div class="card-header bg-primary text-white">
@@ -241,9 +241,9 @@
             </div>
         </div>
     </div>
-</section>
+</section> *@
 
-@section Scripts {
+@* @section Scripts {
     <script>
         function toggleFileInput() {
             const selectedTable = document.getElementById("selectedTable").value;
@@ -293,333 +293,190 @@
 
     </script>
 }
+ *@
 
-
-
-
-
-@* @{
-    ViewData["Title"] = "Système ETL";
-    Layout = "~/Pages/Shared/_ETLLayout.cshtml";
+@{
+    ViewData["Title"] = "Upload ETL";
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml"; // Même layout que ta vue descriptive
 }
 
-<div id="loadingSpinner" style="display:none;" class="text-center mt-4">
-    <i class="fas fa-spinner fa-spin fa-3x text-primary"></i>
-    <p>Traitement en cours...</p>
-</div>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-@if (ViewBag.Message != null)
-{
-    <div class="alert alert-info mt-4 text-center">
-        <i class="fas fa-info-circle me-2"></i> @ViewBag.Message
-    </div>
-}
+<section class="py-5 bg-light" style="min-height: 100vh;">
+    <div class="container-fluid px-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase">
+                <i class="fas fa-database me-2" style="color: #FFE600;"></i> Upload & Lancement du systeme ETL
+            </h2>
+            <p class="text-muted">Séléctionnez une table, importez un fichier CSV , et déclenchez le traitement.</p>
+        </div>
 
-<div class="container py-5">
-    <h2 class="text-center mb-5">Lancer un processus ETL</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" action="/ETL/UploadFile">
+                            @Html.AntiForgeryToken()
 
-    <div class="row g-3 mb-4">
-        @{
-            var tables = new[] {
-        ("Toutes", "fas fa-layer-group"),
-        ("Prospect", "fas fa-user-plus"),
-        ("Compte", "fas fa-building"),
-        ("Contact", "fas fa-address-book"),
-        ("Opportunity", "fas fa-bullseye"),
-        ("Quote", "fas fa-file-invoice"),
-        ("Sales", "fas fa-shopping-cart"),
-        ("QuoteProduct", "fas fa-box-open"),
-        ("OpportunityProduct", "fas fa-boxes"),
-        ("SalesProduct", "fas fa-box")
-        };
+                            <div class="mb-3">
+                                <label for="selectedTable" class="form-label fw-semibold">
+                                    <i class="fas fa-table me-1" style="color: #FFE600;"></i> Choisir la table :
+                                </label>
+                                <select id="selectedTable" name="selectedTable" class="form-select" required onchange="toggleFileInput()">
+                                    <option value="" disabled selected>-- Sélectionnez une table --</option>
+                                    <option value="Toutes">Toutes les tables</option>
+                                    <option value="Prospect">Prospect</option>
+                                    <option value="Compte">Account</option>
+                                    <option value="Contact">Contact</option>
+                                    <option value="Opportunity">Opportunities</option>
+                                    <option value="Quote">Devis</option>
+                                    <option value="Sales">Sales_Order</option>
+                                    <option value="QuoteProduct">Quote_Product</option>
+                                    <option value="OpportunityProduct">Opportunity_Product</option>
+                                    <option value="SalesProduct">Sales_Order_Product</option>
+                                </select>
+                            </div>
 
-            foreach (var table in tables)
-            {
-                <div class="col-md-4">
-                    <div class="card table-card p-3" onclick="selectTable('@table.Item1')">
-                        <div class="card-body d-flex align-items-center">
-                            <i class="@table.Item2 card-icon me-3"></i>
-                            <h5 class="mb-0">@table.Item1</h5>
-                        </div>
+                            <div class="mb-3">
+                                <label for="uploadedFile" class="form-label fw-semibold">
+                                    <i class="fas fa-file-csv me-1" style="color: #FFE600;"></i> Fichier CSV :
+                                </label>
+                                <input id="uploadedFile" type="file" name="uploadedFile" accept=".csv" class="form-control" required />
+                            </div>
+
+                            <div class="d-grid">
+                                <button id="submitBtn" type="submit" class="btn btn-warning text-dark fw-bold" disabled>
+                                    <span id="btnText"><i class="fas fa-play me-2"></i> Lancer l'ETL</span>
+                                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+                                    <!-- Barre de progression en jaune -->
+                                    <div class="progress mt-2 d-none" id="progressBar" style="height: 5px;">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%; background-color: #FFE600;" id="progress"></div>
+                                    </div>
+                                </button>
+                            </div>
+
+                        </form>
+
+                        @if (ViewBag.Message != null)
+                        {
+                            <div class="alert mt-4 @(ViewBag.Message.Contains("Erreur") ? "alert-danger" : "alert-success") text-center fw-semibold">
+                                @ViewBag.Message
+                            </div>
+                        }
+
+                        @if (ViewBag.PackageOutput != null)
+                        {
+                            <div class="alert alert-secondary mt-3">
+                                <strong>Sortie du package :</strong>
+                                <pre>@ViewBag.PackageOutput</pre>
+                            </div>
+                        }
+
+                        @if (ViewBag.PackageError != null)
+                        {
+                            <div class="alert alert-danger mt-3">
+                                <strong>Erreurs du package :</strong>
+                                <pre>@ViewBag.PackageError</pre>
+                            </div>
+                        }
+
+                        @* FICHIERS RÉCENTS REUTILISABLES *@
+                        @if (ViewBag.RecentFiles != null && (ViewBag.RecentFiles as List<string>).Any())
+                        {
+                            <div class="card mt-4 shadow-sm border-0">
+                                <div class="card-header d-flex align-items-center" style="background-color: #FFE600;">
+                                    <i class="fas fa-folder-open me-2 text-dark"></i>
+                                    <h5 class="mb-0 text-dark fw-bold">Fichiers récemment téléchargés</h5>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    @foreach (var file in ViewBag.RecentFiles as List<string>)
+                                    {
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-file-csv me-2 text-success"></i>
+                                                <span class="fw-semibold">@file</span>
+                                            </div>
+                                            <a href="@Url.Content("~/uploads/" + file)"
+                                               class="btn btn-sm fw-bold text-dark"
+                                               style="background-color: #FFE600; border: none;"
+                                               target="_blank">
+                                                Télécharger
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+
                     </div>
                 </div>
-            }
-        }
+            </div>
+        </div>
     </div>
-
-    <!-- Étapes du processus ETL -->
-    <div class="progress-steps mb-4">
-        <span id="step-upload" class="progress-step">Upload</span>
-        <span id="step-transform" class="progress-step">Transformation</span>
-        <span id="step-load" class="progress-step">Chargement</span>
-    </div>
-
-    <form id="etlForm" asp-action="UploadFile" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="selectedTable" id="selectedTable" value="" />
-
-        <div class="mb-3">
-            <label for="uploadedFile" class="form-label">Choisir un fichier</label>
-            <input type="file" class="form-control" name="uploadedFile" id="uploadedFile" required disabled />
-        </div>
-
-        <button type="submit" class="btn btn-primary" id="startETLButton" disabled>
-            <i class="fas fa-play"></i> Lancer ETL
-        </button>
-    </form>
-
-    <!-- Fichiers récents -->
-    @{
-        var recentFiles = TempData["RecentFiles"] as List<string>;
-    }
-
-    <div class="recent-files mt-5">
-        <h5 class="section-title">Fichiers récents</h5>
-        <ul id="recentFilesList">
-            @if (recentFiles != null && recentFiles.Any())
-            {
-                foreach (var file in recentFiles)
-                {
-                    <li>
-                        <i class="fas fa-file-csv me-2 text-secondary"></i> @file
-                    </li>
-                }
-            }
-            else
-            {
-                <li>Aucun fichier récent disponible.</li>
-            }
-        </ul>
-    </div>
-
-
-    <!-- Message -->
-    @if (ViewBag.Message != null)
-    {
-        <div class="alert alert-danger">
-            @ViewBag.Message
-        </div>
-    }
-
-    @if (ViewBag.PackageOutput != null)
-    {
-        <div class="alert alert-info">
-            <strong>Sortie du package :</strong> @ViewBag.PackageOutput
-        </div>
-    }
-
-    @if (ViewBag.PackageError != null)
-    {
-        <div class="alert alert-warning">
-            <strong>Erreur du package :</strong> @ViewBag.PackageError
-        </div>
-    }
-
-</div>
+</section>
 
 @section Scripts {
     <script>
-        function selectTable(tableName) {
-            document.getElementById("selectedTable").value = tableName;
+        function toggleFileInput() {
+            const selectedTable = document.getElementById("selectedTable").value;
+            const fileInput = document.getElementById("uploadedFile");
+            const submitBtn = document.getElementById("submitBtn");
 
-            // Désactiver ou activer le fichier et le bouton en fonction de la sélection
-            if (tableName === "Toutes") {
-                document.getElementById("uploadedFile").disabled = true;
-                document.getElementById("startETLButton").disabled = false;
-                document.getElementById("startETLButton").innerHTML = `<i class="fas fa-play"></i> Lancer ETL`;
+            if (selectedTable === "Toutes") {
+                fileInput.disabled = true;
+                fileInput.removeAttribute("required");
             } else {
-                document.getElementById("uploadedFile").disabled = false;
-                document.getElementById("startETLButton").disabled = false;
-                document.getElementById("startETLButton").innerHTML = `<i class="fas fa-play"></i> Lancer ${tableName} ETL`;
+                fileInput.disabled = false;
+                fileInput.setAttribute("required", "required");
             }
 
-            // Reset progression
-            document.querySelectorAll('.progress-step').forEach(e => e.classList.remove('active'));
-            document.getElementById('step-upload').classList.add('active');
+            submitBtn.disabled = selectedTable === "";
         }
 
-        document.getElementById("etlForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent the form from submitting the traditional way
+         document.addEventListener("DOMContentLoaded", () => {
+            const form = document.querySelector("form");
+            const btnText = document.getElementById("btnText");
+            const btnSpinner = document.getElementById("btnSpinner");
+            const submitBtn = document.getElementById("submitBtn");
+            const progressBar = document.getElementById("progressBar");
+            const progress = document.getElementById("progress");
 
-            // Désactiver le bouton et afficher le spinner
-            document.getElementById("startETLButton").disabled = true;
-            document.getElementById("loadingSpinner").style.display = "block";
+            form.addEventListener("submit", function () {
+                btnText.innerText = "Traitement en cours...";
+                btnSpinner.classList.remove("d-none");
+                progressBar.classList.remove("d-none");
+                submitBtn.disabled = true;
 
-            // Lancer les étapes du processus ETL
-            document.getElementById("step-upload").classList.remove("active");
-            document.getElementById("step-transform").classList.add("active");
-
-            setTimeout(() => {
-                document.getElementById("step-transform").classList.remove("active");
-                document.getElementById("step-load").classList.add("active");
-            }, 2000);
-
-            // Soumettre le formulaire via AJAX
-            var formData = new FormData(document.getElementById("etlForm"));
-            $.ajax({
-                url: '@Url.Action("UploadFile", "ETL")',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    document.getElementById("loadingSpinner").style.display = "none";
-                    if (response.success) {
-                        document.getElementById("step-load").classList.remove("active");
-                        alert("ETL terminé avec succès !");
-                    } else {
-                        alert("Erreur : " + response.message);
+                // Simuler une progression pour le test
+                let progressValue = 0;
+                let interval = setInterval(function () {
+                    progressValue += 10;
+                    progress.style.width = progressValue + "%";
+                    if (progressValue >= 100) {
+                        clearInterval(interval);
                     }
-                },
-                error: function () {
-                    alert("Erreur lors de l'exécution de l'ETL.");
-                    document.getElementById("loadingSpinner").style.display = "none";
-                }
+                }, 1000);
             });
         });
+
+        function prefillForm(fileName, tableName) {
+             const tableSelect = document.getElementById("selectedTable");
+             const fileInput = document.getElementById("uploadedFile");
+
+             for (let option of tableSelect.options) {
+                 if (option.value.toLowerCase() === tableName.toLowerCase()) {
+                     option.selected = true;
+                     break;
+                 }
+             }
+
+             toggleFileInput();
+             alert(`Veuillez sélectionner manuellement le fichier : ${fileName} dans votre système.`);
+             document.getElementById("submitBtn").disabled = false;
+         }
+
     </script>
 }
 
- *@
-
-
-@* <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@ViewData["Title"]</title>
-
-
-    <!-- Lien vers le fichier CSS ETL -->
-    
-
-    
-</head>
-<body>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-agency-gh-pages/css/agency.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2-gh-pages/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css" rel="stylesheet"> <!-- Pour les icônes -->
-
-    <div class="container">
-        <div class="file-upload-container">
-            <h2 class="display-4">Téléchargez votre fichier pour ETL</h2>
-
-            <form method="post" enctype="multipart/form-data" id="uploadForm">
-                <div class="form-group">
-                    <label for="selectedTable">Choisissez la table :</label>
-                    <select class="form-control" name="selectedTable" id="selectedTable">
-                        <option value="Toutes">Toutes</option>
-                        <option value="Prospect">Prospect</option>
-                        <option value="Compte">Compte</option>
-                        <option value="Contact">Contact</option>
-                        <option value="Opportunity">Opportunity</option>
-                        <option value="Quote">Quote</option>
-                        <option value="Sales">Sales</option>
-                        <option value="QuoteProduct">QuoteProduct</option>
-                        <option value="OpportunityProduct">OpportunityProduct</option>
-                        <option value="SalesProduct">SalesProduct</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="uploadedFile">Sélectionner un fichier :</label>
-                    <input type="file" class="form-control" name="uploadedFile" id="uploadedFile" />
-                </div>
-
-                <button type="submit" class="btn btn-primary">Télécharger</button>
-            </form>
-
-            <div id="statusMessage"></div>
-
-            <div class="progress-bar-container" id="progressBarContainer">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar" style="width: 0%"></div>
-                </div>
-            </div>
-
-            <div id="processIcons" class="mt-4" style="display: none;">
-                <div id="process1" class="icon-process">
-                    <i class="fa fa-spinner"></i>
-                </div>
-                <div id="process2" class="icon-process">
-                    <i class="fa fa-spinner"></i>
-                </div>
-                <div id="process3" class="icon-process">
-                    <i class="fa fa-spinner"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#uploadForm").submit(function(e) {
-                e.preventDefault();
-
-                var selectedTable = $("#selectedTable").val();
-
-                if (selectedTable === "Toutes") {
-                    startTransformation();
-                } else {
-                    var formData = new FormData(this);
-                    $("#progressBarContainer").show();
-                    $("#processIcons").show();
-
-                    $("#process1").html('<i class="fa fa-cloud-upload"></i>');
-                    updateProgress(20);
-
-                    $("#process2").html('<i class="fa fa-cloud-download"></i>');
-                    updateProgress(50);
-
-                    $("#process3").html('<i class="fa fa-cogs"></i>');
-                    updateProgress(80);
-
-                    $.ajax({
-                        url: '/ETL/UploadFile',
-                        type: 'POST',
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(response) {
-                            updateProgress(100);
-                            $("#statusMessage").html('<div class="alert alert-success">Le processus ETL a été terminé avec succès !</div>');
-                        },
-                        error: function() {
-                            $("#statusMessage").html('<div class="alert alert-danger">Erreur pendant l\'exécution du processus ETL.</div>');
-                        }
-                    });
-                }
-            });
-
-            function updateProgress(percent) {
-                var progressBar = $("#progressBar");
-                progressBar.css("width", percent + "%");
-
-                if (percent > 0) {
-                    progressBar.addClass('progress-bar-animated');
-                }
-            }
-
-            function startTransformation() {
-                $("#progressBarContainer").show();
-                $("#processIcons").show();
-
-                $("#process1").html('<i class="fa fa-cogs"></i>');
-                updateProgress(20);
-
-                $("#process2").html('<i class="fa fa-check-circle"></i>');
-                updateProgress(60);
-
-                $("#process3").html('<i class="fa fa-thumbs-up"></i>');
-                updateProgress(100);
-
-                $("#statusMessage").html('<div class="alert alert-success">La transformation a été effectuée avec succès !</div>');
-            }
-        });
-    </script>
-
-</body>
-</html>
- *@

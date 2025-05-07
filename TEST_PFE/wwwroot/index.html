@@ -3,6 +3,8 @@
 <head>
     <!-- Google Fonts - Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Animation AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
 
     <style>
@@ -33,432 +35,240 @@
 <body data-bs-spy="scroll" data-bs-target=".navbar" data-bs-offset="70" tabindex="0">
 
 
-    <!-- Navbar moderne et interactive -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm fixed-top py-3">
-        <div class="container px-5">
-            <a class="navbar-brand fw-bold fs-4" href="#">BI 360°</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarContent"
-                    aria-controls="navbarContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <nav class="navbar navbar-expand-lg fixed-top transition-navbar shadow-sm" style="backdrop-filter: blur(6px);">
+        <div class="container">
+            <a class="nav-item">
+                <a class="nav-link nav-colored fw-bold fs-4" href="#">BI 360°</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+                        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse" id="navbarContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-light nav-hover" href="#home">Accueil</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-light nav-hover" href="#kpis">KPIs</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-light nav-hover" href="#etl">Système ETL</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-light nav-hover" href="#crm">CRM</a>
-                    </li>
-                    <li class="nav-item px-2">
-                        <a class="nav-link text-light nav-hover" href="#team">Notre équipe</a>
-                    </li>
-                </ul>
-
-                <!-- Call-to-action -->
-                <a href="#login" class="btn btn-warning ms-4 fw-bold shadow-sm">Se connecter</a>
-            </div>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fw-semibold">
+                        <li class="nav-item"><a class="nav-link nav-colored" href="#kpis">KPIs</a></li>
+                        <li class="nav-item"><a class="nav-link nav-colored" href="#etl">ETL</a></li>
+                        <li class="nav-item"><a class="nav-link nav-colored" href="#crm">CRM</a></li>
+                        <li class="nav-item"><a class="nav-link nav-colored" href="#dashboard">Dashboards</a></li>
+                        <li class="nav-item"><a class="nav-link nav-colored" href="#team">Notre équipe</a></li>
+                    </ul>
+                    <a href="#login" class="btn btn-warning ms-4 fw-bold shadow-sm">Myriam HAMMI</a>
+                </div>
         </div>
     </nav>
 
 
-    <!-- Style personnalisé -->
+
+
     <style>
-        .nav-hover {
-            position: relative;
+
+        .navbar-nav .nav-link {
+            color: #333 !important;
+            transition: color 0.2s ease;
+        }
+
+            .navbar-nav .nav-link:hover,
+            .navbar-nav .nav-link.active {
+                color: #ffc107 !important;
+            }
+
+        .navbar-brand {
+            font-size: 1.2rem;
+            color: #000 !important;
+        }
+
+        .transition-navbar {
+            transition: background-color 0.4s ease, box-shadow 0.4s ease;
+            background-color: transparent;
+        }
+
+            .transition-navbar.scrolled {
+                background-color: rgba(255, 255, 255, 0.95);
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(6px);
+            }
+        /* Par défaut (navbar transparente) */
+        .navbar.transition-navbar .nav-colored {
+            color: white !important;
             transition: color 0.3s ease;
         }
 
-            .nav-hover::after {
-                content: '';
-                position: absolute;
-                bottom: -6px;
-                left: 0;
-                width: 0;
-                height: 2px;
-                background-color: #ffe600;
-                transition: width 0.3s ease;
-            }
-
-            .nav-hover:hover::after {
-                width: 100%;
-            }
-
-            .nav-hover:hover {
-                color: #ffe600 !important;
-            }
-
-        .navbar .btn-warning:hover {
-            background-color: #e6cd00;
-            color: #000;
+        /* Quand la navbar devient blanche */
+        .navbar.transition-navbar.scrolled .nav-colored {
+            color: black !important;
         }
     </style>
 
 
 
 
-    <!-- Header-->
-    <!--<header class="bg-dark py-5 position-relative">
+
+    <header class="position-relative overflow-hidden d-flex align-items-center" style="min-height: 100vh;">
+
         <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Agency - Start Bootstrap Theme</title>-->
-    <!--Favicon-->
-    <!--<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />-->
-    <!--Font Awesome icons (free version)-->
-    <!--<script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>-->
-    <!--Google fonts-->
-    <!--<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />-->
-    <!--Core theme CSS (includes Bootstrap)-->
-    <!--<link href="css/styles1.css" rel="stylesheet" />-->
-    <!-- fond animé
-    <!--<div id="particles-js"></div>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">-->
-    <!--<div class="container px-5">
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-6">
-                <div class="text-center my-5">
-                    <img src="https://localhost:44365/images/logo_2.png" alt="logo" class="img-fluid mb-2 fade-in-up fade-in-delay-1" />
-                    <p class="lead text-white-50 mb-4 fade-in-up fade-in-delay-2">
-                        Plateforme intégrée d'intelligence d'affaire pour la gestion des données et la prédiction des ventes
-                    </p>
-
-                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center fade-in-up fade-in-delay-3">-->
-    <!-- Le bouton "Get Started" déclenche maintenant le défilement vers les KPIs -->
-    <!--<a class="btn btn-primary btn-lg px-5 me-sm-3" href="#kpis" id="getStartedButton">Get Started</a>
-        <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-        <button class="btn btn-primary btn-lg px-4 me-sm-4" id="launchETLBtn">Lancer l’ETL🚀</button>
-    </div>-->
-    <!-- Progress bar (masquée au début) -->
-    <!--<div class="progress mt-4 fade-in-up fade-in-delay-4" style="height: 25px; display: none;" id="etlProgressContainer">
-        <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
-             role="progressbar" style="width: 0%">0%</div>
-    </div>-->
-    <!-- Message de retour -->
-    <!--<div id="etlMessage" class="mt-3 text-white fw-bold fs-6"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>-->
-
-    <header class="bg-dark py-5 position-relative">
-        <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Plateforme d'Intelligence d'Affaires</title>
-
-        <!--Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-
         <!--Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
         <!--Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
-
         <!--Core theme CSS (includes Bootstrap)-->
         <link href="css/styles1.css" rel="stylesheet" />
+        <!-- Vidéo de fond -->
+        <video autoplay muted loop playsinline class="position-absolute w-100 h-100 object-fit-cover" style="z-index: -1;">
+            <source src="/videos/background-light.mp4" type="video/mp4" />
+        </video>
 
-        <div class="container px-5">
-            <div class="row gx-5 justify-content-center">
-                <div class="col-lg-6">
-                    <div class="text-center my-5">
-                        <!-- Logo -->
-                        <img src="/images/logo-3.png" alt="logo" class="img-fluid mb-4 fade-in-up fade-in-delay-1" />
 
-                        <!-- Description -->
-                        <p class="lead text-white-50 mb-4 fade-in-up fade-in-delay-2">
-                            Plateforme intégrée d'intelligence d'affaire pour la gestion des données et la prédiction des ventes
-                        </p>
-
-                        <!-- Call to Action Buttons (modifiés pour être légèrement plus grands et alignés sur une seule ligne) -->
-                        <div class="d-flex gap-3 justify-content-center fade-in-up fade-in-delay-3">
-                            <!-- Premier bouton -->
-                            <a class="btn btn-primary btn-md px-5 me-sm-3" href="#kpis" id="getStartedButton" style="white-space: nowrap;">Commencer</a>
-
-                            <!-- Deuxième bouton -->
-                            <a class="btn btn-outline-light btn-md px-5" href="#!" style="white-space: nowrap;">En savoir plus</a>
-
-                            <!-- Troisième bouton -->
-                            <button class="btn btn-primary btn-md px-5 me-sm-4" id="launchETLBtn" style="white-space: nowrap;">Lancer l’ETL🚀</button>
-                        </div>
-
-                        <!-- Barre de progression masquée au début -->
-                        <div class="progress mt-4 fade-in-up fade-in-delay-4" style="height: 25px; display: none;" id="etlProgressContainer">
-                            <div id="etlProgressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
-                        </div>
-
-                        <!-- Message de retour -->
-                        <div id="etlMessage" class="mt-3 text-white fw-bold fs-6"></div>
-                    </div>
-                </div>
+        <!-- Contenu centré -->
+        <div class="container text-center text-white" style="padding-top: 80px;" data-aos="fade-up" data-aos-duration="1500">
+            <img src="/images/logo-3.png" alt="logo" class="img-fluid mb-4 " style="max-width: 700px;" />
+            <h1 class="display-5 fw-bold text-shadow mb-3">Plateforme d'intelligence d'affaires</h1>
+            <p class="lead text-white-50 mb-4 text-shadow">
+                Gestion des données & prédiction des ventes avec style et précision.
+            </p>
+            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                <a class="btn btn-warning text-dark fw-bold px-4 py-2 shadow-sm" href="#kpis">
+                    <i class="fas fa-rocket me-2"></i> Commencer
+                </a>
+                <a class="btn btn-outline-light fw-bold px-4 py-2 shadow-sm" href="#etl">
+                    <i class="fas fa-info-circle me-2"></i> En savoir plus
+                </a>
             </div>
         </div>
     </header>
 
 
 
-
-
-
-
-
-
     <style>
-        /* Amélioration de l'apparence de la barre de progression */
-        #etlProgressContainer {
-            background-color: #f4f4f4;
-            border-radius: 10px;
+        header video {
+            object-fit: cover;
+            filter: brightness(0.6);
         }
 
-        #etlProgressBar {
-            height: 100%;
-            text-align: center;
-            line-height: 25px; /* Alignement vertical du texte */
+        .text-shadow {
+            text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
         }
 
-        #message {
-            font-size: 1.1rem;
-            font-weight: bold;
+        .shadow {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-warning:hover {
+            background-color: #ffcd00;
+            transform: scale(1.05);
+            transition: 0.3s ease;
+        }
+
+        .btn-outline-light:hover {
+            background-color: white;
+            color: black !important;
+            transform: scale(1.05);
+            transition: 0.3s ease;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
         }
+
+        header img {
+            max-width: 700px;
+            width: 100%;
+            height: auto;
+        }
     </style>
-
-    <script>
-
-        document.getElementById("launchETLBtn").addEventListener("click", async () => {
-            const launchBtn = document.getElementById("launchETLBtn");
-            const progressBar = document.getElementById("etlProgressBar");
-            const progressContainer = document.getElementById("etlProgressContainer");
-            const message = document.getElementById("etlMessage");
-
-            // 🔒 Désactiver le bouton pendant l’exécution
-            launchBtn.disabled = true;
-            launchBtn.textContent = "En cours...";
-
-            // Reset
-            progressContainer.style.display = "block";
-            progressBar.style.width = "0%";
-            progressBar.textContent = "0%";
-            message.textContent = "";
-            progressBar.classList.remove("bg-danger", "bg-success");
-
-            // Faux chargement
-            let progress = 0;
-            const interval = setInterval(() => {
-                if (progress < 95) {
-                    progress += 5;
-                    progressBar.style.width = `${progress}%`;
-                    progressBar.textContent = `${progress}%`;
-                }
-            }, 200);
-
-            try {
-                const response = await fetch('/SsisRunner/RunETL', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({}) // ← on envoie un corps vide
-                });
-
-
-                const result = await response.text();
-                clearInterval(interval);
-                progressBar.style.width = "100%";
-                progressBar.textContent = "100%";
-                message.textContent = result;
-
-                if (result.includes("✅")) {
-                    progressBar.classList.add("bg-success");
-                } else {
-                    progressBar.classList.add("bg-danger");
-                }
-
-            } catch (error) {
-                clearInterval(interval);
-                progressBar.classList.add("bg-danger");
-                progressBar.style.width = "100%";
-                progressBar.textContent = "Erreur";
-                message.textContent = "❌ Une erreur est survenue pendant l’exécution.";
-            }
-
-            // 🔓 Réactiver le bouton après 3 secondes
-            setTimeout(() => {
-                launchBtn.disabled = false;
-                launchBtn.textContent = "Lancer l’ETL 🚀";
-            }, 3000);
-        });
-
-
-
-    </script>
-
-    <section class="py-5" id="kpis">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-heading text-uppercase" style="font-style: italic;">KPIs Descriptifs, Explicatifs et Prédictifs</h2>
-                <h3 class="section-subheading text-muted">Une lecture complète des données pour guider vos décisions stratégiques</h3>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-4 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-chart-line fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">KPIs Descriptifs</h4>
-                    <p class="text-muted">Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.</p>
-                    <a class="text-decoration-none" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-project-diagram fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">KPIs Explicatifs</h4>
-                    <p class="text-muted">Compréhension des relations entre les variables pour expliquer les fluctuations de performance.</p>
-                    <a class="text-decoration-none" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
-                </div>
-                <div class="col-md-4 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-brain fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">KPIs Prédictifs</h4>
-                    <p class="text-muted">Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.</p>
-                    <a class="text-decoration-none" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-
-    <!--Séparateur vague (effet vague vers le haut)-->
-
-    <div style="position: relative; height: 100px; overflow: hidden;">
-        <svg viewBox="0 0 500 150" preserveAspectRatio="none"
-             style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;">
-            <path d="M0.00,49.98 C150.00,150.00 349.15,-50.00 500.00,49.98 L500.00,150.00 L0.00,150.00 Z"
-                  style="stroke: none; fill: #f4f4f4;"></path>
-        </svg>
-    </div>
-
-
-
-    <!-- Section Système ETL -->
-    <section class="py-5" id="etl" style="background-color: #f4f4f4;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="section-heading text-uppercase" style="font-style: italic;">Système ETL</h2>
-                <h3 class="section-subheading text-muted">De la donnée brute à la valeur décisionnelle</h3>
-            </div>
-            <div class="row text-center d-flex justify-content-between">
-                <div class="col-md-5 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-cogs fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">Extraction & Transformation</h4>
-                    <p class="text-muted">Collecte des données issues de sources variées, nettoyage, normalisation et enrichissement pour garantir leur qualité.</p>
-                    <a class="text-decoration-none d-inline-block mt-2" href="/ETL/Upload" >Découvrir <i class="bi bi-arrow-right"></i></a>
-                    <!-- Nouveau formulaire de mapping simplifié -->
-                    <div id="uploadFormContainer"></div>
-                </div>
-                <div class="col-md-5 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-database fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">Chargement & Stockage</h4>
-                    <p class="text-muted">Insertion des données dans un entrepôt centralisé pour faciliter l’analyse et la visualisation.</p>
-
-                    <!-- Lien "Découvrir" déclencheur -->
-                    <a class="text-decoration-none d-inline-block mt-2" href="#" id="showTablesLink">
-                        Découvrir <i class="bi bi-arrow-right"></i>
-                    </a>
-
-                    <!-- Tableau des tables extraites, masqué au départ -->
-                    <div id="tablesContainer" class="table-responsive mt-4 border rounded shadow-sm p-3 bg-white d-none">
-                        <h5 class="text-center mb-3" style="font-style: italic; color: #343a40;">Tables extraites</h5>
-                        <table class="table table-bordered table-hover align-middle text-center" id="sql-tables">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Nom de la table</th>
-                                    <th>Action</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Modal Bootstrap du tableau sql -->
-    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Aperçu du tableau</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Ajout du scroll horizontal -->
-                    <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
-                        <div id="tableContainer"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <style>
-        #statusMessage {
-            margin-top: 10px;
+        /* Amélioration du fond */
+        body {
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0); /* Dégradé subtil de gris */
+            color: #2c3e50; /* Couleur du texte pour un bon contraste */
+        }
+    </style>
+
+    <!-- Section KPIs - Avec un fond sombre pour mieux délimiter -->
+    <section class="py-5" id="kpis" style="background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="text-uppercase fw-bold" style="font-style: italic; color: #2c3e50;">KPIs Descriptifs, Explicatifs et Prédictifs</h2>
+                <h5 class="text-muted fst-italic">Une lecture complète des données pour guider vos décisions stratégiques</h5>
+            </div>
+            <div class="row text-center">
+                <!-- KPI 1 -->
+                <div class="col-md-4 mb-5" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card border-0 shadow h-100 hover-card">
+                        <div class="card-body">
+                            <div class="icon-circle mb-4">
+                                <i class="fas fa-chart-line fa-2x text-white"></i>
+                            </div>
+                            <h4 class="fw-semibold">KPIs Descriptifs</h4>
+                            <p class="text-muted small">Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.</p>
+                            <a class="text-decoration-none fw-bold text-warning" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- KPI 2 -->
+                <div class="col-md-4 mb-5" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card border-0 shadow h-100 hover-card">
+                        <div class="card-body">
+                            <div class="icon-circle mb-3">
+                                <i class="fas fa-project-diagram fa-2x text-white"></i>
+                            </div>
+                            <h4 class="fw-semibold">KPIs Explicatifs</h4>
+                            <p class="text-muted small">Compréhension des relations entre les variables pour expliquer les fluctuations de performance.</p>
+                            <a class="text-decoration-none fw-bold text-warning" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- KPI 3 -->
+                <div class="col-md-4 mb-5" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card border-0 shadow h-100 hover-card">
+                        <div class="card-body">
+                            <div class="icon-circle mb-4">
+                                <i class="fas fa-brain fa-2x text-white"></i>
+                            </div>
+                            <h4 class="fw-semibold">KPIs Prédictifs</h4>
+                            <p class="text-muted small">Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.</p>
+                            <a class="text-decoration-none fw-bold text-warning" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <style>
+        /* Séparation et amélioration du fond sombre pour la section KPIs */
+        #kpis {
+            background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);
         }
 
-        .alert {
-            padding: 15px;
-            margin-bottom: 10px;
+
+        .icon-circle {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto;
+            background-color: #ffe600;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .alert-success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
+        .hover-card:hover {
+            transform: translateY(-6px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
         }
 
-        .alert-danger {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
+        .card-body i {
+            font-size: 2rem;
+        }
+
+        .card h4 {
+            color: #fff;
         }
     </style>
 
@@ -466,7 +276,72 @@
 
 
 
+    <!-- Section ETL - Fond clair avec un gradient -->
+    <section class="py-5 bg-gradient-light" id="etl">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="text-uppercase fw-bold" style="font-style: italic; color: #2c3e50;">Système ETL</h2>
+                <h5 class="text-muted fst-italic">De la donnée brute à la valeur décisionnelle</h5>
+            </div>
+            <div class="row text-center">
+                <!-- Système ETL complet -->
+                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card border-0 shadow-lg rounded-4 h-100 etl-card">
+                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
+                            <div class="icon-circle mb-4">
+                                <i class="fas fa-database fa-2x text-white"></i>
+                            </div>
+                            <h4 class="fw-semibold text-dark">Système ETL complet</h4>
+                            <p class="text-muted small">Collecte, transformation, et chargement des données dans un environnement fiable, prêt à l’analyse.</p>
+                            <a class="btn btn-warning text-dark fw-bold mt-4" href="/ETL/Upload">Lancer le système ETL <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Timeline ETL -->
+                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card border-0 shadow-lg rounded-4 h-100 etl-card">
+                        <div class="card-body">
+                            <div class="timeline">
+                                <div class="timeline-step">
+                                    <div class="icon-circle bg-primary text-white">
+                                        <i class="fas fa-download"></i>
+                                    </div>
+                                    <h5 class="mt-3 fw-bold">Extract</h5>
+                                    <p class="text-muted small">Extraction automatique des données depuis vos sources multiples (fichiers, API, bases de données…)</p>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="icon-circle bg-info text-white">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </div>
+                                    <h5 class="mt-3 fw-bold">Transform</h5>
+                                    <p class="text-muted small">Nettoyage, enrichissement, et formatage des données pour garantir leur cohérence et leur qualité.</p>
+                                </div>
+                                <div class="timeline-step">
+                                    <div class="icon-circle bg-success text-white">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+                                    <h5 class="mt-3 fw-bold">Load</h5>
+                                    <p class="text-muted small">Chargement dans l'entrepôt de données, prêt à être exploité par vos outils d’analyse et dashboards.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <style>
+        /* Séparation et fond clair avec gradient pour la section ETL */
+        .bg-gradient-light {
+            background: linear-gradient(135deg, #f5f6fa, #ecf0f1); /* Gradient clair */
+        }
+
+        .etl-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Ombrage sur hover */
+        }
+    </style>
 
     <script>
         // Ajout de l'événement pour le bouton "Get Started" pour faire défiler vers la section des KPIs
@@ -478,100 +353,128 @@
     </script>
 
 
-    <!-- Séparateur vague fluide (vers le bas, pour transition grise -> blanche) -->
-    <div style="position: relative; height: 120px; overflow: hidden; background-color: #f4f4f4;">
-        <svg viewBox="0 0 500 150" preserveAspectRatio="none"
-             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-            <path d="M0,0 C150,100 350,0 500,100 L500,150 L0,150 Z"
-                  style="stroke: none; fill: #ffffff;"></path>
-        </svg>
-    </div>
-
-
-
-
-
     <!-- Section CRM - Harmonisée -->
-    <section class="py-5" id="crm" style="background-color: #ffffff;">
+    <section class="py-5" id="crm" style="background: linear-gradient(to bottom, #f0f0f0, #b0b0b0);">
         <div class="container">
-            <div class="text-center">
-                <h2 class="section-heading text-uppercase" style="font-style: italic">CRM - Gestion de la Relation Client</h2>
+            <div class="text-center mb-5">
+                <h2 class="text-uppercase fw-bold" style="font-style: italic; color: #2c3e50;">CRM - Gestion de la Relation Client</h2>
+                <h5 class="text-muted fst-italic">Optimisez vos interactions clients et automatisez vos processus de vente</h5>
             </div>
-
-            <div class="row text-center mt-5">
+            <div class="row text-center">
                 <!-- Gestion des clients -->
-                <div class="col-md-6 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-user-check fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">Gestion des clients</h4>
-                    <p class="text-muted">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
-                    <a class="text-decoration-none mt-3 d-inline-block" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
+                <div class="col-md-6 mb-5" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card border-0 shadow h-100 hover-card">
+                        <div class="card-body">
+                            <div class="icon-circle mb-4">
+                                <i class="fas fa-user-check fa-2x text-white"></i>
+                            </div>
+                            <h4 class="fw-semibold">Gestion des clients</h4>
+                            <p class="text-muted small">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
+                            <a class="text-decoration-none fw-bold text-warning" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
                 </div>
-
                 <!-- Automatisation & Reporting -->
-                <div class="col-md-6 mb-5">
-                    <span class="fa-stack fa-4x">
-                        <i class="fas fa-circle fa-stack-2x" style="color: #ffe600;"></i>
-                        <i class="fas fa-chart-bar fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="my-3">Automatisation & Reporting</h4>
-                    <p class="text-muted">Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
-                    <a class="text-decoration-none mt-3 d-inline-block" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
-                    <!-- Intégration du tableau de bord Power BI -->
-                    <!--<iframe title="Dashboard Power BI" width="100%" height="500px" src="https://app.powerbi.com/view?r=TON-LIEN-DU-RAPPORT" frameborder="0" allowFullScreen="true"></iframe>-->
+                <div class="col-md-6 mb-5" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card border-0 shadow h-100 hover-card">
+                        <div class="card-body">
+                            <div class="icon-circle mb-3">
+                                <i class="fas fa-chart-bar fa-2x text-white"></i>
+                            </div>
+                            <h4 class="fw-semibold">Automatisation & Reporting</h4>
+                            <p class="text-muted small">Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
+                            <a class="text-decoration-none fw-bold text-warning" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <style>
+        .icon-circle {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            background-color: #ffe600;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            font-size: 2rem; /* Ajuster la taille de l'icône */
+        }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            transition: 0.3s ease-in-out;
+        }
+
+        .card-body i {
+            font-size: 1rem; /* Taille d'icône plus grande */
+            line-height: 1; /* Assurer que l'icône est centrée verticalement */
+        }
+
+        .card h4 {
+            color: #2c3e50;
+        }
+
+        .bg-dark-gradient {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        }
+
+        .card h4 {
+            color: #ffe600;
+        }
+    </style>
+
 
     <!-- Team-->
-    <section class="page-section" id="team" style="background-color: #cccccc;">
-        <div class="container py-5">
+    <section class="page-section" id="team" style="background-color: #f8f9fa; padding-top: 5rem; padding-bottom: 5rem;">
+        <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-heading text-uppercase fw-bold" style="font-style: italic;">Notre Équipe</h2>
+                <h2 class="section-heading text-uppercase fw-bold" style="font-style: italic; color: #333;">Notre Équipe</h2>
+                <p class="text-muted">Des experts passionnés, engagés à fournir des solutions innovantes et adaptées à vos besoins.</p>
             </div>
             <div class="row justify-content-center">
                 <!-- Membre 1 -->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="team-member bg-white rounded-4 shadow-sm p-4 text-center h-100">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100">
                         <img class="mx-auto rounded-circle mb-3" src="assets/img/team/1.jpg" alt="Parveen Anand" style="width: 150px; height: 150px; object-fit: cover;" />
-                        <h4 class="fw-semibold">Parveen Anand</h4>
+                        <h4 class="fw-bold" style="color: #333;">Parveen Anand</h4>
                         <p class="text-muted">Développeur Front-End / Intégrateur Web</p>
-                        <div>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <div class="social-icons">
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Membre 2 -->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="team-member bg-white rounded-4 shadow-sm p-4 text-center h-100">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100">
                         <img class="mx-auto rounded-circle mb-3" src="assets/img/team/2.jpg" alt="Myriem El Hammi" style="width: 150px; height: 150px; object-fit: cover;" />
-                        <h4 class="fw-semibold">Myriem El Hammi</h4>
+                        <h4 class="fw-bold" style="color: #333;">Myriem El Hammi</h4>
                         <p class="text-muted">Cheffe de projet / Data Analyst</p>
-                        <div>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <div class="social-icons">
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Membre 3 -->
-                <div class="col-md-6 col-lg-4 mb-5">
-                    <div class="team-member bg-white rounded-4 shadow-sm p-4 text-center h-100">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100">
                         <img class="mx-auto rounded-circle mb-3" src="assets/img/team/3.jpg" alt="Larry Parker" style="width: 150px; height: 150px; object-fit: cover;" />
-                        <h4 class="fw-semibold">Larry Parker</h4>
+                        <h4 class="fw-bold" style="color: #333;">Larry Parker</h4>
                         <p class="text-muted">Data Engineer / Back-End Developer</p>
-                        <div>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-dark btn-social mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <div class="social-icons">
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
@@ -579,8 +482,8 @@
 
             <!-- Citation -->
             <div class="row">
-                <div class="col-lg-10 mx-auto text-center">
-                    <p class="lead fst-italic mt-3 text-dark">
+                <div class="col-lg-8 mx-auto text-center mt-5">
+                    <p class="lead fst-italic text-dark">
                         "L’union fait la force. Ensemble, nous créons des solutions innovantes et durables."
                     </p>
                 </div>
@@ -588,166 +491,62 @@
         </div>
     </section>
 
+    <!-- Style personnalisé -->
+    <style>
+        .team-member {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .team-member:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            }
+
+        .social-icons .btn {
+            transition: background-color 0.3s ease;
+        }
+
+            .social-icons .btn:hover {
+                background-color: #ffe600;
+                color: white;
+            }
+
+        .section-heading {
+            color: #333;
+            font-size: 2.5rem;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .btn-outline-dark {
+            border: 2px solid #343a40;
+            color: #343a40;
+        }
+
+            .btn-outline-dark:hover {
+                background-color: #343a40;
+                color: white;
+            }
+
+        .team-member img {
+            transition: transform 0.3s ease;
+        }
+
+            .team-member img:hover {
+                transform: scale(1.1);
+            }
+
+        /* Add spacing and padding */
+        .page-section {
+            padding: 3rem 0;
+        }
+    </style>
+
+   
 
 
-
-
-    <!-- Pricing section-->
-    <!--<section class="bg-light py-5 border-bottom">
-        <div class="container px-5 my-5">
-            <div class="text-center mb-5">
-                <h2 class="fw-bolder">Pay as you grow</h2>
-                <p class="lead mb-0">With our no hassle pricing plans</p>
-            </div>
-            <div class="row gx-5 justify-content-center">-->
-    <!-- Pricing card free-->
-    <!--<div class="col-lg-6 col-xl-4">
-        <div class="card mb-5 mb-xl-0">
-            <div class="card-body p-5">
-                <div class="small text-uppercase fw-bold text-muted">Free</div>
-                <div class="mb-3">
-                    <span class="display-4 fw-bold">$0</span>
-                    <span class="text-muted">/ mo.</span>
-                </div>
-                <ul class="list-unstyled mb-4">
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        <strong>1 users</strong>
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        5GB storage
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Unlimited public projects
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Community access
-                    </li>
-                    <li class="mb-2 text-muted">
-                        <i class="bi bi-x"></i>
-                        Unlimited private projects
-                    </li>
-                    <li class="mb-2 text-muted">
-                        <i class="bi bi-x"></i>
-                        Dedicated support
-                    </li>
-                    <li class="mb-2 text-muted">
-                        <i class="bi bi-x"></i>
-                        Free linked domain
-                    </li>
-                    <li class="text-muted">
-                        <i class="bi bi-x"></i>
-                        Monthly status reports
-                    </li>
-                </ul>
-                <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
-            </div>
-        </div>
-    </div>-->
-    <!-- Pricing card pro-->
-    <!--<div class="col-lg-6 col-xl-4">
-        <div class="card mb-5 mb-xl-0">
-            <div class="card-body p-5">
-                <div class="small text-uppercase fw-bold">
-                    <i class="bi bi-star-fill text-warning"></i>
-                    Pro
-                </div>
-                <div class="mb-3">
-                    <span class="display-4 fw-bold">$9</span>
-                    <span class="text-muted">/ mo.</span>
-                </div>
-                <ul class="list-unstyled mb-4">
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        <strong>5 users</strong>
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        5GB storage
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Unlimited public projects
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Community access
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Unlimited private projects
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Dedicated support
-                    </li>
-                    <li class="mb-2">
-                        <i class="bi bi-check text-primary"></i>
-                        Free linked domain
-                    </li>
-                    <li class="text-muted">
-                        <i class="bi bi-x"></i>
-                        Monthly status reports
-                    </li>
-                </ul>
-                <div class="d-grid"><a class="btn btn-primary" href="#!">Choose plan</a></div>
-            </div>
-        </div>
-    </div>-->
-    <!-- Pricing card enterprise-->
-    <!--<div class="col-lg-6 col-xl-4">
-                    <div class="card">
-                        <div class="card-body p-5">
-                            <div class="small text-uppercase fw-bold text-muted">Enterprise</div>
-                            <div class="mb-3">
-                                <span class="display-4 fw-bold">$49</span>
-                                <span class="text-muted">/ mo.</span>
-                            </div>
-                            <ul class="list-unstyled mb-4">
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    <strong>Unlimited users</strong>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    5GB storage
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Unlimited public projects
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Community access
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Unlimited private projects
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Dedicated support
-                                </li>
-                                <li class="mb-2">
-                                    <i class="bi bi-check text-primary"></i>
-                                    <strong>Unlimited</strong>
-                                    linked domains
-                                </li>
-                                <li class="text-muted">
-                                    <i class="bi bi-check text-primary"></i>
-                                    Monthly status reports
-                                </li>
-                            </ul>
-                            <div class="d-grid"><a class="btn btn-outline-primary" href="#!">Choose plan</a></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>-->
     <!-- Clients-->
     <!-- Section Logos Centralisée -->
     <div class="py-5" style="background-color: #f9f9f9;">
@@ -780,13 +579,7 @@
                 <h2 class="section-heading text-uppercase">Contactez nous</h2>
                 <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
             </div>
-            <!-- * * * * * * * * * * * * * * *-->
-            <!-- * * SB Forms Contact Form * *-->
-            <!-- * * * * * * * * * * * * * * *-->
-            <!-- This form is pre-integrated with SB Forms.-->
-            <!-- To make this form functional, sign up at-->
-            <!-- https://startbootstrap.com/solution/contact-forms-->
-            <!-- to get an API token!-->
+
             <form id="contactForm" data-sb-form-api-token="API_TOKEN">
                 <div class="row align-items-stretch mb-5">
                     <div class="col-md-6">
@@ -815,10 +608,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Submit success message-->
-                <!---->
-                <!-- This is what your users will see when the form-->
-                <!-- has successfully submitted-->
+
                 <div class="d-none" id="submitSuccessMessage">
                     <div class="text-center text-white mb-3">
                         <div class="fw-bolder">Le formulaire a été soumis avec succès!</div>
@@ -873,72 +663,7 @@
 
     <!--<script src="/js/fileUpload.js"></script>-->
     <!--<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script>
-        particlesJS("particles-js", {
-            particles: {
-                number: { value: 60 },
-                color: { value: "#ffffff" },
-                shape: { type: "circle" },
-                opacity: { value: 0.5 },
-                size: { value: 3 },
-                line_linked: {
-                    enable: true,
-                    distance: 150,
-                    color: "#ffffff",
-                    opacity: 0.4,
-                    width: 1
-                },
-                move: {
-                    enable: true,
-                    speed: 2,
-                    direction: "none",
-                    out_mode: "out"
-                }
-            },
-            interactivity: {
-                events: {
-                    onhover: { enable: true, mode: "repulse" },
-                    onclick: { enable: true, mode: "push" }
-                }
-            }
-        });
-    </script>-->
 
-
-    <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in-up {
-            opacity: 0;
-            animation: fadeInUp 1s ease-out forwards;
-        }
-
-        .fade-in-delay-1 {
-            animation-delay: 0.3s;
-        }
-
-        .fade-in-delay-2 {
-            animation-delay: 0.6s;
-        }
-
-        .fade-in-delay-3 {
-            animation-delay: 0.9s;
-        }
-
-        .fade-in-delay-4 {
-            animation-delay: 1.2s;
-        }
-    </style>
 
 
     <!-- AOS JS -->
@@ -958,6 +683,70 @@
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+    <!-- Animation AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.transition-navbar');
+            const navLinks = document.querySelectorAll('.nav-colored');
+
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+                navLinks.forEach(link => {
+                    link.classList.add('text-dark');
+                    link.classList.remove('text-white');
+                });
+            } else {
+                navbar.classList.remove('scrolled');
+                navLinks.forEach(link => {
+                    link.classList.add('text-white');
+                    link.classList.remove('text-dark');
+                });
+            }
+        });
+
+        // Init état au chargement
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.scrollY <= 50) {
+                document.querySelectorAll('.nav-colored').forEach(link => {
+                    link.classList.add('text-white');
+                });
+            }
+        });
+    </script>
+
+    <script>
+        // Animation pour la section Système ETL
+        window.addEventListener('scroll', function () {
+            const etlSection = document.getElementById('etl-section');
+            const rect = etlSection.getBoundingClientRect();
+
+            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                etlSection.style.opacity = 1;
+                etlSection.style.transform = 'translateY(0)';
+                etlSection.classList.add('animate__animated', 'animate__fadeIn');
+            }
+        });
+    </script>
+
+    <script>
+        // Animation pour la section CRM
+        window.addEventListener('scroll', function () {
+            const crmSection = document.getElementById('crm-section');
+            const rect = crmSection.getBoundingClientRect();
+
+            if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+                crmSection.style.opacity = 1;
+                crmSection.style.transform = 'translateY(0)';
+                crmSection.classList.add('animate__animated', 'animate__fadeIn');
+            }
+        });
+    </script>
 
 
 

@@ -49,6 +49,8 @@ namespace TEST_PFE.Controllers
                 return View("Upload");  // Retourner la vue Upload.cshtml sous Views/ETL
             }
 
+           
+
             if (uploadedFile != null && uploadedFile.Length > 0)
             {
                 var fileUploadPath = Path.Combine(_fileUploadDirectory, uploadedFile.FileName);  // Renommage de 'filePath'
