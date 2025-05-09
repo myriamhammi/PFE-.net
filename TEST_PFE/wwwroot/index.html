@@ -186,50 +186,161 @@
         }
     </style>
 
-    <!-- Section KPIs - Avec un fond sombre pour mieux délimiter -->
-    <section class="py-5" id="kpis" style="background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);">
+
+    <!-- ===== Section : KPIs ===== -->
+    <section id="kpis" class="py-6 position-relative overflow-hidden">
+        <!-- Liseré de séparation avec le header -->
+        <div class="w-100 position-absolute top-0 start-0" style="height:4px;background:#ffe600;"></div>
+
+        <div class="container position-relative" style="z-index:1;">
+            <div class="text-center mb-5">
+                <h2 class="text-uppercase fw-bold text-white fst-italic">
+                    KPIs Descriptifs, Explicatifs et Prédictifs
+                </h2>
+                <h5 class="fst-italic mb-0" style="color:#d0d0d0;">
+                    Une lecture complète des données pour guider vos décisions stratégiques
+                </h5>
+            </div>
+
+            <div class="row text-center gy-5">
+                <!-- KPI 1 -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="kpi-card h-100">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h4 class="fw-semibold mb-3">KPIs Descriptifs</h4>
+                        <p class="small text-light opacity-75">
+                            Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.
+                        </p>
+                        <a class="stretched-link kpi-link" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- KPI 2 -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="kpi-card h-100">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-project-diagram"></i>
+                        </div>
+                        <h4 class="fw-semibold mb-3">KPIs Explicatifs</h4>
+                        <p class="small text-light opacity-75">
+                            Compréhension des relations entre les variables pour expliquer les fluctuations de performance.
+                        </p>
+                        <a class="stretched-link kpi-link" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- KPI 3 -->
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="kpi-card h-100">
+                        <div class="icon-circle mb-4">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h4 class="fw-semibold mb-3">KPIs Prédictifs</h4>
+                        <p class="small text-light opacity-75">
+                            Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.
+                        </p>
+                        <a class="stretched-link kpi-link" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Petit voile sombre par‑dessus le fond -->
+        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+    </section>
+
+    <style>
+        /* --- Harmonisation avec le header “espace” --- */
+        #kpis {
+            /* même dégradé bleu nuit que le header */
+            background: radial-gradient(ellipse at 50% 20%, #203050 0%, #0d1520 55%, #06090f 100%);
+            color: #ffffff;
+        }
+
+        /* Carte KPI */
+        .kpi-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.07);
+            border-radius: .75rem;
+            padding: 2rem 1.5rem;
+            position: relative;
+            transition: .3s;
+        }
+
+            .kpi-card:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 10px 25px rgba(0,0,0,.4);
+            }
+
+        /* Pastille icône */
+        .icon-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #ffe600; /* jaune signature */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 4px rgba(255,230,0,.3);
+            color: #000; /* pour les icônes */
+            font-size: 1.75rem;
+        }
+
+        /* Lien “Explorer” */
+        .kpi-link {
+            color: #ffe600;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .kpi-link:hover {
+                text-decoration: underline;
+            }
+    </style>
+
+
+
+    <section class="py-5" id="etl" style="background-color: #1C1C1C;">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="text-uppercase fw-bold" style="font-style: italic; color: #2c3e50;">KPIs Descriptifs, Explicatifs et Prédictifs</h2>
-                <h5 class="text-muted fst-italic">Une lecture complète des données pour guider vos décisions stratégiques</h5>
+                <h2 class="text-uppercase fw-bold text-white fst-italic">Système ETL</h2>
+                <h5 class="fst-italic" style="color: #B7B7B7;">De la donnée brute à la valeur décisionnelle</h5>
             </div>
-            <div class="row text-center">
-                <!-- KPI 1 -->
-                <div class="col-md-4 mb-5" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card border-0 shadow h-100 hover-card">
-                        <div class="card-body">
-                            <div class="icon-circle mb-4">
-                                <i class="fas fa-chart-line fa-2x text-white"></i>
-                            </div>
-                            <h4 class="fw-semibold">KPIs Descriptifs</h4>
-                            <p class="text-muted small">Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.</p>
-                            <a class="text-decoration-none fw-bold text-warning" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
+
+            <div class="row">
+                <!-- Colonne 1 : Carte ETL Complet -->
+                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="etl-feature-card p-5 text-center text-dark position-relative h-100">
+                        <div class="etl-icon-circle position-absolute top-0 start-50 translate-middle">
+                            <i class="fas fa-database fa-2x" style="color: #000000;"></i>
                         </div>
+                        <h4 class="fw-bold mt-5 pt-3 text-black">Système ETL Complet</h4>
+                        <p class="text-dark small">
+                            Collecte, transformation, et chargement des données dans un environnement fiable, prêt à l’analyse.
+                        </p>
+                        <a href="/ETL/Upload" class="btn btn-outline-dark fw-bold mt-4">Lancer le système ETL <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-                <!-- KPI 2 -->
-                <div class="col-md-4 mb-5" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card border-0 shadow h-100 hover-card">
-                        <div class="card-body">
-                            <div class="icon-circle mb-3">
-                                <i class="fas fa-project-diagram fa-2x text-white"></i>
-                            </div>
-                            <h4 class="fw-semibold">KPIs Explicatifs</h4>
-                            <p class="text-muted small">Compréhension des relations entre les variables pour expliquer les fluctuations de performance.</p>
-                            <a class="text-decoration-none fw-bold text-warning" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
+
+                <!-- Colonne 2 : Timeline verticale -->
+                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="etl-timeline ps-3 border-start border-2 border-warning">
+                        <div class="mb-5 position-relative">
+                            <span class="etl-step-dot bg-warning"></span>
+                            <h5 class="text-white fw-bold ms-4">Extract</h5>
+                            <p class="text-light small ms-4">Extraction automatique des données depuis vos sources multiples (fichiers, API, bases de données…)</p>
                         </div>
-                    </div>
-                </div>
-                <!-- KPI 3 -->
-                <div class="col-md-4 mb-5" data-aos="fade-up" data-aos-delay="300">
-                    <div class="card border-0 shadow h-100 hover-card">
-                        <div class="card-body">
-                            <div class="icon-circle mb-4">
-                                <i class="fas fa-brain fa-2x text-white"></i>
-                            </div>
-                            <h4 class="fw-semibold">KPIs Prédictifs</h4>
-                            <p class="text-muted small">Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.</p>
-                            <a class="text-decoration-none fw-bold text-warning" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
+                        <div class="mb-5 position-relative">
+                            <span class="etl-step-dot bg-secondary"></span>
+                            <h5 class="text-white fw-bold ms-4">Transform</h5>
+                            <p class="text-light small ms-4">Nettoyage, enrichissement, et formatage des données pour garantir leur cohérence et leur qualité.</p>
+                        </div>
+                        <div class="position-relative">
+                            <span class="etl-step-dot bg-success"></span>
+                            <h5 class="text-white fw-bold ms-4">Load</h5>
+                            <p class="text-light small ms-4">Chargement dans l'entrepôt de données, prêt à être exploité par vos outils d’analyse et dashboards.</p>
                         </div>
                     </div>
                 </div>
@@ -237,111 +348,51 @@
         </div>
     </section>
 
-
     <style>
-        /* Séparation et amélioration du fond sombre pour la section KPIs */
-        #kpis {
-            background: linear-gradient(to bottom, #e0e0e0, #b0b0b0);
+        /* EY-inspired root vars */
+        :root {
+            --ey-yellow: #FFE600;
+            --ey-black: #1C1C1C;
+            --ey-gray: #CCCCCC;
         }
 
+        /* Carte ETL Complet */
+        .etl-feature-card {
+            background-color: var(--ey-gray);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
 
-        .icon-circle {
+        /* Icône flottante */
+        .etl-icon-circle {
             width: 70px;
             height: 70px;
-            margin: 0 auto;
-            background-color: #ffe600;
             border-radius: 50%;
+            background-color: var(--ey-yellow);
             display: flex;
-            justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .hover-card:hover {
-            transform: translateY(-6px);
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Ombre supplémentaire au survol */
+        /* Timeline */
+        .etl-timeline {
+            position: relative;
         }
 
-        .card-body i {
-            font-size: 2rem;
-        }
-
-        .card h4 {
-            color: #fff;
-        }
-    </style>
-
-
-
-
-
-    <!-- Section ETL - Fond clair avec un gradient -->
-    <section class="py-5 bg-gradient-light" id="etl">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="text-uppercase fw-bold" style="font-style: italic; color: #2c3e50;">Système ETL</h2>
-                <h5 class="text-muted fst-italic">De la donnée brute à la valeur décisionnelle</h5>
-            </div>
-            <div class="row text-center">
-                <!-- Système ETL complet -->
-                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card border-0 shadow-lg rounded-4 h-100 etl-card">
-                        <div class="card-body d-flex flex-column justify-content-center align-items-center text-center">
-                            <div class="icon-circle mb-4">
-                                <i class="fas fa-database fa-2x text-white"></i>
-                            </div>
-                            <h4 class="fw-semibold text-dark">Système ETL complet</h4>
-                            <p class="text-muted small">Collecte, transformation, et chargement des données dans un environnement fiable, prêt à l’analyse.</p>
-                            <a class="btn btn-warning text-dark fw-bold mt-4" href="/ETL/Upload">Lancer le système ETL <i class="bi bi-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Timeline ETL -->
-                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card border-0 shadow-lg rounded-4 h-100 etl-card">
-                        <div class="card-body">
-                            <div class="timeline">
-                                <div class="timeline-step">
-                                    <div class="icon-circle bg-primary text-white">
-                                        <i class="fas fa-download"></i>
-                                    </div>
-                                    <h5 class="mt-3 fw-bold">Extract</h5>
-                                    <p class="text-muted small">Extraction automatique des données depuis vos sources multiples (fichiers, API, bases de données…)</p>
-                                </div>
-                                <div class="timeline-step">
-                                    <div class="icon-circle bg-info text-white">
-                                        <i class="fas fa-sync-alt"></i>
-                                    </div>
-                                    <h5 class="mt-3 fw-bold">Transform</h5>
-                                    <p class="text-muted small">Nettoyage, enrichissement, et formatage des données pour garantir leur cohérence et leur qualité.</p>
-                                </div>
-                                <div class="timeline-step">
-                                    <div class="icon-circle bg-success text-white">
-                                        <i class="fas fa-cloud-upload-alt"></i>
-                                    </div>
-                                    <h5 class="mt-3 fw-bold">Load</h5>
-                                    <p class="text-muted small">Chargement dans l'entrepôt de données, prêt à être exploité par vos outils d’analyse et dashboards.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <style>
-        /* Séparation et fond clair avec gradient pour la section ETL */
-        .bg-gradient-light {
-            background: linear-gradient(135deg, #f5f6fa, #ecf0f1); /* Gradient clair */
-        }
-
-        .etl-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Ombrage sur hover */
+        .etl-step-dot {
+            position: absolute;
+            left: -11px;
+            top: 4px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid white;
+            z-index: 1;
         }
     </style>
+
 
     <script>
         // Ajout de l'événement pour le bouton "Get Started" pour faire défiler vers la section des KPIs
@@ -353,38 +404,36 @@
     </script>
 
 
-    <!-- Section CRM - Harmonisée -->
-    <section class="py-5" id="crm" style="background: linear-gradient(to bottom, #f0f0f0, #b0b0b0);">
+    <!-- Section CRM - Harmonisée avec charte EY -->
+    <section class="py-5" id="crm" style="background-color: #CCCCCC;">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="text-uppercase fw-bold" style="font-style: italic; color: #2c3e50;">CRM - Gestion de la Relation Client</h2>
-                <h5 class="text-muted fst-italic">Optimisez vos interactions clients et automatisez vos processus de vente</h5>
+                <h2 class="text-uppercase fw-bold text-black fst-italic">CRM - Gestion de la Relation Client</h2>
+                <h5 class="fst-italic" style="color: #4a4a4a;">Optimisez vos interactions clients et automatisez vos processus de vente</h5>
             </div>
+
             <div class="row text-center">
-                <!-- Gestion des clients -->
-                <div class="col-md-6 mb-5" data-aos="fade-up" data-aos-delay="100">
-                    <div class="card border-0 shadow h-100 hover-card">
-                        <div class="card-body">
-                            <div class="icon-circle mb-4">
-                                <i class="fas fa-user-check fa-2x text-white"></i>
-                            </div>
-                            <h4 class="fw-semibold">Gestion des clients</h4>
-                            <p class="text-muted small">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
-                            <a class="text-decoration-none fw-bold text-warning" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
+                <!-- Carte 1 : Gestion des clients -->
+                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="crm-feature-card p-4 h-100 text-dark position-relative">
+                        <div class="crm-icon-circle bg-warning mb-4 mx-auto">
+                            <i class="fas fa-user-check fa-2x" style="color: #000000;"></i>
                         </div>
+                        <h4 class="fw-bold">Gestion des clients</h4>
+                        <p class="text-dark small">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
+                        <a class="fw-bold text-dark text-decoration-none" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-                <!-- Automatisation & Reporting -->
-                <div class="col-md-6 mb-5" data-aos="fade-up" data-aos-delay="200">
-                    <div class="card border-0 shadow h-100 hover-card">
-                        <div class="card-body">
-                            <div class="icon-circle mb-3">
-                                <i class="fas fa-chart-bar fa-2x text-white"></i>
-                            </div>
-                            <h4 class="fw-semibold">Automatisation & Reporting</h4>
-                            <p class="text-muted small">Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
-                            <a class="text-decoration-none fw-bold text-warning" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
+
+                <!-- Carte 2 : Automatisation & Reporting -->
+                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="crm-feature-card p-4 h-100 text-dark position-relative">
+                        <div class="crm-icon-circle bg-warning mb-4 mx-auto">
+                            <i class="fas fa-chart-bar fa-2x" style="color: #000000;"></i>
                         </div>
+                        <h4 class="fw-bold">Automatisation & Reporting</h4>
+                        <p class="text-dark small">Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
+                        <a class="fw-bold text-dark text-decoration-none" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             </div>
@@ -392,44 +441,31 @@
     </section>
 
     <style>
-        .icon-circle {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto;
-            background-color: #ffe600;
+        .crm-feature-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-in-out;
+        }
+
+            .crm-feature-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .crm-icon-circle {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
+            background-color: #FFE600;
             display: flex;
-            justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            font-size: 2rem; /* Ajuster la taille de l'icône */
-        }
-
-        .hover-card:hover {
-            transform: translateY(-5px);
-            transition: 0.3s ease-in-out;
-        }
-
-        .card-body i {
-            font-size: 1rem; /* Taille d'icône plus grande */
-            line-height: 1; /* Assurer que l'icône est centrée verticalement */
-        }
-
-        .card h4 {
-            color: #2c3e50;
-        }
-
-        .bg-dark-gradient {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-        }
-
-        .card h4 {
-            color: #ffe600;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 
 
-    <!-- Team-->
+    <!-- Team -->
     <section class="page-section" id="team" style="background-color: #f8f9fa; padding-top: 5rem; padding-bottom: 5rem;">
         <div class="container">
             <div class="text-center mb-5">
@@ -439,42 +475,42 @@
             <div class="row justify-content-center">
                 <!-- Membre 1 -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100">
-                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/1.jpg" alt="Parveen Anand" style="width: 150px; height: 150px; object-fit: cover;" />
+                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100" style="animation-delay: 0.1s;">
+                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/1.jpg" alt="Photo de Parveen Anand - Développeur Front-End" style="width: 150px; height: 150px; object-fit: cover;" />
                         <h4 class="fw-bold" style="color: #333;">Parveen Anand</h4>
                         <p class="text-muted">Développeur Front-End / Intégrateur Web</p>
                         <div class="social-icons">
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil Twitter de Parveen"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil Facebook de Parveen"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil LinkedIn de Parveen"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Membre 2 -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100">
-                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/2.jpg" alt="Myriem El Hammi" style="width: 150px; height: 150px; object-fit: cover;" />
+                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100" style="animation-delay: 0.2s;">
+                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/2.jpg" alt="Photo de Myriem El Hammi - Cheffe de projet" style="width: 150px; height: 150px; object-fit: cover;" />
                         <h4 class="fw-bold" style="color: #333;">Myriem El Hammi</h4>
                         <p class="text-muted">Cheffe de projet / Data Analyst</p>
                         <div class="social-icons">
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil Twitter de Myriem"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil Facebook de Myriem"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil LinkedIn de Myriem"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Membre 3 -->
                 <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100">
-                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/3.jpg" alt="Larry Parker" style="width: 150px; height: 150px; object-fit: cover;" />
+                    <div class="team-member bg-white rounded-4 shadow-lg p-4 text-center h-100" style="animation-delay: 0.3s;">
+                        <img class="mx-auto rounded-circle mb-3" src="assets/img/team/3.jpg" alt="Photo de Larry Parker - Data Engineer" style="width: 150px; height: 150px; object-fit: cover;" />
                         <h4 class="fw-bold" style="color: #333;">Larry Parker</h4>
                         <p class="text-muted">Data Engineer / Back-End Developer</p>
                         <div class="social-icons">
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-outline-dark btn-sm mx-1" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil Twitter de Larry"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil Facebook de Larry"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-dark btn-sm mx-1" href="#" aria-label="Profil LinkedIn de Larry"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
                 </div>
@@ -494,12 +530,34 @@
     <!-- Style personnalisé -->
     <style>
         .team-member {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
             .team-member:hover {
-                transform: translateY(-10px);
+                transform: translateY(-8px) scale(1.02);
                 box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+            }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .team-member img {
+            transition: transform 0.3s ease;
+        }
+
+            .team-member img:hover {
+                transform: scale(1.1);
             }
 
         .social-icons .btn {
@@ -530,47 +588,58 @@
                 color: white;
             }
 
-        .team-member img {
-            transition: transform 0.3s ease;
-        }
-
-            .team-member img:hover {
-                transform: scale(1.1);
-            }
-
-        /* Add spacing and padding */
         .page-section {
             padding: 3rem 0;
         }
     </style>
-
-   
-
-
-    <!-- Clients-->
-    <!-- Section Logos Centralisée -->
-    <div class="py-5" style="background-color: #f9f9f9;">
-
-        <div class="row justify-content-center align-items-center">
-            <div class="col-md-2 col-sm-4 col-6 my-3">
-                <a href="#!">
-                    <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/microsoft.svg" alt="Logo Microsoft" aria-label="Microsoft Logo" />
-                </a>
-            </div>
-            <div class="col-md-2 col-sm-4 col-6 my-3">
-                <a href="#!">
-                    <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/google.svg" alt="Logo Google" aria-label="Google Logo" />
-                </a>
-            </div>
-            <div class="col-md-2 col-sm-4 col-6 my-3">
-                <a href="#!">
-                    <img class="img-fluid img-brand d-block mx-auto" src="assets/img/logos/ibm.svg" alt="Logo IBM" aria-label="IBM Logo" />
-                </a>
+    <!-- Clients -->
+    <section class="py-5" style="background-color: #ffffff;">
+        <div class="container text-center">
+            <div class="row justify-content-center align-items-center">
+                <!-- Logo 1 -->
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                    <img src="assets/img/logos/microsoft.svg" alt="Logo Microsoft" class="img-fluid client-logo" tabindex="0" />
+                </div>
+                <!-- Logo 2 -->
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                    <img src="assets/img/logos/google.svg" alt="Logo Google" class="img-fluid client-logo" tabindex="0" />
+                </div>
+                <!-- Logo 3 -->
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                    <img src="assets/img/logos/facebook.svg" alt="Logo Facebook" class="img-fluid client-logo" tabindex="0" />
+                </div>
+                <!-- Logo 4 -->
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-4">
+                    <img src="assets/img/logos/ibm.svg" alt="Logo IBM" class="img-fluid client-logo" tabindex="0" />
+                </div>
+                <!-- Logo 5 -->
+               
             </div>
         </div>
+    </section>
 
-    </div>
+    <!-- Styles personnalisés pour logos -->
+    <style>
+        .client-logo {
+            max-height: 60px;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: grayscale(100%);
+            cursor: pointer;
+        }
 
+            .client-logo:hover,
+            .client-logo:focus {
+                transform: scale(1.1);
+                filter: none;
+                outline: none;
+            }
+
+        @media (max-width: 576px) {
+            .client-logo {
+                max-height: 50px;
+            }
+        }
+    </style>
 
     <!-- Contact-->
     <section class="page-section" id="contact">

@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     Layout = null;
 }
 
@@ -160,6 +160,215 @@ footer {
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.5.2/dist/js/sb-admin-2.min.js"></script>
     <script src="~/js/scripts.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+ *@
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - BI 360°</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="~/css/site.css" rel="stylesheet" />
+
+    <style>
+        /* Couleurs principales */
+        :root {
+            --ey-yellow: #F2C100;
+            --ey-black: #000000;
+            --ey-light-gray: #D1D3D4;
+            --ey-dark-gray: #4B4F54;
+            --ey-white: #FFFFFF;
+            --ey-blue: #003B5C;
+            --ey-green: #009639;
+            --ey-orange: #F47C00;
+        }
+
+        /* Corps de texte */
+        body {
+            font-family: 'Arial', sans-serif;
+            color: var(--ey-dark-gray);
+            background-color: var(--ey-white);
+        }
+
+        /* Titres */
+        h1, h2, h3 {
+            color: var(--ey-black);
+        }
+
+        /* Liens */
+        a {
+            color: var(--ey-blue);
+        }
+
+            a:hover {
+                color: var(--ey-orange);
+            }
+
+        /* Boutons */
+        .btn-primary {
+            background-color: var(--ey-yellow);
+            color: var(--ey-black);
+        }
+
+            .btn-primary:hover {
+                background-color: var(--ey-orange);
+            }
+
+        /* Zones de texte */
+        .card {
+            background-color: var(--ey-light-gray);
+            border: 1px solid var(--ey-dark-gray);
+        }
+
+        .card-title {
+            color: var(--ey-black);
+            font-weight: bold;
+        }
+
+        /* Bordures, fond */
+        section.bg-light {
+            background-color: var(--ey-light-gray);
+        }
+
+        footer {
+            background-color: var(--ey-dark-gray);
+            color: var(--ey-white);
+        }
+        /* Navbar initiale transparente */
+        #navbar {
+            background-color: transparent; /* Transparente au début */
+            transition: background-color 0.3s ease; /* Transition douce */
+        }
+
+            /* Icônes dans la navbar */
+            #navbar .nav-link {
+                color: #000; /* Jaune EY pour les icônes */
+            }
+
+            /* Lorsque la navbar devient blanche après le scroll */
+            #navbar.scrolled {
+                background-color: #FFFFFF; /* Blanc après défilement */
+                color: #000; /* Couleur du texte noire pour la lisibilité */
+            }
+
+                /* Ajuster la couleur des liens dans la navbar après le scroll */
+                #navbar.scrolled .nav-link {
+                    color: #000; /* Texte noir pour les liens quand la navbar devient blanche */
+                }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        main {
+            min-height: 100vh; /* S'étend sur toute la hauteur visible */
+            width: 100%;
+        }
+
+
+
+    </style>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="/">BI 360°</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item dropdown px-2">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownKpis"
+                           role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            KPIs
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" asp-controller="SalesKPI" asp-action="Descriptifs">Descriptifs</a></li>
+                            <li><a class="dropdown-item" asp-controller="SalesKPI" asp-action="Explicatifs">Explicatifs</a></li>
+                            <li><a class="dropdown-item" asp-controller="SalesKPI" asp-action="Predictifs">Prédictifs</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item px-2"><a class="nav-link" href="#etl">ETL</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="#crm">CRM</a></li>
+                    <li class="nav-item px-2"><a class="nav-link" href="#team">Notre équipe</a></li>
+                </ul>
+                <a href="#" class="btn btn-warning ms-4">Myriam HAMMI</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <!-- FOOTER -->
+    <!-- Footer-->
+    <footer class="footer py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                    <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script>
+        // Ajouter la classe 'scrolled' à la navbar lorsque l'utilisateur commence à faire défiler la page
+        window.onscroll = function() {
+            var navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) { // Si l'utilisateur a défilé de 50px ou plus
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>

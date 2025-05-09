@@ -1,10 +1,10 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "KPIs Descriptifs";
     Layout = "~/Pages/Shared/_KPIsLayout.cshtml"; // 
-}
+} *@
 
 <!-- Font Awesome (version CDN à jour) -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+@* <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <section class="py-5 bg-light">
     <div class="container">
@@ -13,9 +13,9 @@
             <p class="text-muted">Analyse des indicateurs clés pour la compréhension des performances commerciales.</p>
         </div>
 
-        <div class="row g-4">
+        <div class="row g-4"> *@
             @* Boucle des KPI *@
-            @{
+          @*   @{
                 var kpis = new List<(string Titre, string Definition, string Icon)>
             {
             ("Nombre total d'opportunités créées", "Total d'opportunités sur une période", "fa-lightbulb"),
@@ -63,3 +63,94 @@
         </div>
     </div>
 </section>
+ *@
+@{
+    ViewData["Title"] = "KPIs Descriptifs";
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
+}
+
+<!-- Font Awesome (version CDN à jour) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-uppercase text-primary">KPIs Descriptifs</h2>
+            <p class="text-muted">Analyse des indicateurs clés pour la compréhension des performances commerciales.</p>
+        </div>
+
+        <div class="row g-4">
+            @* Boucle des KPI *@
+            @{
+                var kpis = new List<(string Titre, string Definition, string Icon)>
+            {
+            ("Nombre total d'opportunités créées", "Total d'opportunités sur une période", "fa-lightbulb"),
+            ("Valeur moyenne des opportunités", "Moyenne des montants estimés", "fa-coins"),
+            ("Taux de conversion devis -> commande", "Nb commandes / Nb devis", "fa-percent"),
+            ("Nombre de nouveaux clients", "Clients sans historique avant la période", "fa-user-plus"),
+            ("CA par produit / catégorie", "Montant total des ventes par produit", "fa-box"),
+            ("Délai moyen opportunité -> commande", "Temps moyen du cycle de vente", "fa-clock"),
+            ("Nombre total de clients", "Total des clients dans la base", "fa-users"),
+            ("Clients recontactés pour la 1ère fois dans le mois", "Basé sur last_contact_date", "fa-phone"),
+            ("Répartition des clients par secteur", "Basé sur le champ industry", "fa-industry"),
+            ("Valeur moyenne d'un client", "CA total / Nb clients", "fa-user-tie"),
+            ("Taux d'activité client", "% avec au moins un devis ou commande", "fa-chart-line"),
+            ("Nombre de devis émis", "Total de devis générés", "fa-file-invoice"),
+            ("Montant moyen des devis", "Moyenne des montants de devis", "fa-money-bill"),
+            ("Taux de validation des devis", "Devis approuvés / total", "fa-check-circle"),
+            ("Délai moyen devis -> commande", "Temps entre date devis et commande", "fa-hourglass-half"),
+            ("Répartition des devis par canal", "Baser sur lead_source", "fa-network-wired"),
+            ("CA total (commandes validées)", "Montant des ventes confirmées", "fa-euro-sign"),
+            ("Nombre de commandes", "Nb de commandes enregistrées", "fa-shopping-cart"),
+            ("Panier moyen", "CA total / nb de commandes", "fa-basket-shopping"),
+            ("Répartition des ventes (mois, canal...)", "Analyse dynamique commerciale", "fa-chart-pie"),
+            ("Nombre total de produits vendus", "Nb d'unités commandées", "fa-boxes-stacked"),
+            ("CA par produit", "Sommé des ventes par référence", "fa-chart-bar"),
+            ("Top 5 produits", "En CA ou prix unitaire", "fa-star"),
+            ("Répartition ventes par catégorie", "Préférences client par produit", "fa-tags"),
+            ("Taux d'abandon par produit", "Devis non validés / total", "fa-times-circle"),
+            };
+            }
+
+            @foreach (var kpi in kpis)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card shadow-sm h-100 border-0 rounded-3 hover-shadow">
+                        <div class="card-body d-flex align-items-start p-4">
+                            <i class="fas @kpi.Icon fa-2x me-3" style="color: #FFE600;"></i>
+                            <div>
+                                <h5 class="card-title fw-semibold text-uppercase text-dark mb-2">@kpi.Titre</h5>
+                                <p class="card-text text-muted mb-1">@kpi.Definition</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Custom Styles -->
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+    }
+
+    .card-text {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+    }
+
+    .text-primary {
+        color: #333333 !important;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
+</style>
