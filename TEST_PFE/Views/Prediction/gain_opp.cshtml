@@ -1,0 +1,102 @@
+﻿@{
+    ViewData["Title"] = "Prédiction d'opportunité";
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
+
+}
+
+<h2>Prédiction de l’opportunité commerciale</h2>
+
+<form id="prediction-form">
+    <label>Industry:</label>
+    <select id="industry">
+        <option value="Education">Education</option>
+        <option value="Finance">Finance</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Manufacturing">Manufacturing</option>
+        <option value="Real Estate">Real Estate</option>
+        <option value="Retail">Retail</option>
+        <option value="Technology">Technology</option>
+    </select><br />
+
+    <label>Lead Source:</label>
+    <select id="lead_source">
+        <option value="Event">Event</option>
+        <option value="Referral">Referral</option>
+        <option value="Email Campaign">Email Campaign</option>
+        <option value="Cold Call">Cold Call</option>
+        <option value="Advertisement">Advertisement</option>
+        <option value="Social Media">Social Media</option>
+        <option value="Website">Website</option>
+    </select><br />
+
+    <label>Revenue Potential:</label>
+    <input type="number" id="revenue" step="0.01" /><br />
+
+    <label>Days to Close:</label>
+    <input type="number" id="days" /><br />
+
+    <label>Modèle:</label>
+    <select id="model">
+        <option value="logreg">Régression Logistique</option>
+        <option value="rf">Random Forest</option>
+        <option value="xgb">XGBoost</option>
+    </select><br /><br />
+
+    <button type="button" onclick="predict()">Prédire</button>
+</form>
+
+<div id="resultatPrediction" style="font-weight:bold; color:green;"></div>
+
+@section Scripts {
+    <script>
+              async function predict() {
+            const industry = document.getElementById("industry").value;
+            const lead_source = document.getElementById("lead_source").value;
+            const revenue = parseFloat(document.getElementById("revenue").value);
+            const days = parseInt(document.getElementById("days").value);
+            const model = document.getElementById("model").value;
+
+            // Vérification des champs requis
+                   if (isNaN(revenue) || isNaN(days)) {
+            document.getElementById("resultatPrediction").innerText = "Veuillez remplir tous les champs correctement.";
+            return;
+        }
+
+
+            try {
+                const mappingsResponse = await fetch("http://localhost:5001/get_mappings");
+                const mappings = await mappingsResponse.json();
+
+                const industryCode = mappings.industry[industry];
+                const leadSourceCode = mappings.lead_source[lead_source];
+
+                if (industryCode === undefined || leadSourceCode === undefined) {
+                    throw new Error("Mapping non trouvé pour industry ou lead source.");
+                }
+
+                const features = [industryCode, leadSourceCode, revenue, days];
+
+                console.log("Données envoyées :", { model: model, features: features });
+                const response = await fetch("http://localhost:5001/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ model: model, features: features })
+                });
+
+                if (!response.ok) {
+                    throw new Error("La requête a échoué avec le statut " + response.status);
+                }
+
+                const result = await response.json();
+
+                document.getElementById("resultatPrediction").innerText =
+                    `Résultat : ${Math.round(result.prediction * 100)}% de chance de succès avec le modèle ${result.model}`;
+            } catch (error) {
+                console.error("Erreur lors de la prédiction :", error);
+                document.getElementById("resultatPrediction").innerText =
+                    "Erreur lors de la prédiction. Vérifiez que l'API Flask fonctionne et que les données sont valides.";
+            }
+        }
+
+    </script>
+}

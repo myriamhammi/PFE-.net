@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
@@ -159,10 +160,12 @@ namespace TEST_PFE.controllers
             return View("~/Views/SalesKPI/Explicatifs.cshtml");
         }
 
-        public IActionResult Predictifs()
-        {
-            return View();
-        }
+        //public IActionResult Predictifs()
+        //{
+          
+
+        //    return View("~/Views/SalesKPI/Predictifs.cshtml");
+        //}
 
     }
 }
