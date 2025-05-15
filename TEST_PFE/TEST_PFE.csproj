@@ -12,20 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Models\log_model.onnx" />
-    <None Remove="Models\rf_model.onnx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Models\log_model.onnx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Models\rf_model.onnx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CsvHelper.Excel.Core" Version="27.2.1" />
     <PackageReference Include="ExcelDataReader" Version="3.7.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0" />
@@ -68,6 +54,7 @@
 
   <ItemGroup>
     <Folder Include="Migrations\" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

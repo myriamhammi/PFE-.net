@@ -1,51 +1,70 @@
-﻿@{
+﻿@* 
+
+@{
     ViewData["Title"] = "Prédiction d'opportunité";
     Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
 
 }
+<html>
+    <body>
+<section style="background: #1c1c1e; color: white; padding: 40px 20px; font-family: 'Segoe UI', sans-serif;">
+    <div style="max-width: 800px; margin: auto; background: #2b2b2e; border-radius: 20px; box-shadow: 0 0 20px rgba(255, 221, 0, 0.3); padding: 30px;">
+        <h2 style="text-align: center; color: #ffdd00; margin-bottom: 30px;">🔍 Prédiction de l’opportunité commerciale</h2>
 
-<h2>Prédiction de l’opportunité commerciale</h2>
+        <form id="prediction-form" style="display: flex; flex-direction: column; gap: 20px;">
+            <div>
+                <label for="industry">Secteur d'activité :</label>
+                <select id="industry" class="input-style">
+                    <option value="Education">Education</option>
+                    <option value="Finance">Finance</option>
+                    <option value="Healthcare">Healthcare</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Technology">Technology</option>
+                </select>
+            </div>
 
-<form id="prediction-form">
-    <label>Industry:</label>
-    <select id="industry">
-        <option value="Education">Education</option>
-        <option value="Finance">Finance</option>
-        <option value="Healthcare">Healthcare</option>
-        <option value="Manufacturing">Manufacturing</option>
-        <option value="Real Estate">Real Estate</option>
-        <option value="Retail">Retail</option>
-        <option value="Technology">Technology</option>
-    </select><br />
+            <div>
+                <label for="lead_source">Source du lead :</label>
+                <select id="lead_source" class="input-style">
+                    <option value="Event">Event</option>
+                    <option value="Referral">Referral</option>
+                    <option value="Email Campaign">Email Campaign</option>
+                    <option value="Cold Call">Cold Call</option>
+                    <option value="Advertisement">Advertisement</option>
+                    <option value="Social Media">Social Media</option>
+                    <option value="Website">Website</option>
+                </select>
+            </div>
 
-    <label>Lead Source:</label>
-    <select id="lead_source">
-        <option value="Event">Event</option>
-        <option value="Referral">Referral</option>
-        <option value="Email Campaign">Email Campaign</option>
-        <option value="Cold Call">Cold Call</option>
-        <option value="Advertisement">Advertisement</option>
-        <option value="Social Media">Social Media</option>
-        <option value="Website">Website</option>
-    </select><br />
+            <div>
+                <label for="revenue">Potentiel de revenu (€) :</label>
+                <input type="number" id="revenue" class="input-style" step="0.01" />
+            </div>
 
-    <label>Revenue Potential:</label>
-    <input type="number" id="revenue" step="0.01" /><br />
+            <div>
+                <label for="days">Jours pour conclure :</label>
+                <input type="number" id="days" class="input-style" />
+            </div>
 
-    <label>Days to Close:</label>
-    <input type="number" id="days" /><br />
+            <div>
+                <label for="model">Modèle :</label>
+                <select id="model" class="input-style">
+                    <option value="logreg">Régression Logistique</option>
+                    <option value="rf">Random Forest</option>
+                    <option value="xgb">XGBoost</option>
+                </select>
+            </div>
 
-    <label>Modèle:</label>
-    <select id="model">
-        <option value="logreg">Régression Logistique</option>
-        <option value="rf">Random Forest</option>
-        <option value="xgb">XGBoost</option>
-    </select><br /><br />
+            <button type="button" onclick="predict()" style="background-color: #ffdd00; border: none; padding: 12px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.3s;">
+                🚀 Prédire
+            </button>
+        </form>
 
-    <button type="button" onclick="predict()">Prédire</button>
-</form>
-
-<div id="resultatPrediction" style="font-weight:bold; color:green;"></div>
+        <div id="resultatPrediction" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; color: #00ff88;"></div>
+    </div>
+</section>
 
 @section Scripts {
     <script>
@@ -99,4 +118,170 @@
         }
 
     </script>
+    }
+
+<style>
+    .input-style {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        background: #444;
+        color: white;
+        font-size: 1rem;
+    }
+
+        .input-style:focus {
+            outline: 2px solid #ffdd00;
+        }
+
+    button:hover {
+        background-color: #e6c800;
+    }
+</style>
+</body>
+</html> *@
+@{
+    ViewData["Title"] = "Prédiction d'opportunité";
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
 }
+<html>
+<body>
+    <section style="background: #f4f4f8; min-height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', sans-serif; padding: 20px;">
+        <div style="width: 100%; max-width: 800px; background: #ffffff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 40px;">
+            <h2 style="text-align: center; color: #333; margin-bottom: 30px;">🔍 Prédire le gain d'une opportunité commerciale </h2>
+
+            <form id="prediction-form" style="display: flex; flex-direction: column; gap: 20px;">
+                <div>
+                    <label for="industry">Secteur d'activité :</label>
+                    <select id="industry" class="input-style">
+                        <option value="Education">Education</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Technology">Technology</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="lead_source">Source du lead :</label>
+                    <select id="lead_source" class="input-style">
+                        <option value="Event">Event</option>
+                        <option value="Referral">Referral</option>
+                        <option value="Email Campaign">Email Campaign</option>
+                        <option value="Cold Call">Cold Call</option>
+                        <option value="Advertisement">Advertisement</option>
+                        <option value="Social Media">Social Media</option>
+                        <option value="Website">Website</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="revenue">Potentiel de revenu (TND) :</label>
+                    <input type="number" id="revenue" class="input-style" step="0.01" />
+                </div>
+
+                <div>
+                    <label for="days">Jours pour conclure :</label>
+                    <input type="number" id="days" class="input-style" />
+                </div>
+
+                <div>
+                    <label for="model">Modèle :</label>
+                    <select id="model" class="input-style">
+                        <option value="logreg">Régression Logistique</option>
+                        <option value="rf">Random Forest</option>
+                        <option value="xgb">XGBoost</option>
+                    </select>
+                </div>
+
+                <button type="button" onclick="predict()" style="background-color: #ffe600; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.3s;">
+                    🚀 Prédire
+                </button>
+            </form>
+
+            <div id="resultatPrediction" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; color: #28a745;"></div>
+        </div>
+    </section>
+
+    @section Scripts {
+        <script>
+            async function predict() {
+                const industry = document.getElementById("industry").value;
+                const lead_source = document.getElementById("lead_source").value;
+                const revenue = parseFloat(document.getElementById("revenue").value);
+                const days = parseInt(document.getElementById("days").value);
+                const model = document.getElementById("model").value;
+
+                if (isNaN(revenue) || isNaN(days)) {
+                    document.getElementById("resultatPrediction").innerText = "Veuillez remplir tous les champs correctement.";
+                    return;
+                }
+
+                try {
+                    const mappingsResponse = await fetch("http://localhost:5001/get_mappings");
+                    const mappings = await mappingsResponse.json();
+
+                    const industryCode = mappings.industry[industry];
+                    const leadSourceCode = mappings.lead_source[lead_source];
+
+                    if (industryCode === undefined || leadSourceCode === undefined) {
+                        throw new Error("Mapping non trouvé pour industry ou lead source.");
+                    }
+
+                    const features = [industryCode, leadSourceCode, revenue, days];
+
+                    const response = await fetch("http://localhost:5001/predict", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ model: model, features: features })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("La requête a échoué avec le statut " + response.status);
+                    }
+
+                    const result = await response.json();
+                    document.getElementById("resultatPrediction").innerText =
+                        `Résultat : ${Math.round(result.prediction * 100)}% de chance de succès avec le modèle ${result.model}`;
+                } catch (error) {
+                    console.error("Erreur lors de la prédiction :", error);
+                    document.getElementById("resultatPrediction").innerText =
+                        "Erreur lors de la prédiction. Vérifiez que l'API Flask fonctionne et que les données sont valides.";
+                }
+            }
+        </script>
+    }
+
+    <style>
+        .input-style {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #333;
+            font-size: 1rem;
+        }
+
+            .input-style:focus {
+                outline: none;
+                border-color: #ffe600;
+                box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
+            }
+
+        button:hover {
+            background-color: #ffe600;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+        }
+    </style>
+</body>
+</html>
