@@ -2,18 +2,27 @@
 using System.Text;
 using TEST_PFE.Models;
 using System.Text.Json;
+using TEST_PFE.Ser;
+using Microsoft.EntityFrameworkCore;
+using System.Data.SqlClient;
 
 namespace TEST_PFE.Controllers
 {
-   
+    
     public class PredictionController : Controller
     {
         private readonly HttpClient _httpClient;
+        private readonly string _connectionString;
 
-        public PredictionController()
+
+
+
+        public PredictionController(IConfiguration configuration)
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("http://127.0.0.1:5001/"); // Flask API
+
+            _connectionString = configuration.GetValue<string>("Prediction_Connection");
         }
 
         public IActionResult gain_opp()
@@ -21,9 +30,11 @@ namespace TEST_PFE.Controllers
             return View();
         }
 
+       
         [HttpPost]
         public async Task<IActionResult> Predict([FromBody] PredictionInput input)
         {
+            // Construction du json pour Flask API
             var jsonContent = new StringContent(JsonSerializer.Serialize(new
             {
                 model = input.Model,
@@ -38,8 +49,45 @@ namespace TEST_PFE.Controllers
             if (!response.IsSuccessStatusCode)
                 return BadRequest("Erreur lors de l'appel de l'API Flask.");
 
-            var result = await response.Content.ReadAsStringAsync();
-            return Content(result, "application/json");
+            var resultString = await response.Content.ReadAsStringAsync();
+
+            // Supposons que le résultat JSON est { "prediction": 0.85, "model": "rf" }
+            var result = JsonSerializer.Deserialize<PredictionResultResponse>(resultString);
+
+            // Enregistre la prédiction dans la base SQL
+            await SavePredictionInDbAsync(input, result);
+
+            return Content(resultString, "application/json");
         }
+        private async Task SavePredictionInDbAsync(PredictionInput input, PredictionResultResponse result)
+        {
+            using SqlConnection conn = new SqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            string sql = @"
+            INSERT INTO PredictionResults
+            (ClientName, Industry, Lead_Source, Revenue_Potential, Days_To_Close, Model, PredictionResult, CreatedAt)
+            VALUES
+            (@ClientName, @Industry, @Lead_Source, @Revenue_Potential, @Days_To_Close, @Model, @PredictionResult, @CreatedAt)";
+
+            using SqlCommand cmd = new SqlCommand(sql, conn);
+            cmd.Parameters.AddWithValue("@ClientName", input.ClientName ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@Industry", input.Industry);
+            cmd.Parameters.AddWithValue("@Lead_Source", input.Lead_Source);
+            cmd.Parameters.AddWithValue("@Revenue_Potential", input.Revenue_Potential);
+            cmd.Parameters.AddWithValue("@Days_To_Close", input.Days_to_Close);
+            cmd.Parameters.AddWithValue("@Model", input.Model);
+            cmd.Parameters.AddWithValue("@PredictionResult", result.Prediction);
+            cmd.Parameters.AddWithValue("@CreatedAt", DateTime.UtcNow);
+
+            await cmd.ExecuteNonQueryAsync();
+        }
+
+    }
+    // Modèle pour désérialiser la réponse Flask
+    public class PredictionResultResponse
+    {
+        public double Prediction { get; set; }
+        public string Model { get; set; }
     }
 }

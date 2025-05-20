@@ -153,6 +153,11 @@
 
             <form id="prediction-form" style="display: flex; flex-direction: column; gap: 20px;">
                 <div>
+                    <label for="clientName">Nom du client :</label>
+                    <input type="text" id="clientName" class="input-style" />
+                </div>
+
+                <div>
                     <label for="industry">Secteur d'activité :</label>
                     <select id="industry" class="input-style">
                         <option value="Education">Education</option>
@@ -209,6 +214,7 @@
     @section Scripts {
         <script>
             async function predict() {
+                const clientName = document.getElementById("clientName").value;
                 const industry = document.getElementById("industry").value;
                 const lead_source = document.getElementById("lead_source").value;
                 const revenue = parseFloat(document.getElementById("revenue").value);
@@ -231,13 +237,20 @@
                         throw new Error("Mapping non trouvé pour industry ou lead source.");
                     }
 
-                    const features = [industryCode, leadSourceCode, revenue, days];
+                    const features = [revenue, days];
 
                     const response = await fetch("http://localhost:5001/predict", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ model: model, features: features })
-                    });
+                      body: JSON.stringify({
+                        model: model,
+                        features: features,
+                        client_name: clientName,
+                        industry: industry,
+                        lead_source: lead_source
+                    })
+
+                                });
 
                     if (!response.ok) {
                         throw new Error("La requête a échoué avec le statut " + response.status);
