@@ -153,9 +153,19 @@
 
             <form id="prediction-form" style="display: flex; flex-direction: column; gap: 20px;">
                 <div>
-                    <label for="clientName">Nom du client :</label>
-                    <input type="text" id="clientName" class="input-style" />
+                    <label for="clientSelect">Nom du client :</label>
+                    <select id="clientSelect" class="input-style" onchange="toggleNewClientInput()">
+                        <option value="">-- Sélectionner un client existant --</option>
+                        <option value="new">➕ Nouveau client</option>
+                        <!-- options clients dynamiques insérées ici par JS -->
+                    </select>
                 </div>
+
+                <div id="newClientDiv" style="display:none; margin-top:10px;">
+                    <label for="newClientName">Nom du nouveau client :</label>
+                    <input type="text" id="newClientName" class="input-style" placeholder="Entrez le nom du client" />
+                </div>
+
 
                 <div>
                     <label for="industry">Secteur d'activité :</label>
@@ -213,8 +223,57 @@
 
     @section Scripts {
         <script>
+            let clients = [];
+
+            // Récupère la liste des clients existants au chargement
+            async function loadClients() {
+                try {
+                    const response = await fetch("http://localhost:5001/get_clients");
+                    clients = await response.json();
+
+                    const select = document.getElementById("clientSelect");
+                    clients.forEach(client => {
+                        const option = document.createElement("option");
+                        option.value = client;
+                        option.text = client;
+                        select.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Erreur chargement clients:", error);
+                }
+            }
+
+            // Montre ou cache l'input nouveau client selon le choix
+            function toggleNewClientInput() {
+                const select = document.getElementById("clientSelect");
+                const newClientDiv = document.getElementById("newClientDiv");
+                if (select.value === "new") {
+                    newClientDiv.style.display = "block";
+                } else {
+                    newClientDiv.style.display = "none";
+                    document.getElementById("newClientName").value = "";
+                }
+            }
+
             async function predict() {
-                const clientName = document.getElementById("clientName").value;
+                const selectClient = document.getElementById("clientSelect").value;
+                const newClientName = document.getElementById("newClientName").value.trim();
+
+                let clientName = "";
+                if (selectClient === "") {
+                    document.getElementById("resultatPrediction").innerText = "Veuillez sélectionner un client existant ou choisir Nouveau client.";
+                    return;
+                }
+                if (selectClient === "new") {
+                    if (newClientName === "") {
+                        document.getElementById("resultatPrediction").innerText = "Veuillez entrer le nom du nouveau client.";
+                        return;
+                    }
+                    clientName = newClientName;
+                } else {
+                    clientName = selectClient;
+                }
+
                 const industry = document.getElementById("industry").value;
                 const lead_source = document.getElementById("lead_source").value;
                 const revenue = parseFloat(document.getElementById("revenue").value);
@@ -242,15 +301,14 @@
                     const response = await fetch("http://localhost:5001/predict", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify({
-                        model: model,
-                        features: features,
-                        client_name: clientName,
-                        industry: industry,
-                        lead_source: lead_source
-                    })
-
-                                });
+                        body: JSON.stringify({
+                            model: model,
+                            features: features,
+                            client_name: clientName,
+                            industry: industry,
+                            lead_source: lead_source
+                        })
+                    });
 
                     if (!response.ok) {
                         throw new Error("La requête a échoué avec le statut " + response.status);
@@ -265,8 +323,14 @@
                         "Erreur lors de la prédiction. Vérifiez que l'API Flask fonctionne et que les données sont valides.";
                 }
             }
+
+            // Charger les clients au chargement de la page
+            window.onload = () => {
+                loadClients();
+            };
         </script>
     }
+
 
     <style>
         .input-style {
