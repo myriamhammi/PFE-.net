@@ -160,12 +160,12 @@ namespace TEST_PFE.controllers
             return View("~/Views/SalesKPI/Explicatifs.cshtml");
         }
 
-        //public IActionResult Predictifs()
-        //{
-          
+        public IActionResult Predictifs()
+        {
 
-        //    return View("~/Views/SalesKPI/Predictifs.cshtml");
-        //}
+
+            return View("~/Views/SalesKPI/Predictifs.cshtml");
+        }
 
     }
 }
