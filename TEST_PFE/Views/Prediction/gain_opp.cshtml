@@ -1,146 +1,4 @@
 ﻿@* 
-
-@{
-    ViewData["Title"] = "Prédiction d'opportunité";
-    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
-
-}
-<html>
-    <body>
-<section style="background: #1c1c1e; color: white; padding: 40px 20px; font-family: 'Segoe UI', sans-serif;">
-    <div style="max-width: 800px; margin: auto; background: #2b2b2e; border-radius: 20px; box-shadow: 0 0 20px rgba(255, 221, 0, 0.3); padding: 30px;">
-        <h2 style="text-align: center; color: #ffdd00; margin-bottom: 30px;">🔍 Prédiction de l’opportunité commerciale</h2>
-
-        <form id="prediction-form" style="display: flex; flex-direction: column; gap: 20px;">
-            <div>
-                <label for="industry">Secteur d'activité :</label>
-                <select id="industry" class="input-style">
-                    <option value="Education">Education</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Manufacturing">Manufacturing</option>
-                    <option value="Real Estate">Real Estate</option>
-                    <option value="Retail">Retail</option>
-                    <option value="Technology">Technology</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="lead_source">Source du lead :</label>
-                <select id="lead_source" class="input-style">
-                    <option value="Event">Event</option>
-                    <option value="Referral">Referral</option>
-                    <option value="Email Campaign">Email Campaign</option>
-                    <option value="Cold Call">Cold Call</option>
-                    <option value="Advertisement">Advertisement</option>
-                    <option value="Social Media">Social Media</option>
-                    <option value="Website">Website</option>
-                </select>
-            </div>
-
-            <div>
-                <label for="revenue">Potentiel de revenu (€) :</label>
-                <input type="number" id="revenue" class="input-style" step="0.01" />
-            </div>
-
-            <div>
-                <label for="days">Jours pour conclure :</label>
-                <input type="number" id="days" class="input-style" />
-            </div>
-
-            <div>
-                <label for="model">Modèle :</label>
-                <select id="model" class="input-style">
-                    <option value="logreg">Régression Logistique</option>
-                    <option value="rf">Random Forest</option>
-                    <option value="xgb">XGBoost</option>
-                </select>
-            </div>
-
-            <button type="button" onclick="predict()" style="background-color: #ffdd00; border: none; padding: 12px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: 0.3s;">
-                🚀 Prédire
-            </button>
-        </form>
-
-        <div id="resultatPrediction" style="margin-top: 20px; font-weight: bold; font-size: 1.1rem; color: #00ff88;"></div>
-    </div>
-</section>
-
-@section Scripts {
-    <script>
-              async function predict() {
-            const industry = document.getElementById("industry").value;
-            const lead_source = document.getElementById("lead_source").value;
-            const revenue = parseFloat(document.getElementById("revenue").value);
-            const days = parseInt(document.getElementById("days").value);
-            const model = document.getElementById("model").value;
-
-            // Vérification des champs requis
-                   if (isNaN(revenue) || isNaN(days)) {
-            document.getElementById("resultatPrediction").innerText = "Veuillez remplir tous les champs correctement.";
-            return;
-        }
-
-
-            try {
-                const mappingsResponse = await fetch("http://localhost:5001/get_mappings");
-                const mappings = await mappingsResponse.json();
-
-                const industryCode = mappings.industry[industry];
-                const leadSourceCode = mappings.lead_source[lead_source];
-
-                if (industryCode === undefined || leadSourceCode === undefined) {
-                    throw new Error("Mapping non trouvé pour industry ou lead source.");
-                }
-
-                const features = [industryCode, leadSourceCode, revenue, days];
-
-                console.log("Données envoyées :", { model: model, features: features });
-                const response = await fetch("http://localhost:5001/predict", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ model: model, features: features })
-                });
-
-                if (!response.ok) {
-                    throw new Error("La requête a échoué avec le statut " + response.status);
-                }
-
-                const result = await response.json();
-
-                document.getElementById("resultatPrediction").innerText =
-                    `Résultat : ${Math.round(result.prediction * 100)}% de chance de succès avec le modèle ${result.model}`;
-            } catch (error) {
-                console.error("Erreur lors de la prédiction :", error);
-                document.getElementById("resultatPrediction").innerText =
-                    "Erreur lors de la prédiction. Vérifiez que l'API Flask fonctionne et que les données sont valides.";
-            }
-        }
-
-    </script>
-    }
-
-<style>
-    .input-style {
-        width: 100%;
-        padding: 10px;
-        border-radius: 10px;
-        border: none;
-        background: #444;
-        color: white;
-        font-size: 1rem;
-    }
-
-        .input-style:focus {
-            outline: 2px solid #ffdd00;
-        }
-
-    button:hover {
-        background-color: #e6c800;
-    }
-</style>
-</body>
-</html> *@
 @{
     ViewData["Title"] = "Prédiction d'opportunité";
     Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
@@ -359,6 +217,287 @@
             margin-bottom: 6px;
             color: #333;
         }
+    </style>
+</body>
+</html>
+ *@
+
+@{
+    ViewData["Title"] = "Prédiction d'opportunité";
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
+}
+<html>
+<body>
+    <section style="background: #f9fafb; min-height: 100vh; display: flex; justify-content: center; align-items: center; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 30px;">
+        <div style="width: 100%; max-width: 700px; background: #ffffff; border-radius: 20px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); padding: 45px 50px;">
+
+            <h2 style="text-align: center; color: #222; margin-bottom: 40px; font-weight: 700; font-size: 1.9rem;">
+                🔮 Prédiction du gain d'une opportunité commerciale
+            </h2>
+
+            <form id="prediction-form" style="display: flex; flex-direction: column; gap: 25px;">
+
+                <div>
+                    <label for="clientSelect">Nom du client :</label>
+                    <select id="clientSelect" class="input-style" onchange="toggleNewClientInput()">
+                        <option value="">-- Sélectionner un client existant --</option>
+                        <option value="new">➕ Nouveau client</option>
+                        <!-- options clients dynamiques insérées ici -->
+                    </select>
+                </div>
+
+                <div id="newClientDiv" style="display:none; margin-top:10px;">
+                    <label for="newClientName">Nom du nouveau client :</label>
+                    <input type="text" id="newClientName" class="input-style" placeholder="Entrez le nom du client" />
+                </div>
+
+                <div>
+                    <label for="industry">Secteur d'activité :</label>
+                    <select id="industry" class="input-style">
+                        <option value="Education">Education</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Technology">Technology</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="lead_source">Source du lead :</label>
+                    <select id="lead_source" class="input-style">
+                        <option value="Event">Event</option>
+                        <option value="Referral">Referral</option>
+                        <option value="Email Campaign">Email Campaign</option>
+                        <option value="Cold Call">Cold Call</option>
+                        <option value="Advertisement">Advertisement</option>
+                        <option value="Social Media">Social Media</option>
+                        <option value="Website">Website</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="revenue">Potentiel de revenu (TND) :</label>
+                    <input type="number" id="revenue" class="input-style" step="0.01" placeholder="Ex: 15000.00" />
+                </div>
+
+                <div>
+                    <label for="days">Jours pour conclure :</label>
+                    <input type="number" id="days" class="input-style" placeholder="Ex: 30" />
+                </div>
+
+                <div>
+                    <label for="model">Modèle :</label>
+                    <select id="model" class="input-style">
+                        <option value="logreg">Régression Logistique</option>
+                        <option value="rf">Random Forest</option>
+                        <option value="xgb">XGBoost</option>
+                    </select>
+                </div>
+
+                <button type="button" onclick="predict()" class="btn-predict">
+                    🚀 Prédire
+                </button>
+            </form>
+
+            <div id="resultatPrediction" class="result-message" style="margin-top: 30px; min-height: 50px; font-weight: 600; font-size: 1.2rem; text-align: center;"></div>
+        </div>
+    </section>
+
+    @section Scripts {
+        <script>
+            let clients = [];
+
+            async function loadClients() {
+                try {
+                    const response = await fetch("http://localhost:5001/get_clients");
+                    clients = await response.json();
+
+                    const select = document.getElementById("clientSelect");
+                    clients.forEach(client => {
+                        const option = document.createElement("option");
+                        option.value = client;
+                        option.text = client;
+                        select.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error("Erreur chargement clients:", error);
+                }
+            }
+
+            function toggleNewClientInput() {
+                const select = document.getElementById("clientSelect");
+                const newClientDiv = document.getElementById("newClientDiv");
+                if (select.value === "new") {
+                    newClientDiv.style.display = "block";
+                } else {
+                    newClientDiv.style.display = "none";
+                    document.getElementById("newClientName").value = "";
+                }
+            }
+
+            function showResultMessage(text, type) {
+                const resultDiv = document.getElementById("resultatPrediction");
+                resultDiv.style.color = '';
+                resultDiv.style.backgroundColor = '';
+                resultDiv.style.borderRadius = '8px';
+                resultDiv.style.padding = '15px';
+                resultDiv.style.fontWeight = '700';
+
+                switch(type) {
+                    case 'success':
+                        resultDiv.style.color = '#155724';
+                        resultDiv.style.backgroundColor = '#d4edda';
+                        resultDiv.innerHTML = `✅ ${text}`;
+                        break;
+                    case 'warning':
+                        resultDiv.style.color = '#856404';
+                        resultDiv.style.backgroundColor = '#fff3cd';
+                        resultDiv.innerHTML = `⚠️ ${text}`;
+                        break;
+                    case 'error':
+                        resultDiv.style.color = '#721c24';
+                        resultDiv.style.backgroundColor = '#f8d7da';
+                        resultDiv.innerHTML = `❌ ${text}`;
+                        break;
+                    default:
+                        resultDiv.style.color = '#0c5460';
+                        resultDiv.style.backgroundColor = '#d1ecf1';
+                        resultDiv.innerHTML = text;
+                }
+            }
+
+            async function predict() {
+                const selectClient = document.getElementById("clientSelect").value;
+                const newClientName = document.getElementById("newClientName").value.trim();
+
+                if (selectClient === "") {
+                    showResultMessage("Veuillez sélectionner un client existant ou choisir Nouveau client.", "warning");
+                    return;
+                }
+                if (selectClient === "new" && newClientName === "") {
+                    showResultMessage("Veuillez entrer le nom du nouveau client.", "warning");
+                    return;
+                }
+
+                const clientName = selectClient === "new" ? newClientName : selectClient;
+                const industry = document.getElementById("industry").value;
+                const lead_source = document.getElementById("lead_source").value;
+                const revenue = parseFloat(document.getElementById("revenue").value);
+                const days = parseInt(document.getElementById("days").value);
+                const model = document.getElementById("model").value;
+
+                if (isNaN(revenue) || isNaN(days)) {
+                    showResultMessage("Veuillez remplir tous les champs numériques correctement.", "warning");
+                    return;
+                }
+
+                showResultMessage("🔄 Prédiction en cours, veuillez patienter...", "");
+
+                try {
+                    const mappingsResponse = await fetch("http://localhost:5001/get_mappings");
+                    const mappings = await mappingsResponse.json();
+
+                    const industryCode = mappings.industry[industry];
+                    const leadSourceCode = mappings.lead_source[lead_source];
+
+                    if (industryCode === undefined || leadSourceCode === undefined) {
+                        throw new Error("Mapping non trouvé pour secteur d'activité ou source du lead.");
+                    }
+
+                    const features = [revenue, days];
+
+                    const response = await fetch("http://localhost:5001/predict", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            model: model,
+                            features: features,
+                            client_name: clientName,
+                            industry: industry,
+                            lead_source: lead_source
+                        })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("La requête a échoué avec le statut " + response.status);
+                    }
+
+                    const result = await response.json();
+                    const chance = Math.round(result.prediction * 100);
+
+                    let message = `Le modèle <strong>${result.model}</strong> prédit une probabilité de succès de <strong>${chance}%</strong> pour l'opportunité de <strong>${clientName}</strong>.`;
+
+                    if (chance >= 51) {
+                        showResultMessage(message + " 🎉 C'est très prometteur !", "success");
+                    } else if (chance >= 40) {
+                        showResultMessage(message + " 🤔 Gardez un œil, ça peut passer.", "warning");
+                    } else {
+                        showResultMessage(message + " 😞 Il y a un risque élevé d'échec.", "error");
+                    }
+
+                } catch (error) {
+                    console.error("Erreur lors de la prédiction :", error);
+                    showResultMessage("Erreur lors de la prédiction. Vérifiez que l'API Flask fonctionne et que les données sont valides.", "error");
+                }
+            }
+
+            window.onload = () => {
+                loadClients();
+            };
+        </script>
+    }
+
+    <style>
+        .input-style {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.8px solid #ddd;
+            background: #fafafa;
+            color: #444;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+            font-weight: 500;
+        }
+
+            .input-style:focus {
+                outline: none;
+                border-color: #ffcc00;
+                box-shadow: 0 0 6px #ffcc00aa;
+                background: #fff;
+                color: #222;
+            }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 8px;
+            color: #222;
+            font-size: 1.05rem;
+        }
+
+        button.btn-predict {
+            background-color: #ffcc00;
+            color: #222;
+            border: none;
+            padding: 14px 0;
+            font-weight: 700;
+            font-size: 1.15rem;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: background-color 0.25s ease, transform 0.15s ease;
+            box-shadow: 0 4px 12px rgba(255, 204, 0, 0.5);
+            margin-top: 10px;
+        }
+
+            button.btn-predict:hover {
+                background-color: #e6b800;
+                transform: scale(1.05);
+                box-shadow: 0 6px 18px rgba(230, 184, 0, 0.7);
+            }
     </style>
 </body>
 </html>

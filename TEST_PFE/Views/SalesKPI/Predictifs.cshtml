@@ -1,54 +1,46 @@
-﻿<!DOCTYPE html>
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>KPIs Prédictifs</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-
     <style>
         :root {
             --ey-yellow: #ffe600;
             --ey-yellow-dark: #e6d600;
-            --dark-gray: #1f2937;
-            --light-gray: #f3f4f6;
-            --text-dark: #222;
-            --text-gray: #555;
+            --dark-bg: #333333;
+            --light-text: #ffffff;
+            --muted-gray: #cccccc;
+            --neutral: #999999;
         }
 
-        html, body {
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--dark-bg);
             margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to bottom right, #ffffff, #f3f4f6);
-            overflow-x: hidden;
+            padding-top: 80px;
         }
 
-        /* NAVBAR */
         .navbar-custom {
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-            padding: 0.8rem 2rem;
-            position: fixed;
-            width: 100%;
-            z-index: 1030;
+            background-color: var(--light-text);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .navbar-brand {
-            font-size: 1.6rem;
+            color: var(--dark-bg);
             font-weight: bold;
-            color: var(--text-dark);
         }
 
         .nav-link {
-            color: var(--text-gray);
+            color: var(--neutral);
             font-weight: 600;
-            margin-right: 1rem;
-            transition: color 0.3s ease;
         }
 
             .nav-link:hover, .nav-link.active {
@@ -57,138 +49,183 @@
 
         .btn-profile {
             background-color: var(--ey-yellow);
-            border: none;
-            padding: 0.4rem 1.3rem;
-            border-radius: 20px;
+            color: var(--dark-bg);
             font-weight: bold;
-            color: var(--text-dark);
-            transition: background 0.3s ease;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
         }
 
-            .btn-profile:hover {
-                background-color: var(--ey-yellow-dark);
-            }
-
-        /* HEADER */
         header {
-            padding-top: 5rem;
-            background-color: var(--dark-gray);
-            color: white;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 2rem 0;
             text-align: center;
-            padding-bottom: 2rem;
         }
 
             header h1 {
-                font-size: 2rem;
-                font-weight: 700;
+                font-size: 2.5rem;
             }
 
-        /* MAIN */
         main {
-            width: 100vw;
-            min-height: 100vh;
-            padding-top: 120px;
-            padding-left: 3vw;
-            padding-right: 3vw;
+            padding: 3rem 6vw;
+            background-color: #ffffff;
         }
 
-        h2.display-5 {
-            margin-bottom: 3rem;
-            color: var(--text-dark);
+        h2 {
+            font-weight: bold;
+            margin-bottom: 2rem;
+            text-align: center;
         }
 
         .card {
             border: none;
-            border-radius: 18px;
-            background: white;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.4s ease-in-out;
+            border-radius: 15px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease-in-out;
             cursor: pointer;
         }
 
             .card:hover {
-                transform: translateY(-8px) scale(1.02);
-                box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+                transform: scale(1.02);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.12);
             }
 
         .card-title {
             font-size: 1.3rem;
             font-weight: bold;
-            color: var(--text-dark);
+            color: var(--dark-bg);
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.5rem;
         }
 
             .card-title i {
                 background-color: var(--ey-yellow);
-                color: var(--dark-gray);
                 padding: 0.5rem;
                 border-radius: 10px;
-                font-size: 1.4rem;
+                color: var(--dark-bg);
             }
 
         .card-text {
-            font-size: 1rem;
-            color: var(--text-gray);
-            margin-top: 0.5rem;
-            margin-bottom: 1rem;
+            color: var(--neutral);
+            margin: 1rem 0;
         }
 
         .btn-ffe600 {
             background-color: var(--ey-yellow);
+            color: var(--dark-bg);
             border: none;
-            color: var(--text-dark);
             font-weight: 600;
-            padding: 0.5rem 1.3rem;
-            border-radius: 12px;
-            transition: background-color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
         }
 
             .btn-ffe600:hover {
                 background-color: var(--ey-yellow-dark);
             }
 
-        /* FOOTER */
         footer.footer {
-            background-color: var(--dark-gray);
-            color: #ccc;
+            background-color: var(--dark-bg);
+            color: var(--muted-gray);
             text-align: center;
-            padding: 1rem 2rem;
+            padding: 1rem;
         }
 
         .btn-social {
-            color: #ccc;
-            margin: 0 0.5rem;
+            color: var(--muted-gray);
             font-size: 1.3rem;
-            transition: color 0.3s ease;
+            margin: 0 0.5rem;
         }
 
             .btn-social:hover {
                 color: var(--ey-yellow);
             }
 
-        footer a {
-            color: #ccc;
-            margin-left: 1rem;
-            text-decoration: none;
+        .kpi-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            background: white;
+            text-align: center;
         }
 
-            footer a:hover {
-                color: var(--ey-yellow);
-            }
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .kpi-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .kpi-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            background: white;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .kpi-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .kpi-icon {
+            font-size: 1.8rem;
+        }
+
+        /* Couleurs selon niveau */
+        .kpi-green {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .kpi-yellow {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .kpi-red {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .kpi-affichage {
+            margin-top: 20px; /* Ajustez la valeur selon ce que vous voulez */
+        }
+
+
     </style>
 </head>
-<body>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
 
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid px-5">
             <a class="navbar-brand" href="#">BI 360°</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
-                <ul class="navbar-nav mb-2 mb-lg-0">
+                <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link active" href="#kpis">KPIs</a></li>
                     <li class="nav-item"><a class="nav-link" href="#etl">ETL</a></li>
                     <li class="nav-item"><a class="nav-link" href="#crm">CRM</a></li>
@@ -200,48 +237,76 @@
         </div>
     </nav>
 
-  
+    <header>
+        <h1>Tableau de Bord Prédictif</h1>
+    </header>
 
-    <main id="kpis">
-        <section class="text-center mb-5">
-            <h2 class="display-5 fw-bold">Tableau de Bord Prédictif</h2>
-        </section>
+    <main style="flex: 1;" id="kpis">
 
-        <div class="row gy-4 justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4 d-flex">
-                <div class="card flex-fill" onclick="navigateTo('gain_opp')" role="button" tabindex="0">
+        <div class="row gy-4">
+            <div class="col-md-6 col-lg-4 d-flex">
+                <div class="card p-3 flex-fill" role="button" tabindex="0">
                     <div class="card-body d-flex flex-column">
                         <h3 class="card-title"><i class="fas fa-chart-line"></i> Probabilité de gain</h3>
-                        <p class="card-text">Prédiction de la probabilité de succès d'une opportunité commerciale.</p>
-                        <button class="btn btn-ffe600 mt-auto">Voir la prédiction</button>
+                        <p class="card-text">Estimation du taux de succès des opportunités selon leurs caractéristiques.</p>
+                        <a href="/Prediction/gain_opp" class="btn btn-ffe600 mt-auto" title="Voir la prédiction de la probabilité de gain">
+                            Voir la prédiction
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4 d-flex">
-                <div class="card flex-fill" onclick="navigateTo('revenue')" role="button" tabindex="0">
+            <div class="col-md-6 col-lg-4 d-flex">
+                <div class="card p-3 flex-fill">
                     <div class="card-body d-flex flex-column">
-                        <h3 class="card-title"><i class="fas fa-euro-sign"></i> Chiffre d'affaire</h3>
-                        <p class="card-text">Prédiction du chiffre d'affaire estimé sur une période définie.</p>
-                        <button class="btn btn-ffe600 mt-auto">Voir la prédiction</button>
+                        <h3 class="card-title"><i class="fas fa-euro-sign"></i> Chiffre d'affaires</h3>
+                        <p class="card-text">Projection des ventes futures basée sur les données historiques et le pipeline.</p>
+                        <a href="/Prediction/revenue" class="btn btn-ffe600 mt-auto" title="Voir la prédiction du chiffre d'affaires">
+                            Voir la prédiction
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4 d-flex">
-                <div class="card flex-fill" onclick="navigateTo('pip')" role="button" tabindex="0">
+            <div class="col-md-6 col-lg-4 d-flex">
+                <div class="card p-3 flex-fill">
                     <div class="card-body d-flex flex-column">
                         <h3 class="card-title"><i class="fas fa-project-diagram"></i> Pipeline</h3>
-                        <p class="card-text">Prédiction des ruptures du pipeline.</p>
-                        <button class="btn btn-ffe600 mt-auto">Voir la prédiction</button>
+                        <p class="card-text">Anticipation des ruptures dans le processus commercial ou le suivi des leads.</p>
+                        <a href="/Prediction/pip" class="btn btn-ffe600 mt-auto" title="Voir la prédiction du pipeline">
+                            Voir la prédiction
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="kpi-container" class="row gy-4"></div>
+
+        <h2 class="mt-5">5 Dernières Prédictions de la probabilité de gain d'une opportnité</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Client</th>
+                        <th>Secteur</th>
+                        <th>Source Lead</th>
+                        <th>Potentiel CA</th>
+                        <th>Jours pour clôturer</th>
+                        <th>Modèle</th>
+                        <th>Prédiction</th>
+                        <th>Date Création</th>
+                    </tr>
+                </thead>
+                <tbody id="prediction-table-body">
+                    <tr><td colspan="8" class="text-center">Chargement des données...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
     </main>
 
-    <!-- Footer-->
-    <footer class="footer py-4">
+
+    <footer style="background-color: #2c2c2c; color: white; padding: 10px 0; text-align: center;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
@@ -251,19 +316,139 @@
                     <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <div class="col-lg-4 text-lg-end">
-                    <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
-                    <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    <a class="link-light text-decoration-none me-3" href="#!">Privacy Policy</a>
+                    <a class="link-light text-decoration-none" href="#!">Terms of Use</a>
                 </div>
             </div>
         </div>
     </footer>
-
     <script>
-        function navigateTo(id) {
-          alert(`Navigation simulée vers : ${id}`);
+                async function fetchPredictions() {
+            try {
+                const response = await fetch("http://localhost:5001/predictions/overview");
+                if (!response.ok) throw new Error('Erreur réseau');
+                const data = await response.json();
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    document.getElementById('kpi-container').innerHTML = '<p class="text-center text-muted">Aucune donnée disponible.</p>';
+                    document.getElementById('prediction-table-body').innerHTML = '<tr><td colspan="8" class="text-center">Aucune donnée disponible.</td></tr>';
+                    return;
+                }
+
+                // Calculs KPI sur les scores
+                const scores = data.map(d => d.prediction);
+                const moyenne = (scores.reduce((a,b) => a + b, 0) / scores.length);
+                const moyenneAffichee = moyenne.toFixed(3);
+                const tauxSup05 = ((scores.filter(s => s > 0.5).length / scores.length) * 100).toFixed(1);
+
+                // Affichage KPI avec couleurs et icônes selon l'objectif "Probabilité de gain"
+                const htmlKpi = `
+                    <div class="col-12 col-md-4">
+                        <div class="kpi-card kpi-affichage" style="background-color: #d1e7dd; border-left: 6px solid #0f5132;">
+                            <div class="kpi-value text-success"><i class="fas fa-star"></i> ${moyenneAffichee}</div>
+                            <div class="kpi-label">Moyenne des scores</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="kpi-card kpi-affichage" style="background-color: #fff3cd; border-left: 6px solid #664d03;">
+                            <div class="kpi-value text-warning"><i class="fas fa-percent"></i> ${tauxSup05}%</div>
+                            <div class="kpi-label">% des scores > 0.5</div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="kpi-card kpi-affichage" style="background-color: #cff4fc; border-left: 6px solid #055160;">
+                            <div class="kpi-value text-info"><i class="fas fa-calculator"></i> ${scores.length}</div>
+                            <div class="kpi-label">Nombre de prédictions</div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('kpi-container').innerHTML = htmlKpi;
+
+                // Construction tableau des dernières prédictions
+                const rowsHtml = data.map(pred => `
+                    <tr>
+                        <td>${pred.client}</td>
+                        <td>${pred.industry}</td>
+                        <td>${pred.lead_source}</td>
+                        <td>${pred.revenue_potential}</td>
+                        <td>${pred.days_to_close}</td>
+                        <td>${pred.model}</td>
+                        <td>${pred.prediction.toFixed(3)}</td>
+                        <td>${pred.created_at}</td>
+                    </tr>
+                `).join('');
+
+                document.getElementById('prediction-table-body').innerHTML = rowsHtml;
+
+            } catch (error) {
+                console.error('Erreur lors de la récupération des prédictions:', error);
+                document.getElementById('kpi-container').innerHTML = '<p class="text-center text-danger">Erreur lors du chargement des données.</p>';
+                document.getElementById('prediction-table-body').innerHTML = '<tr><td colspan="8" class="text-center text-danger">Erreur lors du chargement des données.</td></tr>';
+            }
         }
+
+          window.addEventListener('DOMContentLoaded', () => {
+            fetchPredictions();
+        });
+                // Fonction pour choisir la classe couleur selon valeur et type KPI
+        function getColorClass(value, type) {
+            if (type === "moyenne") {
+                if (value >= 0.7) return 'kpi-green';
+                if (value >= 0.4) return 'kpi-yellow';
+                return 'kpi-red';
+            }
+            if (type === "pourcentage") {
+                if (value >= 70) return 'kpi-green';
+                if (value >= 40) return 'kpi-yellow';
+                return 'kpi-red';
+            }
+            if (type === "nombre") {
+                // Nombre de prédictions, moins critique, on met vert si au moins 10, jaune si 5-10, rouge sinon
+                if (value >= 10) return 'kpi-green';
+                if (value >= 5) return 'kpi-yellow';
+                return 'kpi-red';
+            }
+            return '';
+        }
+
+        const moyenneNum = parseFloat(moyenne);
+        const tauxNum = parseFloat(tauxSup05);
+        const nombreNum = scores.length;
+
+        const htmlKpi = `
+            <div class="col-12 col-md-4">
+                <div class="kpi-card ${getColorClass(moyenneNum, 'moyenne')}">
+                    <div class="kpi-value">
+                        <i class="fas fa-balance-scale kpi-icon"></i> ${moyenne}
+                    </div>
+                    <div class="kpi-label">Moyenne des scores</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="kpi-card ${getColorClass(tauxNum, 'pourcentage')}">
+                    <div class="kpi-value">
+                        <i class="fas fa-arrow-up kpi-icon"></i> ${tauxSup05}%
+                    </div>
+                    <div class="kpi-label">% des scores &gt; 0.5</div>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="kpi-card ${getColorClass(nombreNum, 'nombre')}">
+                    <div class="kpi-value">
+                        <i class="fas fa-users kpi-icon"></i> ${nombreNum}
+                    </div>
+                    <div class="kpi-label">Nombre de prédictions</div>
+                </div>
+            </div>
+        `;
+
+
+      
     </script>
 
+
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
