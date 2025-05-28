@@ -80,6 +80,9 @@
     </button>
 
     <div id="resultsContainer" class="mt-4"></div>
+    <button class="btn btn-secondary mt-3" onclick="getPredictionsOverview()">📊 Voir les prédictions globales</button>
+
+
 
     <!-- Bouton global pour lancer toutes les prédictions si nécessaire -->
     <!-- <button id="predictBtn" class="btn btn-success mt-4" onclick="makeAllPredictions()">Lancer toutes les prédictions</button> -->
@@ -199,6 +202,119 @@
             document.getElementById("resultsContainer").innerHTML += `<div class="alert alert-danger mt-3">Erreur réseau pour ${clientName} : ${error.message}</div>`;
         }
     }
+
+
+     let previousOverview = null; // Stockage de la dernière vue d'ensemble
+
+        function formatEvolution(oldValue, newValue) {
+        if (oldValue === null || oldValue === undefined) return "";
+        const diff = newValue - oldValue;
+        const sign = diff > 0 ? "+" : "";
+        return ` <span style="color:${diff > 0 ? 'green' : (diff < 0 ? 'red' : 'black')}">(${sign}${diff.toLocaleString('fr-FR')})</span>`;
+    }
+
+    // Pour comparer les répartitions (objets) par secteur ou étape
+    function formatDistributionEvolution(oldDist, newDist) {
+        if (!oldDist || !newDist) return "";
+        let changes = [];
+        for (const key of new Set([...Object.keys(oldDist), ...Object.keys(newDist)])) {
+            const oldVal = oldDist[key] ?? 0;
+            const newVal = newDist[key] ?? 0;
+            if (oldVal !== newVal) {
+                const diff = newVal - oldVal;
+                const sign = diff > 0 ? "+" : "";
+                changes.push(`${key} : <span style="color:${diff > 0 ? 'green' : 'red'}">${sign}${diff}</span>`);
+            }
+        }
+        return changes.length > 0 ? changes.join(", ") : "Aucune évolution";
+    }
+
+
+        async function getPredictionsOverview() {
+        try {
+            const response = await fetch("http://127.0.0.1:5001/get_predictions_overview");
+            const data = await response.json();
+
+            console.log("📦 Données reçues :", data);
+
+            const container = document.getElementById("resultsContainer");
+
+            // Affichage avec comparaison à la donnée précédente
+                container.innerHTML = `
+        <div class="alert alert-secondary mt-4">
+            <h4 class="mb-3">📊 Vue d'ensemble des prédictions</h4>
+
+            <p><strong>Total des prédictions :</strong> ${data.total_predictions ?? "N/A"}${previousOverview ? formatEvolution(previousOverview.total_predictions, data.total_predictions) : ""}</p>
+
+            <p><strong>Moyenne des montants estimés :</strong> ${data.average_prediction?.toLocaleString('fr-FR') ?? "N/A"} TND${previousOverview ? formatEvolution(previousOverview.average_prediction, data.average_prediction) : ""}</p>
+
+            <h5 class="mt-4">📌 Répartition par secteur d’activité :</h5>
+            <ul>
+                ${data.industry_distribution
+                    ? Object.entries(data.industry_distribution).map(([k, v]) => `<li>${k} : ${v}</li>`).join("")
+                    : "<li>Aucune donnée</li>"}
+            </ul>
+            ${previousOverview
+                ? `<small>${formatDistributionEvolution(previousOverview.industry_distribution, data.industry_distribution)}</small>`
+                : ""}
+
+            <h5 class="mt-4">📌 Répartition par étape :</h5>
+            <ul>
+                ${data.stage_distribution
+                    ? Object.entries(data.stage_distribution).map(([k, v]) => `<li>${k} : ${v}</li>`).join("")
+                    : "<li>Aucune donnée</li>"}
+            </ul>
+            ${previousOverview
+                ? `<small>${formatDistributionEvolution(previousOverview.stage_distribution, data.stage_distribution)}</small>`
+                : ""}
+
+            <h5 class="mt-4">🕒 Dernières prédictions :</h5>
+            <ul>
+                ${Array.isArray(data.latest_predictions)
+                    ? data.latest_predictions.map(pred => `
+                        <li>
+                            <strong>${pred.client} (${pred.industry})</strong> - ${pred.product}, ${pred.stage} →
+                            <strong>${pred.prediction.toLocaleString('fr-FR')} TND</strong> (${pred.created_at})
+                        </li>
+                    `).join("")
+                    : "<li>Aucune prédiction disponible</li>"}
+            </ul>
+
+            <h5 class="mt-4">📈 Évolution dans le temps :</h5>
+            <ul>
+                ${Array.isArray(data.evolution_overview) && data.evolution_overview.length > 0
+                    ? data.evolution_overview.map(e => `
+                        <li>
+                            <strong>${e.client} (${e.industry})</strong> - ${e.product}, ${e.stage} →
+                            <strong>${e.latest_prediction.toLocaleString('fr-FR')} TND</strong>
+                            ${e.previous_prediction !== null ? `(précédente : ${e.previous_prediction.toLocaleString('fr-FR')} TND)` : ""}
+                            ${e.evolution !== null ? `📈 Évolution : ${e.evolution.toLocaleString('fr-FR')} TND` : ""}
+                            (${e.created_at})
+                        </li>
+                    `).join("") : "<li>Aucune évolution disponible</li>"}
+            </ul>
+        </div>
+    `;
+
+
+            // Met à jour previousOverview pour la prochaine comparaison
+            previousOverview = data;
+
+        } catch (error) {
+            console.error("❌ Erreur fetch :", error);
+              document.getElementById("resultsContainer").innerHTML = `
+        <div class="alert alert-danger mt-3">
+            ❌ Erreur lors de la récupération des prédictions globales : ${error.message}
+        </div>
+    `;
+
+        }
+    }
+
+    // Pour rafraîchir automatiquement toutes les 10 secondes (ou après un event spécifique), tu peux appeler régulièrement :
+    setInterval(getPredictionsOverview, 10000);
+
+
 
     // Initialisation au chargement de la page
     window.onload = () => {
