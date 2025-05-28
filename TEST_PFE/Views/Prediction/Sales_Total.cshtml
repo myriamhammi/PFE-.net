@@ -1,12 +1,117 @@
 ﻿@{
     ViewData["Title"] = "Prédiction Montant total de la commande";
 }
-
+<!DOCTYPE html>
+<html lang="fr">
+<head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --ey-yellow: #ffe600;
+            --ey-yellow-dark: #e6d600;
+            --dark-bg: #333333;
+            --light-text: #ffffff;
+            --muted-gray: #cccccc;
+            --neutral: #999999;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--dark-bg);
+            padding-top: 80px; /* si tu as une navbar fixe en haut */
+        }
+
+        /* Conteneur principal centré avec largeur max */
+        .container {
+            flex: 1; /* prend tout l’espace disponible */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .navbar-custom {
+            background-color: var(--light-text);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            color: var(--dark-bg);
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: var(--neutral);
+            font-weight: 600;
+        }
+
+            .nav-link:hover, .nav-link.active {
+                color: var(--ey-yellow);
+            }
+
+        .btn-profile {
+            background-color: var(--ey-yellow);
+            color: var(--dark-bg);
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+        }
+
+        footer.footer {
+            background-color: var(--dark-bg);
+            color: var(--muted-gray);
+            text-align: center;
+            padding: 1rem;
+            /* plus besoin de position fixed ou absolute */
+        }
+
+        .btn-social {
+            color: var(--muted-gray);
+            font-size: 1.3rem;
+            margin: 0 0.5rem;
+        }
+
+            .btn-social:hover {
+                color: var(--ey-yellow);
+            }
+    </style>
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand" href="~/index.html">BI 360°</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#kpis">KPIs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#etl">ETL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#crm">CRM</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboards</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#team">Notre équipe</a></li>
+                </ul>
+                <button class="btn btn-profile">Myriam HAMMI</button>
+            </div>
+        </div>
+    </nav>
+    
 
 <div class="container mt-5">
     <h2 class="mb-4">Estimation du montant total de la commande</h2>
-
+    
     <div id="formsContainer">
         <!-- Premier formulaire (prototype à dupliquer) -->
         <div class="prediction-form card shadow-lg p-4 mb-4">
@@ -86,7 +191,41 @@
 
     <!-- Bouton global pour lancer toutes les prédictions si nécessaire -->
     <!-- <button id="predictBtn" class="btn btn-success mt-4" onclick="makeAllPredictions()">Lancer toutes les prédictions</button> -->
+    <!-- Popup Bootstrap (modale) -->
+    <div class="modal fade" id="predictionModal" tabindex="-1" aria-labelledby="predictionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="predictionModalLabel">Prédiction enregistrée</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    La prédiction a été effectuée avec succès !
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+    <footer style="background-color: #2c2c2c; color: white; padding: 10px 0; text-align: center;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                <div class="col-lg-4 my-3 my-lg-0">
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <a class="link-light text-decoration-none me-3" href="#!">Privacy Policy</a>
+                    <a class="link-light text-decoration-none" href="#!">Terms of Use</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 <script>
     async function loadClients(selectElement) {
@@ -186,7 +325,7 @@
             const result = await response.json();
             const resultsContainer = document.getElementById("resultsContainer");
 
-                if (response.ok) {
+                   if (response.ok) {
         resultsContainer.innerHTML += `
             <div class="card border-info shadow-sm mb-3">
                 <div class="card-body">
@@ -197,7 +336,12 @@
                 </div>
             </div>
         `;
+
+        // ✅ Afficher la popup en dehors du template string
+        const modal = new bootstrap.Modal(document.getElementById('predictionModal'));
+        modal.show();
     }
+
      else {
                 resultsContainer.innerHTML += `<div class="alert alert-danger mt-3">Erreur pour ${clientName} : ${result.error || result.message}</div>`;
             }
@@ -396,3 +540,7 @@
         loadClients(firstSelect);
     };
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
