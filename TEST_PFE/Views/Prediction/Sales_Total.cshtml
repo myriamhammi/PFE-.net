@@ -66,9 +66,11 @@
                     </select>
                 </div>
 
-                <div class="col-12 text-end">
-                    <button class="btn btn-primary mt-3" onclick="makePrediction(this)">Lancer la prédiction</button>
+                <div class="col-12 d-flex justify-content-between mt-3">
+                    <button class="btn btn-danger d-none remove-btn" onclick="removeForm(this)">🗑️ Supprimer ce formulaire</button>
+                    <button class="btn btn-primary" onclick="makePrediction(this)">Lancer la prédiction</button>
                 </div>
+
             </div>
         </div>
     </div>
@@ -132,7 +134,17 @@
             }
         });
 
+        // Afficher bouton de suppression
+        const removeBtn = clone.querySelector(".remove-btn");
+        removeBtn.classList.remove("d-none");
+
+
         container.appendChild(clone);
+    }
+
+    function removeForm(button) {
+        const form = button.closest(".prediction-form");
+        form.remove();
     }
 
     async function makePrediction(button) {
