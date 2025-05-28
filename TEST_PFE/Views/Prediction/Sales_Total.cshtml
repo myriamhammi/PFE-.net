@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Prédiction Montant total de la commande";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container mt-5">
+    <h2 class="mb-4">Estimation du montant total de la commande</h2>
+
+    <div class="card shadow-lg p-4">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="client_name" class="form-label">Nom du client</label>
+                <input type="text" class="form-control" id="client_name" placeholder="Client X" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="industry" class="form-label">Secteur d’activité</label>
+                <select class="form-select" id="industry">
+                    <option>Technology</option>
+                    <option>Finance</option>
+                    <option>Healthcare</option>
+                    <option>Retail</option>
+                    <option>Education</option>
+                    <option>Manufacturing</option>
+                    <option>Real Estate</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="revenue" class="form-label">Revenu potentiel (TND)</label>
+                <input type="range" class="form-range" min="1000" max="200000" step="1000" id="revenue" oninput="revenueOutput.value = revenue.value" />
+                <output id="revenueOutput">1000</output>
+            </div>
+
+            <div class="col-md-6">
+                <label for="quote_total" class="form-label">Montant du devis (TND)</label>
+                <input type="number" class="form-control" id="quote_total" placeholder="75000" />
+            </div>
+
+            <div class="col-md-6">
+                <label for="stage" class="form-label">Étape de l'opportunité</label>
+                <select class="form-select" id="stage">
+                    <option>Negotiation</option>
+                    <option>Closed Won</option>
+                    <option>Closed Lost</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="product" class="form-label">Produit concerné</label>
+                <select class="form-select" id="product">
+                    <option>ERP System</option>
+                    <option>Business Analytics</option>
+                    <option>Custom Development</option>
+                    <option>Cybersecurity Suite</option>
+                    <option>IT Support</option>
+                    <option>Cloud Hosting</option>
+                    <option>CRM Software</option>
+                </select>
+            </div>
+
+            <div class="col-12 text-end">
+                <button class="btn btn-primary mt-3" id="predictBtn" onclick="makePrediction()">Lancer la prédiction</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-4 d-none" id="resultBox">
+        <h5 class="alert-heading">Résultat de la prédiction</h5>
+        <p id="predictionResult"></p>
+    </div>
+</div>
+
+<script>
+      async function makePrediction() {
+        const clientName = document.getElementById("client_name").value;
+        const industry = document.getElementById("industry").value;
+        const stage = document.getElementById("stage").value;
+        const product = document.getElementById("product").value;
+        const revenue = parseFloat(document.getElementById("revenue").value);
+        const quote = parseFloat(document.getElementById("quote_total").value);
+
+        const payload = {
+            Full_Name: clientName,
+            client_name: clientName,
+            customer_industry: industry,
+            opportunity_stage: stage,
+            product_name: product,
+            Revenue_Potential: revenue,
+            Quote_Total: quote
+        };
+
+        try {
+            const response = await fetch("http://127.0.0.1:5001/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                const box = document.getElementById("resultBox");
+                box.classList.remove("d-none");
+
+                document.getElementById("predictionResult").innerHTML = `
+                    <strong>Modèle utilisé :</strong> ${result.model}<br/>
+                    <strong>Statut client :</strong> ${result.client_status}<br/>
+                    <strong>Montant estimé :</strong> ${result.prediction.toLocaleString()} €
+                `;
+            } else {
+                alert("Erreur: " + result.error || result.message);
+            }
+
+        } catch (error) {
+            alert("Erreur lors de la récupération des prédictions: " + error.message);
+        }
+    }
+
+</script>

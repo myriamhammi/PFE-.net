@@ -30,7 +30,12 @@ namespace TEST_PFE.Controllers
             return View();
         }
 
-       
+        public IActionResult Sales_Total()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Predict([FromBody] PredictionInput input)
         {
@@ -82,8 +87,40 @@ namespace TEST_PFE.Controllers
 
             await cmd.ExecuteNonQueryAsync();
         }
+        public async Task<Prediction_2_Response> PredictAsync(Prediction_2 request)
+        { 
+            var response = await _httpClient.PostAsJsonAsync("http://localhost:5001/predict", request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var predictionResult = await response.Content.ReadFromJsonAsync<Prediction_2_Response>();
+                return predictionResult;
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Erreur lors de l’appel à l’API Flask : {error}");
+            }
+        }
+
+        // Action HTTP POST exposée à ton front
+        [HttpPost("predict")]
+        public async Task<IActionResult> Post([FromBody] Prediction_2 request)
+        {
+            try
+            {
+                var result = await PredictAsync(request);
+                return Ok(result); // Renvoie : { client_status, model, prediction }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
     }
+
+
     // Modèle pour désérialiser la réponse Flask
     public class PredictionResultResponse
     {
