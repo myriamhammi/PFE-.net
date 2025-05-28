@@ -186,16 +186,19 @@
             const result = await response.json();
             const resultsContainer = document.getElementById("resultsContainer");
 
-            if (response.ok) {
-                resultsContainer.innerHTML += `
-                    <div class="alert alert-info mt-3">
-                        <h5>Résultat pour ${clientName}</h5>
-                        <strong>Modèle utilisé :</strong> ${result.model}<br/>
-                        <strong>Statut client :</strong> ${result.client_status}<br/>
-                        <strong>Montant estimé :</strong> ${result.prediction.toLocaleString()} TND
-                    </div>
-                `;
-            } else {
+                if (response.ok) {
+        resultsContainer.innerHTML += `
+            <div class="card border-info shadow-sm mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-primary fw-bold">${clientName}</h5>
+                    <p class="card-text mb-1"><strong>Modèle utilisé :</strong> ${result.model}</p>
+                    <p class="card-text mb-1"><strong>Statut client :</strong> ${result.client_status}</p>
+                    <p class="card-text fs-5"><strong>💰 Montant estimé :</strong> <span class="text-success">${result.prediction.toLocaleString()} TND</span></p>
+                </div>
+            </div>
+        `;
+    }
+     else {
                 resultsContainer.innerHTML += `<div class="alert alert-danger mt-3">Erreur pour ${clientName} : ${result.error || result.message}</div>`;
             }
         } catch (error) {
@@ -205,6 +208,8 @@
 
 
      let previousOverview = null; // Stockage de la dernière vue d'ensemble
+     let previousPredictionsMap = {}; // Stocke l'évolution individuelle par client-produit-étape
+
 
         function formatEvolution(oldValue, newValue) {
         if (oldValue === null || oldValue === undefined) return "";
@@ -240,60 +245,129 @@
             const container = document.getElementById("resultsContainer");
 
             // Affichage avec comparaison à la donnée précédente
-                container.innerHTML = `
-        <div class="alert alert-secondary mt-4">
-            <h4 class="mb-3">📊 Vue d'ensemble des prédictions</h4>
+                    container.innerHTML = `
+        <div class="card bg-light shadow-sm mt-4">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">📊 Vue d'ensemble des prédictions</h4>
+            </div>
+            <div class="card-body">
+                <div class="row g-4">
+                       <div class="col-md-6">
+                        <div class="border-start border-4 border-primary ps-3">
+                            <h6 class="text-muted">Total des prédictions</h6>
+                            <p class="fs-4 fw-bold">
+                                ${data.total_predictions ?? "N/A"}
+                                ${previousOverview && previousOverview.total_predictions != null
+                                    ? formatEvolution(previousOverview.total_predictions, data.total_predictions)
+                                    : ""}
+                            </p>
+                        </div>
+                    </div>
 
-            <p><strong>Total des prédictions :</strong> ${data.total_predictions ?? "N/A"}${previousOverview ? formatEvolution(previousOverview.total_predictions, data.total_predictions) : ""}</p>
+                    <div class="col-md-6">
+                        <div class="border-start border-4 border-success ps-3">
+                            <h6 class="text-muted">Moyenne des montants estimés</h6>
+                            <p class="fs-4 fw-bold">${data.average_prediction?.toLocaleString('fr-FR') ?? "N/A"} TND
+                                ${previousOverview ? formatEvolution(previousOverview.average_prediction, data.average_prediction) : ""}
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
-            <p><strong>Moyenne des montants estimés :</strong> ${data.average_prediction?.toLocaleString('fr-FR') ?? "N/A"} TND${previousOverview ? formatEvolution(previousOverview.average_prediction, data.average_prediction) : ""}</p>
+                <div class="mt-4">
+                    <h5>📌 Répartition par secteur d'activité</h5>
+                    <ul class="list-group list-group-flush">
+                        ${Object.entries(data.industry_distribution || {}).map(([key, val]) => `
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${key}
+                                <span class="badge bg-primary rounded-pill">${val}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    ${previousOverview ? `<small class="text-muted mt-2 d-block">Évolution : ${formatDistributionEvolution(previousOverview.industry_distribution, data.industry_distribution)}</small>` : ""}
+                </div>
 
-            <h5 class="mt-4">📌 Répartition par secteur d’activité :</h5>
-            <ul>
-                ${data.industry_distribution
-                    ? Object.entries(data.industry_distribution).map(([k, v]) => `<li>${k} : ${v}</li>`).join("")
-                    : "<li>Aucune donnée</li>"}
-            </ul>
-            ${previousOverview
-                ? `<small>${formatDistributionEvolution(previousOverview.industry_distribution, data.industry_distribution)}</small>`
-                : ""}
-
-            <h5 class="mt-4">📌 Répartition par étape :</h5>
-            <ul>
-                ${data.stage_distribution
-                    ? Object.entries(data.stage_distribution).map(([k, v]) => `<li>${k} : ${v}</li>`).join("")
-                    : "<li>Aucune donnée</li>"}
-            </ul>
-            ${previousOverview
-                ? `<small>${formatDistributionEvolution(previousOverview.stage_distribution, data.stage_distribution)}</small>`
-                : ""}
-
-            <h5 class="mt-4">🕒 Dernières prédictions :</h5>
-            <ul>
-                ${Array.isArray(data.latest_predictions)
-                    ? data.latest_predictions.map(pred => `
-                        <li>
-                            <strong>${pred.client} (${pred.industry})</strong> - ${pred.product}, ${pred.stage} →
-                            <strong>${pred.prediction.toLocaleString('fr-FR')} TND</strong> (${pred.created_at})
-                        </li>
-                    `).join("")
-                    : "<li>Aucune prédiction disponible</li>"}
-            </ul>
-
-            <h5 class="mt-4">📈 Évolution dans le temps :</h5>
-            <ul>
-                ${Array.isArray(data.evolution_overview) && data.evolution_overview.length > 0
-                    ? data.evolution_overview.map(e => `
-                        <li>
-                            <strong>${e.client} (${e.industry})</strong> - ${e.product}, ${e.stage} →
-                            <strong>${e.latest_prediction.toLocaleString('fr-FR')} TND</strong>
-                            ${e.previous_prediction !== null ? `(précédente : ${e.previous_prediction.toLocaleString('fr-FR')} TND)` : ""}
-                            ${e.evolution !== null ? `📈 Évolution : ${e.evolution.toLocaleString('fr-FR')} TND` : ""}
-                            (${e.created_at})
-                        </li>
-                    `).join("") : "<li>Aucune évolution disponible</li>"}
-            </ul>
+                <div class="mt-4">
+                    <h5>🎯 Répartition par étape d'opportunité</h5>
+                    <ul class="list-group list-group-flush">
+                        ${Object.entries(data.stage_distribution || {}).map(([key, val]) => `
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${key}
+                                <span class="badge bg-success rounded-pill">${val}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                    ${previousOverview ? `<small class="text-muted mt-2 d-block">Évolution : ${formatDistributionEvolution(previousOverview.stage_distribution, data.stage_distribution)}</small>` : ""}
+                </div>
+            </div>
         </div>
+            <div class="row g-4 mt-4">
+
+        <!-- 🕒 Dernières prédictions -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3"><i class="bi bi-clock-history text-primary me-2"></i>Dernières prédictions</h5>
+                    <ul class="list-group list-group-flush">
+                        ${
+                            Array.isArray(data.latest_predictions) && data.latest_predictions.length > 0
+                            ? data.latest_predictions.map(pred => `
+                                <li class="list-group-item">
+                                    <strong>${pred.client} (${pred.industry})</strong><br>
+                                    ${pred.product}, ${pred.stage} <br>
+                                    <span class="text-primary fw-bold">${pred.prediction.toLocaleString('fr-FR')} TND</span>
+                                    <small class="text-muted d-block mt-1">${pred.created_at}</small>
+                                </li>
+                            `).join("")
+                            : `<li class="list-group-item text-muted">Aucune prédiction disponible</li>`
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📈 Évolution dans le temps -->
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3"><i class="bi bi-graph-up-arrow text-success me-2"></i>Évolution dans le temps</h5>
+                    <ul class="list-group list-group-flush">
+                        ${
+                            Array.isArray(data.evolution_overview) && data.evolution_overview.length > 0
+                                ? data.evolution_overview.map(e => {
+        const key = `${e.client}|${e.product}|${e.stage}`;
+        const previous = previousPredictionsMap[key];
+        // Mise à jour du cache avec la dernière valeur
+        previousPredictionsMap[key] = e.latest_prediction;
+
+        const evolution = previous !== undefined ? e.latest_prediction - previous : null;
+
+        return `
+            <li class="list-group-item">
+                <strong>${e.client} (${e.industry})</strong><br>
+                ${e.product}, ${e.stage} <br>
+                <span class="text-success fw-bold">${e.latest_prediction.toLocaleString('fr-FR')} TND</span>
+                ${
+                    previous !== undefined
+                    ? `<span class="fw-semibold d-block ${evolution >= 0 ? 'text-success' : 'text-danger'}">
+                        📈 Évolution : ${evolution >= 0 ? '+' : ''}${evolution.toLocaleString('fr-FR')} TND
+                      </span>`
+                    : `<span class="text-muted">Aucune donnée précédente</span>`
+                }
+                <small class="text-muted d-block mt-1">${e.created_at}</small>
+            </li>
+        `;
+    }).join("")
+
+                            : `<li class="list-group-item text-muted">Aucune évolution disponible</li>`
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     `;
 
 
