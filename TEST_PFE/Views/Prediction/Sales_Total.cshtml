@@ -7,79 +7,149 @@
 <div class="container mt-5">
     <h2 class="mb-4">Estimation du montant total de la commande</h2>
 
-    <div class="card shadow-lg p-4">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label for="client_name" class="form-label">Nom du client</label>
-                <input type="text" class="form-control" id="client_name" placeholder="Client X" />
-            </div>
+    <div id="formsContainer">
+        <!-- Premier formulaire (prototype à dupliquer) -->
+        <div class="prediction-form card shadow-lg p-4 mb-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Nom du client</label>
+                    <select class="form-select client_name" onchange="toggleCustomClient(this)">
+                        <option disabled selected>Choisissez un client</option>
+                        <option value="__custom__">➕ Nouveau client</option>
+                    </select>
+                    <input type="text" class="form-control custom_client_name d-none" placeholder="Entrez le nom complet du client" />
+                </div>
 
-            <div class="col-md-6">
-                <label for="industry" class="form-label">Secteur d’activité</label>
-                <select class="form-select" id="industry">
-                    <option>Technology</option>
-                    <option>Finance</option>
-                    <option>Healthcare</option>
-                    <option>Retail</option>
-                    <option>Education</option>
-                    <option>Manufacturing</option>
-                    <option>Real Estate</option>
-                </select>
-            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Secteur d’activité</label>
+                    <select class="form-select industry">
+                        <option>Technology</option>
+                        <option>Finance</option>
+                        <option>Healthcare</option>
+                        <option>Retail</option>
+                        <option>Education</option>
+                        <option>Manufacturing</option>
+                        <option>Real Estate</option>
+                    </select>
+                </div>
 
-            <div class="col-md-6">
-                <label for="revenue" class="form-label">Revenu potentiel (TND)</label>
-                <input type="range" class="form-range" min="1000" max="200000" step="1000" id="revenue" oninput="revenueOutput.value = revenue.value" />
-                <output id="revenueOutput">1000</output>
-            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Revenu potentiel (TND)</label>
+                    <input type="range" class="form-range revenue" min="1000" max="200000" step="1000" oninput="this.nextElementSibling.value = this.value" />
+                    <output class="revenueOutput">1000</output>
+                </div>
 
-            <div class="col-md-6">
-                <label for="quote_total" class="form-label">Montant du devis (TND)</label>
-                <input type="number" class="form-control" id="quote_total" placeholder="75000" />
-            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Montant du devis (TND)</label>
+                    <input type="number" class="form-control quote_total" placeholder="75000" />
+                </div>
 
-            <div class="col-md-6">
-                <label for="stage" class="form-label">Étape de l'opportunité</label>
-                <select class="form-select" id="stage">
-                    <option>Negotiation</option>
-                    <option>Closed Won</option>
-                    <option>Closed Lost</option>
-                </select>
-            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Étape de l'opportunité</label>
+                    <select class="form-select stage">
+                        <option>Negotiation</option>
+                        <option>Closed Won</option>
+                        <option>Closed Lost</option>
+                    </select>
+                </div>
 
-            <div class="col-md-6">
-                <label for="product" class="form-label">Produit concerné</label>
-                <select class="form-select" id="product">
-                    <option>ERP System</option>
-                    <option>Business Analytics</option>
-                    <option>Custom Development</option>
-                    <option>Cybersecurity Suite</option>
-                    <option>IT Support</option>
-                    <option>Cloud Hosting</option>
-                    <option>CRM Software</option>
-                </select>
-            </div>
+                <div class="col-md-6">
+                    <label class="form-label">Produit concerné</label>
+                    <select class="form-select product">
+                        <option>ERP System</option>
+                        <option>Business Analytics</option>
+                        <option>Custom Development</option>
+                        <option>Cybersecurity Suite</option>
+                        <option>IT Support</option>
+                        <option>Cloud Hosting</option>
+                        <option>CRM Software</option>
+                    </select>
+                </div>
 
-            <div class="col-12 text-end">
-                <button class="btn btn-primary mt-3" id="predictBtn" onclick="makePrediction()">Lancer la prédiction</button>
+                <div class="col-12 text-end">
+                    <button class="btn btn-primary mt-3" onclick="makePrediction(this)">Lancer la prédiction</button>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="alert alert-info mt-4 d-none" id="resultBox">
-        <h5 class="alert-heading">Résultat de la prédiction</h5>
-        <p id="predictionResult"></p>
-    </div>
+    <button id="addFormBtn" type="button" class="btn btn-warning mt-3 fw-bold" onclick="addForm()">
+        ➕ Ajouter un formulaire de prédiction
+    </button>
+
+    <div id="resultsContainer" class="mt-4"></div>
+
+    <!-- Bouton global pour lancer toutes les prédictions si nécessaire -->
+    <!-- <button id="predictBtn" class="btn btn-success mt-4" onclick="makeAllPredictions()">Lancer toutes les prédictions</button> -->
 </div>
 
 <script>
-      async function makePrediction() {
-        const clientName = document.getElementById("client_name").value;
-        const industry = document.getElementById("industry").value;
-        const stage = document.getElementById("stage").value;
-        const product = document.getElementById("product").value;
-        const revenue = parseFloat(document.getElementById("revenue").value);
-        const quote = parseFloat(document.getElementById("quote_total").value);
+    async function loadClients(selectElement) {
+        try {
+            const response = await fetch("http://127.0.0.1:5001/get_clients");
+            const clients = await response.json();
+
+            selectElement.innerHTML = `
+                <option disabled selected>Choisissez un client</option>
+                <option value="__custom__">➕ Nouveau client</option>
+            `;
+            clients.forEach(client => {
+                const option = document.createElement("option");
+                option.value = client;
+                option.text = client;
+                selectElement.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Erreur lors du chargement des clients:", error);
+        }
+    }
+
+    function toggleCustomClient(select) {
+        const container = select.closest(".prediction-form");
+        const customInput = container.querySelector(".custom_client_name");
+        customInput.classList.toggle("d-none", select.value !== "__custom__");
+        if (select.value === "__custom__") customInput.focus();
+    }
+
+    function addForm() {
+        const container = document.getElementById("formsContainer");
+        const template = container.querySelector(".prediction-form");
+        const clone = template.cloneNode(true);
+
+        // Reset inputs
+        clone.querySelectorAll("input, select, output").forEach(el => {
+            if (el.tagName === "SELECT") {
+                if (el.classList.contains("client_name")) {
+                    loadClients(el);
+                } else {
+                    el.selectedIndex = 0;
+                }
+            } else if (el.type === "range") {
+                el.value = 1000;
+                el.nextElementSibling.value = 1000;
+            } else {
+                el.value = "";
+            }
+        });
+
+        container.appendChild(clone);
+    }
+
+    async function makePrediction(button) {
+        const form = button.closest(".prediction-form");
+        const clientSelect = form.querySelector(".client_name");
+        const customClientInput = form.querySelector(".custom_client_name");
+        const clientName = clientSelect.value === "__custom__" ? customClientInput.value : clientSelect.value;
+        const industry = form.querySelector(".industry").value;
+        const stage = form.querySelector(".stage").value;
+        const product = form.querySelector(".product").value;
+        const revenue = parseFloat(form.querySelector(".revenue").value);
+        const quote = parseFloat(form.querySelector(".quote_total").value);
+
+        if (!clientName || isNaN(revenue) || isNaN(quote)) {
+            alert("Veuillez remplir tous les champs correctement.");
+            return;
+        }
 
         const payload = {
             Full_Name: clientName,
@@ -99,23 +169,28 @@
             });
 
             const result = await response.json();
+            const resultsContainer = document.getElementById("resultsContainer");
 
             if (response.ok) {
-                const box = document.getElementById("resultBox");
-                box.classList.remove("d-none");
-
-                document.getElementById("predictionResult").innerHTML = `
-                    <strong>Modèle utilisé :</strong> ${result.model}<br/>
-                    <strong>Statut client :</strong> ${result.client_status}<br/>
-                    <strong>Montant estimé :</strong> ${result.prediction.toLocaleString()} €
+                resultsContainer.innerHTML += `
+                    <div class="alert alert-info mt-3">
+                        <h5>Résultat pour ${clientName}</h5>
+                        <strong>Modèle utilisé :</strong> ${result.model}<br/>
+                        <strong>Statut client :</strong> ${result.client_status}<br/>
+                        <strong>Montant estimé :</strong> ${result.prediction.toLocaleString()} TND
+                    </div>
                 `;
             } else {
-                alert("Erreur: " + result.error || result.message);
+                resultsContainer.innerHTML += `<div class="alert alert-danger mt-3">Erreur pour ${clientName} : ${result.error || result.message}</div>`;
             }
-
         } catch (error) {
-            alert("Erreur lors de la récupération des prédictions: " + error.message);
+            document.getElementById("resultsContainer").innerHTML += `<div class="alert alert-danger mt-3">Erreur réseau pour ${clientName} : ${error.message}</div>`;
         }
     }
 
+    // Initialisation au chargement de la page
+    window.onload = () => {
+        const firstSelect = document.querySelector(".client_name");
+        loadClients(firstSelect);
+    };
 </script>
