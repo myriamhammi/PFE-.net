@@ -5,24 +5,33 @@ using System.Text.Json;
 using TEST_PFE.Ser;
 using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
+using System.Net.Http;
+using TEST_PFE.controllers;
 
 namespace TEST_PFE.Controllers
 {
-    
+    [Route("api/prediction")]
+    [ApiController]
     public class PredictionController : Controller
     {
         private readonly HttpClient _httpClient;
         private readonly string _connectionString;
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        private readonly ILogger<PredictionController> _logger;
 
 
 
-
-        public PredictionController(IConfiguration configuration)
+        public PredictionController(IConfiguration configuration, IHttpClientFactory httpClientFactory, ILogger<PredictionController> logger)
         {
             _httpClient = new HttpClient();
+            _httpClientFactory = httpClientFactory;
             _httpClient.BaseAddress = new Uri("http://127.0.0.1:5001/"); // Flask API
 
             _connectionString = configuration.GetValue<string>("Prediction_Connection");
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+
         }
 
         public IActionResult gain_opp()
@@ -33,6 +42,11 @@ namespace TEST_PFE.Controllers
         public IActionResult Sales_Total()
         {
             return View();
+        }
+        [HttpGet("/Prediction/Order_status")]
+        public IActionResult Order_status()
+        {
+            return View("Order_status");
         }
 
 
@@ -117,6 +131,95 @@ namespace TEST_PFE.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        // Endpoint pour Order status
+
+        // GET: /api/prediction/stats/overview
+        [HttpGet("stats/overview")]
+        public async Task<IActionResult> GetStats()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync("http://localhost:5001/stats/overview");
+            var json = await response.Content.ReadAsStringAsync();
+
+            // Désérialise la chaîne JSON pour la retourner comme objet JSON propre
+            var data = JsonSerializer.Deserialize<object>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            return Json(data); 
+        }
+
+
+        [HttpGet("recent")]
+        public async Task<IActionResult> GetRecentPredictions()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync("http://localhost:5001/predictions/recent");
+            var json = await response.Content.ReadAsStringAsync();
+            return Content(json, "application/json");
+        }
+
+        [HttpGet("clients")]
+        public async Task<IActionResult> GetClients()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync("http://localhost:5001/clients");
+            var json = await response.Content.ReadAsStringAsync();
+            return Content(json, "application/json");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostPrediction([FromBody] Prediction3 data)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient();
+                
+
+                // Sérialisation correcte en JSON
+                var json = JsonSerializer.Serialize(data);
+                Console.WriteLine("==== JSON envoyé à Flask ====");
+                Console.WriteLine(json);
+                //Console.WriteLine("Payload envoyé à Flask : " + json);
+
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                var response = await client.PostAsync("http://localhost:5001/predict", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine("==== Réponse Flask ====");
+                Console.WriteLine($"Code HTTP : {(int)response.StatusCode}");
+                Console.WriteLine($"Contenu : {responseContent}");
+
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode((int)response.StatusCode, $"Erreur depuis Flask API : {responseContent}");
+                }
+
+                return Content(responseContent, "application/json");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception: " + ex.ToString()); 
+                return StatusCode(500, $"Erreur interne : {ex.Message}");
+            }
+
+
+        }
+
+
+        [HttpGet("stats/by_client")]
+        public async Task<IActionResult> GetClientStats()
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync("http://localhost:5001/stats/by_client");
+            var json = await response.Content.ReadAsStringAsync();
+            return Content(json, "application/json");
+        }
+
+
 
     }
 

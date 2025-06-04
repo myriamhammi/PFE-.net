@@ -1,0 +1,264 @@
+﻿@{
+    ViewData["Title"] = "Sales Prediction Status";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="max-w-7xl mx-auto p-6 bg-gray-100 min-h-screen">
+
+    <h1 class="text-3xl font-bold mb-4 text-gray-800">📊 Sales Prediction Dashboard</h1>
+    <!-- Prediction Form -->
+    <div class="bg-white p-6 rounded-xl shadow mt-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">🔮 Lancer une Prédiction</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input id="full_name" type="text" placeholder="Nom complet" class="p-2 border rounded-lg w-full" />
+            <label for="Industry" class="block text-sm font-medium text-gray-700">🏭 Secteur</label>
+            <select id="Industry" class="p-2 border rounded-lg w-full">
+                <option value="">-- Choisir un secteur --</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Finance">Finance</option>
+                <option value="Retail">Retail</option>
+                <option value="Technology">Technology</option>
+            </select>
+
+            <input id="Order_Total" type="number" placeholder="Montant total de la commande" class="p-2 border rounded-lg w-full" />
+            <input id="delai_livraison_jours" type="number" placeholder="Délai de livraison (jours)" class="p-2 border rounded-lg w-full" />
+            <input id="Order_Month" type="number" placeholder="Mois de commande (1-12)" class="p-2 border rounded-lg w-full" />
+            <input id="Order_Weekday" type="number" placeholder="Jour de la semaine (0=dim, 6=sam)" class="p-2 border rounded-lg w-full" />
+            <input id="Order_Quarter" type="number" placeholder="Trimestre (1-4)" class="p-2 border rounded-lg w-full" />
+            <input id="nb_lignes_produits" type="number" placeholder="Nombre de lignes produits" class="p-2 border rounded-lg w-full" />
+            <input id="quantite_totale" type="number" placeholder="Quantité totale" class="p-2 border rounded-lg w-full" />
+            <input id="prix_unitaire_moyen" type="number" step="0.01" placeholder="Prix unitaire moyen" class="p-2 border rounded-lg w-full" />
+            <input id="nb_produits_uniques" type="number" placeholder="Nombre de produits uniques" class="p-2 border rounded-lg w-full" />
+            <input id="prix_total_recalcule" type="number" step="0.01" placeholder="Prix total recalculé" class="p-2 border rounded-lg w-full" />
+            <input id="quantite_par_ligne" type="number" step="0.01" placeholder="Quantité par ligne" class="p-2 border rounded-lg w-full" />
+            <input id="prix_moyen_par_ligne" type="number" step="0.01" placeholder="Prix moyen par ligne" class="p-2 border rounded-lg w-full" />
+        </div>
+
+        <button onclick="sendPrediction()"
+                class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+            ⚙️ Prédire
+        </button>
+
+        <div id="predictionResult" class="mt-4 text-gray-800 font-medium"></div>
+    </div>
+
+
+    <!-- Client selector -->
+    <div class="mb-6">
+        <label for="clientSelect" class="block text-lg font-medium text-gray-700">👤 Select a client</label>
+        <select id="clientSelect" class="mt-2 w-full p-2 border border-gray-300 rounded-lg">
+            <option value="">-- Choose a client --</option>
+        </select>
+    </div>
+
+    <!-- Pie chart -->
+    <div class="mb-6 bg-white rounded-xl shadow p-4">
+        <h2 class="text-xl font-semibold mb-2">📈 Global Prediction Stats</h2>
+        <canvas id="globalChart" width="400" height="400"></canvas>
+    </div>
+
+    <!-- Latest predictions -->
+    <div>
+        <h2 class="text-xl font-semibold mb-2 text-gray-800">🕓 Recent Predictions</h2>
+        <div id="recentPredictions" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <!-- JS fills this -->
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    async function fetchClients() {
+        const res = await fetch("/api/prediction/clients");
+        const clients = await res.json();
+        const select = document.getElementById("clientSelect");
+        clients.forEach(client => {
+            const opt = document.createElement("option");
+            opt.value = client;
+            opt.innerText = client;
+            select.appendChild(opt);
+        });
+    }
+
+    //   async function fetchGlobalStats() {
+    //     const res = await fetch("/api/prediction/stats/overview");
+    //     const raw = await res.text();
+    //     console.log("RAW:", raw);
+
+    //     const stats = JSON.parse(raw); // si le backend ne renvoie pas un vrai objet JSON
+    //     console.log("Parsed stats:", stats);
+
+    //     const ctx = document.getElementById('globalChart').getContext('2d');
+    //     new Chart(ctx, {
+    //         type: 'pie',
+    //         data: {
+    //             labels: ['Validées', 'Annulées'],
+    //             datasets: [{
+    //                 label: 'Statistiques Globales',
+    //                 data: [stats.negatives, stats.positives],
+    //                 backgroundColor: ['#10b981', '#ef4444']
+    //             }]
+    //         }
+    //     });
+    // }
+
+        let globalChartInstance = null;
+
+    async function fetchGlobalStats() {
+        try {
+            const res = await fetch("/api/prediction/stats/overview");
+            const raw = await res.text();
+            console.log("RAW:", raw);
+
+            const stats = JSON.parse(raw);
+            console.log("Parsed stats:", stats);
+
+            const ctx = document.getElementById('globalChart').getContext('2d');
+
+            // Détruire l'ancien graphique s'il existe
+            if (globalChartInstance !== null) {
+                globalChartInstance.destroy();
+            }
+
+             // Créer un nouveau graphique
+            globalChartInstance = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Validées', 'Annulées'],
+                    datasets: [{
+                        label: 'Statistiques Globales',
+                        data: [stats.negatives, stats.positives],
+                        backgroundColor: ['#10b981', '#ef4444']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            
+
+           
+        } catch (error) {
+            console.error("Erreur lors de la récupération des statistiques :", error);
+        }
+    }
+
+    // Lancer la mise à jour automatique au chargement
+    window.addEventListener('load', () => {
+        fetchGlobalStats(); // Chargement initial
+        setInterval(fetchGlobalStats, 10000); // Rafraîchissement toutes les 10 secondes
+    });
+
+
+
+    async function fetchRecentPredictions() {
+        const res = await fetch("/api/prediction/recent");
+
+        if (!res.ok) {
+            console.error("Erreur lors de la récupération des prédictions récentes");
+            return;
+        }
+
+        const data = await res.json();
+        console.log(data);  // Pour voir la structure réelle
+
+        const container = document.getElementById("recentPredictions");
+        container.innerHTML = "";
+
+        data.forEach(item => {
+            const fullName = item.full_name || "Nom inconnu";
+            const industry = item.industry || "Industrie inconnue";
+            const prediction = item.prediction;  // suppose 0 ou 1
+            const prob = parseFloat(item.prob_class_1);
+            const probability = (!isNaN(prob) && prob >= 0 && prob <= 1) ? Math.round(prob * 100) : "?";
+            const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "Date inconnue";
+
+            const card = document.createElement("div");
+            card.className = "bg-white p-4 rounded-xl shadow hover:scale-105 transition-transform duration-300";
+            card.innerHTML = `
+                <h3 class="text-lg font-bold">${fullName}</h3>
+                <p class="text-sm text-gray-600">Secteur : ${industry}</p>
+                <p class="mt-1 text-gray-800 font-semibold">
+                    ${prediction === 1 ? '🚫 Annulée' : '✅ Validée'}
+                </p>
+                <div class="text-sm mt-1 text-gray-500">
+                    Probabilité : ${probability}% d'annulation
+                </div>
+                <div class="text-xs mt-2 text-gray-400">Le ${timestamp}</div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+
+
+           async function sendPrediction() {
+        try {
+            const body = {
+                Full_Name: document.getElementById("full_name").value.trim(),
+                Industry: document.getElementById("Industry").value.trim(),
+                Order_Total: parseFloat(document.getElementById("Order_Total").value),
+                delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
+                Order_Month: parseInt(document.getElementById("Order_Month").value),
+                Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
+                Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
+                nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
+                quantite_totale: parseInt(document.getElementById("quantite_totale").value),
+                prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
+                nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
+                prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
+                quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
+                prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
+            };
+
+               const response = await fetch("http://localhost:5001/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) throw new Error("Échec de la prédiction");
+
+            const result = await response.json();
+            console.log("Résultat de la prédiction :", result);
+
+            const prob = parseFloat(result.probability_class_1);
+            const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
+
+            const msg = result.prediction === 1
+                ? `❌ Résultat : Annulation probable (${isValidProb ? Math.round(prob * 100) : "?"}%)`
+                : `✅ Résultat : Validation probable (${isValidProb ? Math.round((1 - prob) * 100) : "?"}%)`;
+
+            document.getElementById("predictionResult").innerText = msg;
+
+            // Mise à jour des prédictions récentes et statistiques
+            await fetchRecentPredictions();
+            await fetchGlobalStats();
+
+        } catch (error) {
+            console.error("Erreur lors de la prédiction :", error);
+            document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
+        }
+    }
+
+
+
+    async function init() {
+        await fetchClients();
+        await fetchGlobalStats();
+        await fetchRecentPredictions();
+    }
+
+    window.onload = init;
+    document.addEventListener("DOMContentLoaded", fetchRecentPredictions);
+    document.addEventListener("DOMContentLoaded", fetchClients);
+
+</script>
