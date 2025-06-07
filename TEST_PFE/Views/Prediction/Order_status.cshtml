@@ -1,4 +1,4 @@
-﻿ @{
+﻿@{
     ViewData["Title"] = "Sales Prediction Status";
 }
 
@@ -24,18 +24,26 @@
     </section>
 
     <!-- Formulaire de prédiction -->
-    <div class="bg-white p-6 rounded-xl shadow mb-10">
+    <div class="bg-white p-6 rounded-xl shadow mb-10 prediction-form">
         <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">🔮 Lancer une Prédiction</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
             <div>
-                <input id="full_name" type="text" placeholder="Nom complet" class="p-2 border rounded-lg w-full" />
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nom du client</label>
+                <select id="full_name" class="p-2 border rounded-lg w-full" onchange="toggleCustomClient(this)">
+                    <option disabled selected>Choisissez un client</option>
+                    <option value="__custom__">➕ Nouveau client</option>
+                </select>
+                <div class="custom_client_name hidden mt-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nom du nouveau client</label>
+                    <input type="text" name="custom_client_name" class="p-2 border rounded-lg w-full" placeholder="Entrez un nom">
+                </div>
                 <small class="text-gray-500 text-xs mt-1 block">Exemple : Jean Dupont</small>
             </div>
 
+
             <div>
-                <label for="Industry" class="block text-sm font-medium text-gray-700 mb-1">🏭 Secteur</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">🏭 Secteur</label>
                 <select id="Industry" class="p-2 border rounded-lg w-full">
                     <option value="">-- Choisir un secteur --</option>
                     <option value="Healthcare">Healthcare (Santé)</option>
@@ -48,7 +56,7 @@
 
             <div>
                 <input id="Order_Total" type="number" placeholder="Montant total de la commande" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Ex : 1200.50 €</small>
+                <small class="text-gray-500 text-xs mt-1 block">Ex : 1200.50 TND</small>
             </div>
 
             <div>
@@ -83,7 +91,7 @@
 
             <div>
                 <input id="prix_unitaire_moyen" type="number" step="0.01" placeholder="Prix unitaire moyen" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Prix moyen par unité vendue (€)</small>
+                <small class="text-gray-500 text-xs mt-1 block">Prix moyen par unité vendue (TND)</small>
             </div>
 
             <div>
@@ -103,7 +111,7 @@
 
             <div>
                 <input id="prix_moyen_par_ligne" type="number" step="0.01" placeholder="Prix moyen par ligne" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Prix moyen d'une ligne de produit (€)</small>
+                <small class="text-gray-500 text-xs mt-1 block">Prix moyen d'une ligne de produit (TND)</small>
             </div>
 
         </div>
@@ -125,12 +133,35 @@
         </select>
     </div>
 
+    <div class="bg-white p-6 rounded shadow mt-6">
+        <h2 class="text-xl font-semibold mb-4">Résumé des Prédictions</h2>
+        <div id="summary" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-gray-700">
+            <div>
+                <p class="text-sm">Total</p>
+                <p class="text-xl font-bold" id="total_predictions">--</p>
+            </div>
+            <div>
+                <p class="text-sm">Validées</p>
+                <p class="text-xl font-bold" id="validations">--</p>
+            </div>
+            <div>
+                <p class="text-sm">Annulées</p>
+                <p class="text-xl font-bold" id="annulations">--</p>
+            </div>
+            <div>
+                <p class="text-sm">Taux d'annulation</p>
+                <p class="text-xl font-bold text-red-600" id="taux_annulation">--%</p>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Pie chart -->
     <div class="mb-6 bg-white rounded-xl shadow p-4">
         <h2 class="text-xl font-semibold mb-2">📈 Global Prediction Stats</h2>
         <canvas id="globalChart" width="400" height="400"></canvas>
     </div>
-
     <!-- Latest predictions -->
     <div>
         <h2 class="text-xl font-semibold mb-2 text-gray-800">🕓 Recent Predictions</h2>
@@ -142,40 +173,105 @@
 
 <script>
 
+        async function fetchPredictionSummary() {
+        try {
+            const res = await fetch("http://localhost:5001/api/prediction/summary");
+            const summary = await res.json();
 
-    async function fetchClients() {
-        const res = await fetch("/api/prediction/clients");
-        const clients = await res.json();
-        const select = document.getElementById("clientSelect");
-        clients.forEach(client => {
-            const opt = document.createElement("option");
-            opt.value = client;
-            opt.innerText = client;
-            select.appendChild(opt);
-        });
+            document.getElementById("total_predictions").textContent = summary.total_predictions;
+            document.getElementById("validations").textContent = summary.validations;
+            document.getElementById("annulations").textContent = summary.annulations;
+            document.getElementById("taux_annulation").textContent = (summary.taux_annulation * 100).toFixed(1) + " %";
+        } catch (err) {
+            console.error("Erreur lors de la récupération du résumé :", err);
+        }
     }
 
-    //   async function fetchGlobalStats() {
-    //     const res = await fetch("/api/prediction/stats/overview");
-    //     const raw = await res.text();
-    //     console.log("RAW:", raw);
 
-    //     const stats = JSON.parse(raw); // si le backend ne renvoie pas un vrai objet JSON
-    //     console.log("Parsed stats:", stats);
 
-    //     const ctx = document.getElementById('globalChart').getContext('2d');
-    //     new Chart(ctx, {
-    //         type: 'pie',
-    //         data: {
-    //             labels: ['Validées', 'Annulées'],
-    //             datasets: [{
-    //                 label: 'Statistiques Globales',
-    //                 data: [stats.negatives, stats.positives],
-    //                 backgroundColor: ['#10b981', '#ef4444']
-    //             }]
+
+    //      async function fetchClients() {
+    //     try {
+    //         const response = await fetch("http://localhost:5001/clients/crm");
+    //         const clients = await response.json();
+
+    //         if (!Array.isArray(clients)) {
+    //             throw new Error("Données inattendues reçues de l'API");
     //         }
-    //     });
+
+    //         const fullNameSelect = document.getElementById("full_name");
+
+    //         fullNameSelect.innerHTML = `
+    //             <option disabled selected>Choisissez un client</option>
+    //             <option value="__custom__">➕ Nouveau client</option>
+    //             ${clients.map(client => `<option value="${client.full_name}">${client.full_name}</option>`).join("")}
+    //         `;
+
+    //         // Ajout ou réajout du listener
+    //         fullNameSelect.addEventListener("change", () => toggleCustomClient(fullNameSelect));
+
+    //     } catch (error) {
+    //         console.error("Erreur lors du chargement des clients :", error);
+    //     }
     // }
+
+        async function fetchClients() {
+        try {
+            const response = await fetch("http://localhost:5001/clients/crm");
+            const clients = await response.json();
+
+            if (!Array.isArray(clients)) {
+                throw new Error("Données inattendues reçues de l'API");
+            }
+
+              const select = document.getElementById("full_name");  // minuscule ici
+             const clientSelectSummary = document.getElementById("clientSelect"); // vérifier si existe
+
+
+            // Vider les options existantes sauf le placeholder
+            select.innerHTML = `
+                <option disabled selected>Choisissez un client</option>
+                <option value="__custom__">➕ Nouveau client</option>
+            `;
+            clientSelectSummary.innerHTML = `<option value="">-- Choose a client --</option>`;
+
+            clients.forEach(client => {
+                const option = document.createElement("option");
+                option.value = client.full_name;
+                option.textContent = client.full_name;
+                select.appendChild(option);
+
+                const optionSummary = document.createElement("option");
+                optionSummary.value = client.full_name;
+                optionSummary.textContent = client.full_name;
+                clientSelectSummary.appendChild(optionSummary);
+            });
+        } catch (err) {
+            console.error("Erreur lors du chargement des clients :", err);
+        }
+    }
+
+
+    // function toggleCustomClient(selectElement) {
+    //     const customField = document.querySelector(".custom_client_name");
+    //     if (selectElement.value === "__custom__") {
+    //         customField.classList.remove("hidden");
+    //     } else {
+    //         customField.classList.add("hidden");
+    //     }
+    // }
+
+        function toggleCustomClient(selectElement) {
+        const customNameInput = document.querySelector(".custom_client_name");
+        if (selectElement.value === "__custom__") {
+            customNameInput.classList.remove("hidden");
+        } else {
+            customNameInput.classList.add("hidden");
+        }
+    }
+
+
+
 
         let globalChartInstance = null;
 
@@ -271,54 +367,59 @@
 
 
 
-           async function sendPrediction() {
-            try {
-                const body = {
-                        full_name: document.getElementById("full_name").value.trim(),
-                    Industry: document.getElementById("Industry").value.trim(),
-                    Order_Total: parseFloat(document.getElementById("Order_Total").value),
-                    delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
-                    Order_Month: parseInt(document.getElementById("Order_Month").value),
-                    Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
-                    Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
-                    nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
-                    quantite_totale: parseInt(document.getElementById("quantite_totale").value),
-                    prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
-                    nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
-                    prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
-                    quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
-                    prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
-                };
+               async function sendPrediction() {
+        try {
+                let fullName = document.getElementById("full_name").value;
+                if (fullName === "__custom__") {
+                fullName = document.querySelector(".custom_client_name input").value.trim();
+                }
 
-                   const response = await fetch("http://localhost:5001/predict", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
-                });
+            const body = {
+                Full_Name: fullName,   // <=== ici on utilise la bonne variable
+                Industry: document.getElementById("Industry").value.trim(),
+                Order_Total: parseFloat(document.getElementById("Order_Total").value),
+                delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
+                Order_Month: parseInt(document.getElementById("Order_Month").value),
+                Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
+                Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
+                nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
+                quantite_totale: parseFloat(document.getElementById("quantite_totale").value),
+                prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
+                nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
+                prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
+                quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
+                prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
+            };
 
-                if (!response.ok) throw new Error("Échec de la prédiction");
+            const response = await fetch("http://localhost:5001/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
 
-                const result = await response.json();
-                console.log("Résultat de la prédiction :", result);
+            if (!response.ok) throw new Error("Échec de la prédiction");
 
-                const prob = parseFloat(result.probability_class_1);
-                const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
+            const result = await response.json();
+            console.log("Résultat de la prédiction :", result);
 
-                const msg = result.prediction === 1
-                    ? `❌ Résultat : Annulation probable (${isValidProb ? Math.round(prob * 100) : "?"}%)`
-                    : `✅ Résultat : Validation probable (${isValidProb ? Math.round((1 - prob) * 100) : "?"}%)`;
+            const prob = parseFloat(result.probability_class_1);
+            const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
 
-                document.getElementById("predictionResult").innerText = msg;
+            const msg = result.prediction === 1
+                ? `❌ Résultat : Annulation probable (${isValidProb ? Math.round(prob * 100) : "?"}%)`
+                : `✅ Résultat : Validation probable (${isValidProb ? Math.round((1 - prob) * 100) : "?"}%)`;
 
-                // Mise à jour des prédictions récentes et statistiques
-                await fetchRecentPredictions();
-                await fetchGlobalStats();
+            document.getElementById("predictionResult").innerText = msg;
 
-            } catch (error) {
-                console.error("Erreur lors de la prédiction :", error);
-                document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
-            }
+            await fetchRecentPredictions();
+            await fetchGlobalStats();
+            await fetchPredictionSummary();
+
+        } catch (error) {
+            console.error("Erreur lors de la prédiction :", error);
+            document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
         }
+    }
 
 
     async function init() {
@@ -334,6 +435,8 @@ window.addEventListener('load', () => {
     fetchGlobalStats();
     setInterval(fetchGlobalStats, 10000);
     fetchRecentPredictions();
+    fetchPredictionSummary(); // 👈 Ajoute cette ligne
+
 });
 
 </script>

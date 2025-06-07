@@ -5,7 +5,7 @@ namespace TEST_PFE.Models
 
     public class Prediction3
     {
-        public string full_name { get; set; }
+        public string Full_Name { get; set; }
         public string Industry { get; set; }
         public float Order_Total { get; set; }
         public int delai_livraison_jours { get; set; }

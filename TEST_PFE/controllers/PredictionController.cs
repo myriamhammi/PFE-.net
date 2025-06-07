@@ -102,7 +102,7 @@ namespace TEST_PFE.Controllers
             await cmd.ExecuteNonQueryAsync();
         }
         public async Task<Prediction_2_Response> PredictAsync(Prediction_2 request)
-        { 
+        {
             var response = await _httpClient.PostAsJsonAsync("http://localhost:5001/predict", request);
 
             if (response.IsSuccessStatusCode)
@@ -148,7 +148,7 @@ namespace TEST_PFE.Controllers
                 PropertyNameCaseInsensitive = true
             });
 
-            return Json(data); 
+            return Json(data);
         }
 
 
@@ -176,7 +176,7 @@ namespace TEST_PFE.Controllers
             try
             {
                 var client = _httpClientFactory.CreateClient();
-                
+
 
                 // Sérialisation correcte en JSON
                 var json = JsonSerializer.Serialize(data);
@@ -202,12 +202,13 @@ namespace TEST_PFE.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Exception: " + ex.ToString()); 
+                Console.WriteLine("Exception: " + ex.ToString());
                 return StatusCode(500, $"Erreur interne : {ex.Message}");
             }
 
 
         }
+
 
 
         [HttpGet("stats/by_client")]
@@ -219,8 +220,42 @@ namespace TEST_PFE.Controllers
             return Content(json, "application/json");
         }
 
+        public async Task<PredictionSummary?> GetPredictionSummaryAsync()
+        {
+            try
+            {
+                HttpResponseMessage response = await _httpClient.GetAsync("http://localhost:5000/api/prediction/summary");
+
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                var json = await response.Content.ReadAsStringAsync();
+                var summary = JsonSerializer.Deserialize<PredictionSummary>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                return summary;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erreur lors de l'appel à l'API Flask : {ex.Message}");
+                return null;
+            }
 
 
+
+        }
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummary()
+        {
+            var summary = await GetPredictionSummaryAsync();
+
+            if (summary == null)
+                return StatusCode(500, "Erreur lors de l'appel à l'API Flask.");
+
+            return Ok(summary);
+        }
     }
 
 
@@ -230,4 +265,13 @@ namespace TEST_PFE.Controllers
         public double Prediction { get; set; }
         public string Model { get; set; }
     }
+
+        public class PredictionSummary
+        {
+            public int total_prediction { get; set; }
+            public int validations { get; set; }
+            public int annulations { get; set; }
+            public double taux_annulation { get; set; }
+        }
+
 }
