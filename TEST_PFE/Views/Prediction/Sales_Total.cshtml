@@ -1,10 +1,10 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Prédiction Montant total de la commande";
 }
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <style>
         :root {
             --ey-yellow: #ffe600;
@@ -118,85 +118,85 @@
             L'objectif est d'obtenir une prédiction basée sur un modèle intelligent "Random Forest" afin de mieux évaluer vos opportunités commerciales.
         </p>
         <div id="formsContainer">
-        <!-- Premier formulaire (prototype à dupliquer) -->
-        <div class="prediction-form card shadow-lg p-4 mb-4">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Nom du client</label>
-                    <select class="form-select client_name" onchange="toggleCustomClient(this)">
-                        <option disabled selected>Choisissez un client</option>
-                        <option value="__custom__">➕ Nouveau client</option>
-                    </select>
-                    <input type="text" class="form-control custom_client_name d-none" placeholder="Entrez le nom complet du client" />
-                </div>
+            <!-- Premier formulaire (prototype à dupliquer) -->
+            <div class="prediction-form card shadow-lg p-4 mb-4">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Nom du client</label>
+                        <select class="form-select client_name" onchange="toggleCustomClient(this)">
+                            <option disabled selected>Choisissez un client</option>
+                            <option value="__custom__">➕ Nouveau client</option>
+                        </select>
+                        <input type="text" class="form-control custom_client_name d-none" placeholder="Entrez le nom complet du client" />
+                    </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Secteur d’activité</label>
-                    <select class="form-select industry">
-                        <option>Technology</option>
-                        <option>Finance</option>
-                        <option>Healthcare</option>
-                        <option>Retail</option>
-                        <option>Education</option>
-                        <option>Manufacturing</option>
-                        <option>Real Estate</option>
-                    </select>
-                </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Secteur d’activité</label>
+                        <select class="form-select industry">
+                            <option>Technology</option>
+                            <option>Finance</option>
+                            <option>Healthcare</option>
+                            <option>Retail</option>
+                            <option>Education</option>
+                            <option>Manufacturing</option>
+                            <option>Real Estate</option>
+                        </select>
+                    </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Revenu potentiel (TND)</label>
-                    <input type="range" class="form-range revenue" min="1000" max="200000" step="1000" oninput="this.nextElementSibling.value = this.value" />
-                    <output class="revenueOutput">1000</output>
-                </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Revenu potentiel (TND)</label>
+                        <input type="range" class="form-range revenue" min="1000" max="200000" step="1000" oninput="this.nextElementSibling.value = this.value" />
+                        <output class="revenueOutput">1000</output>
+                    </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Montant du devis (TND)</label>
-                    <input type="number" class="form-control quote_total" placeholder="75000" />
-                </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Montant du devis (TND)</label>
+                        <input type="number" class="form-control quote_total" placeholder="75000" />
+                    </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Étape de l'opportunité</label>
-                    <select class="form-select stage">
-                        <option>Negotiation</option>
-                        <option>Closed Won</option>
-                        <option>Closed Lost</option>
-                    </select>
-                </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Étape de l'opportunité</label>
+                        <select class="form-select stage">
+                            <option>Negotiation</option>
+                            <option>Closed Won</option>
+                            <option>Closed Lost</option>
+                        </select>
+                    </div>
 
-                <div class="col-md-6">
-                    <label class="form-label">Produit concerné</label>
-                    <select class="form-select product">
-                        <option>ERP System</option>
-                        <option>Business Analytics</option>
-                        <option>Custom Development</option>
-                        <option>Cybersecurity Suite</option>
-                        <option>IT Support</option>
-                        <option>Cloud Hosting</option>
-                        <option>CRM Software</option>
-                    </select>
-                </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Produit concerné</label>
+                        <select class="form-select product">
+                            <option>ERP System</option>
+                            <option>Business Analytics</option>
+                            <option>Custom Development</option>
+                            <option>Cybersecurity Suite</option>
+                            <option>IT Support</option>
+                            <option>Cloud Hosting</option>
+                            <option>CRM Software</option>
+                        </select>
+                    </div>
 
-                <div class="col-12 d-flex justify-content-between mt-3">
-                    <button class="btn btn-danger d-none remove-btn" onclick="removeForm(this)">🗑️ Supprimer ce formulaire</button>
-                    <button class="btn btn-primary" onclick="makePrediction(this)">Lancer la prédiction</button>
-                </div>
+                    <div class="col-12 d-flex justify-content-between mt-3">
+                        <button class="btn btn-danger d-none remove-btn" onclick="removeForm(this)">🗑️ Supprimer ce formulaire</button>
+                        <button class="btn btn-primary" onclick="makePrediction(this)">Lancer la prédiction</button>
+                    </div>
 
+                </div>
             </div>
         </div>
-    </div>
 
-    <button id="addFormBtn" type="button" class="btn btn-warning mt-3 fw-bold" onclick="addForm()">
-        ➕ Ajouter un formulaire de prédiction
-    </button>
+        <button id="addFormBtn" type="button" class="btn btn-warning mt-3 fw-bold" onclick="addForm()">
+            ➕ Ajouter un formulaire de prédiction
+        </button>
 
-    <div id="resultsContainer" class="mt-4"></div>
-    <button class="btn btn-secondary mt-3" onclick="getPredictionsOverview()">📊 Voir les prédictions globales</button>
-
+        <div id="resultsContainer" class="mt-4"></div>
+        <button class="btn btn-secondary mt-3" onclick="getPredictionsOverview()">📊 Voir les prédictions globales</button>
 
 
-    <!-- Bouton global pour lancer toutes les prédictions si nécessaire -->
-    <!-- <button id="predictBtn" class="btn btn-success mt-4" onclick="makeAllPredictions()">Lancer toutes les prédictions</button> -->
-    <!-- Popup Bootstrap (modale) -->
+
+        <!-- Bouton global pour lancer toutes les prédictions si nécessaire -->
+        <!-- <button id="predictBtn" class="btn btn-success mt-4" onclick="makeAllPredictions()">Lancer toutes les prédictions</button> -->
+        <!-- Popup Bootstrap (modale) -->
         <!-- Modal pour afficher le résultat de la prédiction -->
         <div class="modal fade" id="predictionModal" tabindex="-1" aria-labelledby="predictionModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -213,7 +213,7 @@
         </div>
 
 
-</div>
+    </div>
     <footer style="background-color: #2c2c2c; color: white; padding: 10px 0; text-align: center;">
         <div class="container">
             <div class="row align-items-center">
@@ -231,321 +231,321 @@
         </div>
     </footer>
 
-<script>
-    async function loadClients(selectElement) {
-        try {
-            const response = await fetch("http://127.0.0.1:5001/get_clients");
-            const clients = await response.json();
+    <script>
+        async function loadClients(selectElement) {
+            try {
+                const response = await fetch("http://127.0.0.1:5001/get_clients");
+                const clients = await response.json();
 
-            selectElement.innerHTML = `
-                <option disabled selected>Choisissez un client</option>
-                <option value="__custom__">➕ Nouveau client</option>
-            `;
-            clients.forEach(client => {
-                const option = document.createElement("option");
-                option.value = client;
-                option.text = client;
-                selectElement.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Erreur lors du chargement des clients:", error);
+                selectElement.innerHTML = `
+                    <option disabled selected>Choisissez un client</option>
+                    <option value="__custom__">➕ Nouveau client</option>
+                `;
+                clients.forEach(client => {
+                    const option = document.createElement("option");
+                    option.value = client;
+                    option.text = client;
+                    selectElement.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Erreur lors du chargement des clients:", error);
+            }
         }
-    }
 
-    function toggleCustomClient(select) {
-        const container = select.closest(".prediction-form");
-        const customInput = container.querySelector(".custom_client_name");
-        customInput.classList.toggle("d-none", select.value !== "__custom__");
-        if (select.value === "__custom__") customInput.focus();
-    }
+        function toggleCustomClient(select) {
+            const container = select.closest(".prediction-form");
+            const customInput = container.querySelector(".custom_client_name");
+            customInput.classList.toggle("d-none", select.value !== "__custom__");
+            if (select.value === "__custom__") customInput.focus();
+        }
 
-    function addForm() {
-        const container = document.getElementById("formsContainer");
-        const template = container.querySelector(".prediction-form");
-        const clone = template.cloneNode(true);
+        function addForm() {
+            const container = document.getElementById("formsContainer");
+            const template = container.querySelector(".prediction-form");
+            const clone = template.cloneNode(true);
 
-        // Reset inputs
-        clone.querySelectorAll("input, select, output").forEach(el => {
-            if (el.tagName === "SELECT") {
-                if (el.classList.contains("client_name")) {
-                    loadClients(el);
+            // Reset inputs
+            clone.querySelectorAll("input, select, output").forEach(el => {
+                if (el.tagName === "SELECT") {
+                    if (el.classList.contains("client_name")) {
+                        loadClients(el);
+                    } else {
+                        el.selectedIndex = 0;
+                    }
+                } else if (el.type === "range") {
+                    el.value = 1000;
+                    el.nextElementSibling.value = 1000;
                 } else {
-                    el.selectedIndex = 0;
+                    el.value = "";
                 }
-            } else if (el.type === "range") {
-                el.value = 1000;
-                el.nextElementSibling.value = 1000;
-            } else {
-                el.value = "";
-            }
-        });
-
-        // Afficher bouton de suppression
-        const removeBtn = clone.querySelector(".remove-btn");
-        removeBtn.classList.remove("d-none");
-
-
-        container.appendChild(clone);
-    }
-
-    function removeForm(button) {
-        const form = button.closest(".prediction-form");
-        form.remove();
-    }
-
-    async function makePrediction(button) {
-        const form = button.closest(".prediction-form");
-        const clientSelect = form.querySelector(".client_name");
-        const customClientInput = form.querySelector(".custom_client_name");
-        const clientName = clientSelect.value === "__custom__" ? customClientInput.value : clientSelect.value;
-        const industry = form.querySelector(".industry").value;
-        const stage = form.querySelector(".stage").value;
-        const product = form.querySelector(".product").value;
-        const revenue = parseFloat(form.querySelector(".revenue").value);
-        const quote = parseFloat(form.querySelector(".quote_total").value);
-
-        if (!clientName || isNaN(revenue) || isNaN(quote)) {
-            alert("Veuillez remplir tous les champs correctement.");
-            return;
-        }
-
-        const payload = {
-            Full_Name: clientName,
-            client_name: clientName,
-            customer_industry: industry,
-            opportunity_stage: stage,
-            product_name: product,
-            Revenue_Potential: revenue,
-            Quote_Total: quote
-        };
-
-        try {
-            const response = await fetch("http://127.0.0.1:5001/predict", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
             });
 
-            const result = await response.json();
-            const resultsContainer = document.getElementById("resultsContainer");
+            // Afficher bouton de suppression
+            const removeBtn = clone.querySelector(".remove-btn");
+            removeBtn.classList.remove("d-none");
 
-                          if (response.ok) {
-            const modalBody = document.getElementById("predictionModalBody");
-            modalBody.innerHTML = `
-                <div class="text-center">
-                    <h5 class="text-primary fw-bold">${clientName}</h5>
-                    <p class="mb-1"><strong>Modèle utilisé :</strong> ${result.model}</p>
-                    <p class="mb-1"><strong>Statut client :</strong> ${result.client_status}</p>
-                    <p class="fs-5 mt-3"><strong>💰 Montant estimé :</strong>
-                        <span class="text-success">${result.prediction.toLocaleString()} TND</span>
-                    </p>
-                </div>
-            `;
 
-            const modal = new bootstrap.Modal(document.getElementById('predictionModal'));
-            modal.show();
+            container.appendChild(clone);
         }
 
+        function removeForm(button) {
+            const form = button.closest(".prediction-form");
+            form.remove();
+        }
 
-     else {
-                resultsContainer.innerHTML += `<div class="alert alert-danger mt-3">Erreur pour ${clientName} : ${result.error || result.message}</div>`;
+        async function makePrediction(button) {
+            const form = button.closest(".prediction-form");
+            const clientSelect = form.querySelector(".client_name");
+            const customClientInput = form.querySelector(".custom_client_name");
+            const clientName = clientSelect.value === "__custom__" ? customClientInput.value : clientSelect.value;
+            const industry = form.querySelector(".industry").value;
+            const stage = form.querySelector(".stage").value;
+            const product = form.querySelector(".product").value;
+            const revenue = parseFloat(form.querySelector(".revenue").value);
+            const quote = parseFloat(form.querySelector(".quote_total").value);
+
+            if (!clientName || isNaN(revenue) || isNaN(quote)) {
+                alert("Veuillez remplir tous les champs correctement.");
+                return;
             }
-        } catch (error) {
-            document.getElementById("resultsContainer").innerHTML += `<div class="alert alert-danger mt-3">Erreur réseau pour ${clientName} : ${error.message}</div>`;
-        }
-    }
 
+            const payload = {
+                Full_Name: clientName,
+                client_name: clientName,
+                customer_industry: industry,
+                opportunity_stage: stage,
+                product_name: product,
+                Revenue_Potential: revenue,
+                Quote_Total: quote
+            };
 
-     let previousOverview = null; // Stockage de la dernière vue d'ensemble
-     let previousPredictionsMap = {}; // Stocke l'évolution individuelle par client-produit-étape
+            try {
+                const response = await fetch("http://127.0.0.1:5001/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
 
+                const result = await response.json();
+                const resultsContainer = document.getElementById("resultsContainer");
 
-        function formatEvolution(oldValue, newValue) {
-        if (oldValue === null || oldValue === undefined) return "";
-        const diff = newValue - oldValue;
-        const sign = diff > 0 ? "+" : "";
-        return ` <span style="color:${diff > 0 ? 'green' : (diff < 0 ? 'red' : 'black')}">(${sign}${diff.toLocaleString('fr-FR')})</span>`;
-    }
+                              if (response.ok) {
+                const modalBody = document.getElementById("predictionModalBody");
+                modalBody.innerHTML = `
+                    <div class="text-center">
+                        <h5 class="text-primary fw-bold">${clientName}</h5>
+                        <p class="mb-1"><strong>Modèle utilisé :</strong> ${result.model}</p>
+                        <p class="mb-1"><strong>Statut client :</strong> ${result.client_status}</p>
+                        <p class="fs-5 mt-3"><strong>💰 Montant estimé :</strong>
+                            <span class="text-success">${result.prediction.toLocaleString()} TND</span>
+                        </p>
+                    </div>
+                `;
 
-    // Pour comparer les répartitions (objets) par secteur ou étape
-    function formatDistributionEvolution(oldDist, newDist) {
-        if (!oldDist || !newDist) return "";
-        let changes = [];
-        for (const key of new Set([...Object.keys(oldDist), ...Object.keys(newDist)])) {
-            const oldVal = oldDist[key] ?? 0;
-            const newVal = newDist[key] ?? 0;
-            if (oldVal !== newVal) {
-                const diff = newVal - oldVal;
-                const sign = diff > 0 ? "+" : "";
-                changes.push(`${key} : <span style="color:${diff > 0 ? 'green' : 'red'}">${sign}${diff}</span>`);
+                const modal = new bootstrap.Modal(document.getElementById('predictionModal'));
+                modal.show();
             }
-        }
-        return changes.length > 0 ? changes.join(", ") : "Aucune évolution";
-    }
 
 
-        async function getPredictionsOverview() {
-        try {
-            const response = await fetch("http://127.0.0.1:5001/get_predictions_overview");
-            const data = await response.json();
-
-            console.log("📦 Données reçues :", data);
-
-            const container = document.getElementById("resultsContainer");
-
-            // Affichage avec comparaison à la donnée précédente
-                    container.innerHTML = `
-        <div class="card bg-light shadow-sm mt-4">
-            <div class="card-header bg-secondary text-white">
-                <h4 class="mb-0">📊 Vue d'ensemble des prédictions</h4>
-            </div>
-            <div class="card-body">
-                <div class="row g-4">
-                       <div class="col-md-6">
-                        <div class="border-start border-4 border-primary ps-3">
-                            <h6 class="text-muted">Total des prédictions</h6>
-                            <p class="fs-4 fw-bold">
-                                ${data.total_predictions ?? "N/A"}
-                                ${previousOverview && previousOverview.total_predictions != null
-                                    ? formatEvolution(previousOverview.total_predictions, data.total_predictions)
-                                    : ""}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="border-start border-4 border-success ps-3">
-                            <h6 class="text-muted">Moyenne des montants estimés</h6>
-                            <p class="fs-4 fw-bold">${data.average_prediction?.toLocaleString('fr-FR') ?? "N/A"} TND
-                                ${previousOverview ? formatEvolution(previousOverview.average_prediction, data.average_prediction) : ""}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <h5>📌 Répartition par secteur d'activité</h5>
-                    <ul class="list-group list-group-flush">
-                        ${Object.entries(data.industry_distribution || {}).map(([key, val]) => `
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${key}
-                                <span class="badge bg-primary rounded-pill">${val}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                    ${previousOverview ? `<small class="text-muted mt-2 d-block">Évolution : ${formatDistributionEvolution(previousOverview.industry_distribution, data.industry_distribution)}</small>` : ""}
-                </div>
-
-                <div class="mt-4">
-                    <h5>🎯 Répartition par étape d'opportunité</h5>
-                    <ul class="list-group list-group-flush">
-                        ${Object.entries(data.stage_distribution || {}).map(([key, val]) => `
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                ${key}
-                                <span class="badge bg-success rounded-pill">${val}</span>
-                            </li>
-                        `).join('')}
-                    </ul>
-                    ${previousOverview ? `<small class="text-muted mt-2 d-block">Évolution : ${formatDistributionEvolution(previousOverview.stage_distribution, data.stage_distribution)}</small>` : ""}
-                </div>
-            </div>
-        </div>
-            <div class="row g-4 mt-4">
-
-        <!-- 🕒 Dernières prédictions -->
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3"><i class="bi bi-clock-history text-primary me-2"></i>Dernières prédictions</h5>
-                    <ul class="list-group list-group-flush">
-                        ${
-                            Array.isArray(data.latest_predictions) && data.latest_predictions.length > 0
-                            ? data.latest_predictions.map(pred => `
-                                <li class="list-group-item">
-                                    <strong>${pred.client} (${pred.industry})</strong><br>
-                                    ${pred.product}, ${pred.stage} <br>
-                                    <span class="text-primary fw-bold">${pred.prediction.toLocaleString('fr-FR')} TND</span>
-                                    <small class="text-muted d-block mt-1">${pred.created_at}</small>
-                                </li>
-                            `).join("")
-                            : `<li class="list-group-item text-muted">Aucune prédiction disponible</li>`
-                        }
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- 📈 Évolution dans le temps -->
-        <div class="col-md-6">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title mb-3"><i class="bi bi-graph-up-arrow text-success me-2"></i>Évolution dans le temps</h5>
-                    <ul class="list-group list-group-flush">
-                        ${
-                            Array.isArray(data.evolution_overview) && data.evolution_overview.length > 0
-                                ? data.evolution_overview.map(e => {
-        const key = `${e.client}|${e.product}|${e.stage}`;
-        const previous = previousPredictionsMap[key];
-        // Mise à jour du cache avec la dernière valeur
-        previousPredictionsMap[key] = e.latest_prediction;
-
-        const evolution = previous !== undefined ? e.latest_prediction - previous : null;
-
-        return `
-            <li class="list-group-item">
-                <strong>${e.client} (${e.industry})</strong><br>
-                ${e.product}, ${e.stage} <br>
-                <span class="text-success fw-bold">${e.latest_prediction.toLocaleString('fr-FR')} TND</span>
-                ${
-                    previous !== undefined
-                    ? `<span class="fw-semibold d-block ${evolution >= 0 ? 'text-success' : 'text-danger'}">
-                        📈 Évolution : ${evolution >= 0 ? '+' : ''}${evolution.toLocaleString('fr-FR')} TND
-                      </span>`
-                    : `<span class="text-muted">Aucune donnée précédente</span>`
+         else {
+                    resultsContainer.innerHTML += `<div class="alert alert-danger mt-3">Erreur pour ${clientName} : ${result.error || result.message}</div>`;
                 }
-                <small class="text-muted d-block mt-1">${e.created_at}</small>
-            </li>
-        `;
-    }).join("")
+            } catch (error) {
+                document.getElementById("resultsContainer").innerHTML += `<div class="alert alert-danger mt-3">Erreur réseau pour ${clientName} : ${error.message}</div>`;
+            }
+        }
 
-                            : `<li class="list-group-item text-muted">Aucune évolution disponible</li>`
-                        }
-                    </ul>
+
+         let previousOverview = null; // Stockage de la dernière vue d'ensemble
+         let previousPredictionsMap = {}; // Stocke l'évolution individuelle par client-produit-étape
+
+
+            function formatEvolution(oldValue, newValue) {
+            if (oldValue === null || oldValue === undefined) return "";
+            const diff = newValue - oldValue;
+            const sign = diff > 0 ? "+" : "";
+            return ` <span style="color:${diff > 0 ? 'green' : (diff < 0 ? 'red' : 'black')}">(${sign}${diff.toLocaleString('fr-FR')})</span>`;
+        }
+
+        // Pour comparer les répartitions (objets) par secteur ou étape
+        function formatDistributionEvolution(oldDist, newDist) {
+            if (!oldDist || !newDist) return "";
+            let changes = [];
+            for (const key of new Set([...Object.keys(oldDist), ...Object.keys(newDist)])) {
+                const oldVal = oldDist[key] ?? 0;
+                const newVal = newDist[key] ?? 0;
+                if (oldVal !== newVal) {
+                    const diff = newVal - oldVal;
+                    const sign = diff > 0 ? "+" : "";
+                    changes.push(`${key} : <span style="color:${diff > 0 ? 'green' : 'red'}">${sign}${diff}</span>`);
+                }
+            }
+            return changes.length > 0 ? changes.join(", ") : "Aucune évolution";
+        }
+
+
+            async function getPredictionsOverview() {
+            try {
+                const response = await fetch("http://127.0.0.1:5001/get_predictions_overview");
+                const data = await response.json();
+
+                console.log("📦 Données reçues :", data);
+
+                const container = document.getElementById("resultsContainer");
+
+                // Affichage avec comparaison à la donnée précédente
+                        container.innerHTML = `
+            <div class="card bg-light shadow-sm mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">📊 Vue d'ensemble des prédictions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                           <div class="col-md-6">
+                            <div class="border-start border-4 border-primary ps-3">
+                                <h6 class="text-muted">Total des prédictions</h6>
+                                <p class="fs-4 fw-bold">
+                                    ${data.total_predictions ?? "N/A"}
+                                    ${previousOverview && previousOverview.total_predictions != null
+                                        ? formatEvolution(previousOverview.total_predictions, data.total_predictions)
+                                        : ""}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="border-start border-4 border-success ps-3">
+                                <h6 class="text-muted">Moyenne des montants estimés</h6>
+                                <p class="fs-4 fw-bold">${data.average_prediction?.toLocaleString('fr-FR') ?? "N/A"} TND
+                                    ${previousOverview ? formatEvolution(previousOverview.average_prediction, data.average_prediction) : ""}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <h5>📌 Répartition par secteur d'activité</h5>
+                        <ul class="list-group list-group-flush">
+                            ${Object.entries(data.industry_distribution || {}).map(([key, val]) => `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${key}
+                                    <span class="badge bg-primary rounded-pill">${val}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        ${previousOverview ? `<small class="text-muted mt-2 d-block">Évolution : ${formatDistributionEvolution(previousOverview.industry_distribution, data.industry_distribution)}</small>` : ""}
+                    </div>
+
+                    <div class="mt-4">
+                        <h5>🎯 Répartition par étape d'opportunité</h5>
+                        <ul class="list-group list-group-flush">
+                            ${Object.entries(data.stage_distribution || {}).map(([key, val]) => `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${key}
+                                    <span class="badge bg-success rounded-pill">${val}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        ${previousOverview ? `<small class="text-muted mt-2 d-block">Évolution : ${formatDistributionEvolution(previousOverview.stage_distribution, data.stage_distribution)}</small>` : ""}
+                    </div>
                 </div>
             </div>
+                <div class="row g-4 mt-4">
+
+            <!-- 🕒 Dernières prédictions -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3"><i class="bi bi-clock-history text-primary me-2"></i>Dernières prédictions</h5>
+                        <ul class="list-group list-group-flush">
+                            ${
+                                Array.isArray(data.latest_predictions) && data.latest_predictions.length > 0
+                                ? data.latest_predictions.map(pred => `
+                                    <li class="list-group-item">
+                                        <strong>${pred.client} (${pred.industry})</strong><br>
+                                        ${pred.product}, ${pred.stage} <br>
+                                        <span class="text-primary fw-bold">${pred.prediction.toLocaleString('fr-FR')} TND</span>
+                                        <small class="text-muted d-block mt-1">${pred.created_at}</small>
+                                    </li>
+                                `).join("")
+                                : `<li class="list-group-item text-muted">Aucune prédiction disponible</li>`
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📈 Évolution dans le temps -->
+            <div class="col-md-6">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3"><i class="bi bi-graph-up-arrow text-success me-2"></i>Évolution dans le temps</h5>
+                        <ul class="list-group list-group-flush">
+                            ${
+                                Array.isArray(data.evolution_overview) && data.evolution_overview.length > 0
+                                    ? data.evolution_overview.map(e => {
+            const key = `${e.client}|${e.product}|${e.stage}`;
+            const previous = previousPredictionsMap[key];
+            // Mise à jour du cache avec la dernière valeur
+            previousPredictionsMap[key] = e.latest_prediction;
+
+            const evolution = previous !== undefined ? e.latest_prediction - previous : null;
+
+            return `
+                <li class="list-group-item">
+                    <strong>${e.client} (${e.industry})</strong><br>
+                    ${e.product}, ${e.stage} <br>
+                    <span class="text-success fw-bold">${e.latest_prediction.toLocaleString('fr-FR')} TND</span>
+                    ${
+                        previous !== undefined
+                        ? `<span class="fw-semibold d-block ${evolution >= 0 ? 'text-success' : 'text-danger'}">
+                            📈 Évolution : ${evolution >= 0 ? '+' : ''}${evolution.toLocaleString('fr-FR')} TND
+                          </span>`
+                        : `<span class="text-muted">Aucune donnée précédente</span>`
+                    }
+                    <small class="text-muted d-block mt-1">${e.created_at}</small>
+                </li>
+            `;
+        }).join("")
+
+                                : `<li class="list-group-item text-muted">Aucune évolution disponible</li>`
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-    </div>
-
-    `;
+        `;
 
 
-            // Met à jour previousOverview pour la prochaine comparaison
-            previousOverview = data;
+                // Met à jour previousOverview pour la prochaine comparaison
+                previousOverview = data;
 
-        } catch (error) {
-            console.error("❌ Erreur fetch :", error);
-              document.getElementById("resultsContainer").innerHTML = `
-        <div class="alert alert-danger mt-3">
-            ❌ Erreur lors de la récupération des prédictions globales : ${error.message}
-        </div>
-    `;
+            } catch (error) {
+                console.error("❌ Erreur fetch :", error);
+                  document.getElementById("resultsContainer").innerHTML = `
+            <div class="alert alert-danger mt-3">
+                ❌ Erreur lors de la récupération des prédictions globales : ${error.message}
+            </div>
+        `;
 
+            }
         }
-    }
 
-    // Pour rafraîchir automatiquement toutes les 10 secondes (ou après un event spécifique), tu peux appeler régulièrement :
-    setInterval(getPredictionsOverview, 10000);
-
+        // Pour rafraîchir automatiquement toutes les 10 secondes (ou après un event spécifique), tu peux appeler régulièrement :
+        setInterval(getPredictionsOverview, 10000);
 
 
-    // Initialisation au chargement de la page
-    window.onload = () => {
-        const firstSelect = document.querySelector(".client_name");
-        loadClients(firstSelect);
-    };
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        // Initialisation au chargement de la page
+        window.onload = () => {
+            const firstSelect = document.querySelector(".client_name");
+            loadClients(firstSelect);
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewData["Title"] = "Sales Prediction Status";
 }
 
@@ -173,270 +173,270 @@
 
 <script>
 
-        async function fetchPredictionSummary() {
-        try {
-            const res = await fetch("http://localhost:5001/api/prediction/summary");
-            const summary = await res.json();
+            async function fetchPredictionSummary() {
+            try {
+                const res = await fetch("http://localhost:5001/api/prediction/summary");
+                const summary = await res.json();
 
-            document.getElementById("total_predictions").textContent = summary.total_predictions;
-            document.getElementById("validations").textContent = summary.validations;
-            document.getElementById("annulations").textContent = summary.annulations;
-            document.getElementById("taux_annulation").textContent = (summary.taux_annulation * 100).toFixed(1) + " %";
-        } catch (err) {
-            console.error("Erreur lors de la récupération du résumé :", err);
-        }
-    }
-
-
-
-
-    //      async function fetchClients() {
-    //     try {
-    //         const response = await fetch("http://localhost:5001/clients/crm");
-    //         const clients = await response.json();
-
-    //         if (!Array.isArray(clients)) {
-    //             throw new Error("Données inattendues reçues de l'API");
-    //         }
-
-    //         const fullNameSelect = document.getElementById("full_name");
-
-    //         fullNameSelect.innerHTML = `
-    //             <option disabled selected>Choisissez un client</option>
-    //             <option value="__custom__">➕ Nouveau client</option>
-    //             ${clients.map(client => `<option value="${client.full_name}">${client.full_name}</option>`).join("")}
-    //         `;
-
-    //         // Ajout ou réajout du listener
-    //         fullNameSelect.addEventListener("change", () => toggleCustomClient(fullNameSelect));
-
-    //     } catch (error) {
-    //         console.error("Erreur lors du chargement des clients :", error);
-    //     }
-    // }
-
-        async function fetchClients() {
-        try {
-            const response = await fetch("http://localhost:5001/clients/crm");
-            const clients = await response.json();
-
-            if (!Array.isArray(clients)) {
-                throw new Error("Données inattendues reçues de l'API");
+                document.getElementById("total_predictions").textContent = summary.total_predictions;
+                document.getElementById("validations").textContent = summary.validations;
+                document.getElementById("annulations").textContent = summary.annulations;
+                document.getElementById("taux_annulation").textContent = (summary.taux_annulation * 100).toFixed(1) + " %";
+            } catch (err) {
+                console.error("Erreur lors de la récupération du résumé :", err);
             }
-
-              const select = document.getElementById("full_name");  // minuscule ici
-             const clientSelectSummary = document.getElementById("clientSelect"); // vérifier si existe
-
-
-            // Vider les options existantes sauf le placeholder
-            select.innerHTML = `
-                <option disabled selected>Choisissez un client</option>
-                <option value="__custom__">➕ Nouveau client</option>
-            `;
-            clientSelectSummary.innerHTML = `<option value="">-- Choose a client --</option>`;
-
-            clients.forEach(client => {
-                const option = document.createElement("option");
-                option.value = client.full_name;
-                option.textContent = client.full_name;
-                select.appendChild(option);
-
-                const optionSummary = document.createElement("option");
-                optionSummary.value = client.full_name;
-                optionSummary.textContent = client.full_name;
-                clientSelectSummary.appendChild(optionSummary);
-            });
-        } catch (err) {
-            console.error("Erreur lors du chargement des clients :", err);
         }
-    }
-
-
-    // function toggleCustomClient(selectElement) {
-    //     const customField = document.querySelector(".custom_client_name");
-    //     if (selectElement.value === "__custom__") {
-    //         customField.classList.remove("hidden");
-    //     } else {
-    //         customField.classList.add("hidden");
-    //     }
-    // }
-
-        function toggleCustomClient(selectElement) {
-        const customNameInput = document.querySelector(".custom_client_name");
-        if (selectElement.value === "__custom__") {
-            customNameInput.classList.remove("hidden");
-        } else {
-            customNameInput.classList.add("hidden");
-        }
-    }
 
 
 
 
-        let globalChartInstance = null;
+        //      async function fetchClients() {
+        //     try {
+        //         const response = await fetch("http://localhost:5001/clients/crm");
+        //         const clients = await response.json();
 
-    async function fetchGlobalStats() {
-        try {
-            const res = await fetch("/api/prediction/stats/overview");
-            const raw = await res.text();
-            console.log("RAW:", raw);
+        //         if (!Array.isArray(clients)) {
+        //             throw new Error("Données inattendues reçues de l'API");
+        //         }
 
-            const stats = JSON.parse(raw);
-            console.log("Parsed stats:", stats);
+        //         const fullNameSelect = document.getElementById("full_name");
 
-            const ctx = document.getElementById('globalChart').getContext('2d');
+        //         fullNameSelect.innerHTML = `
+        //             <option disabled selected>Choisissez un client</option>
+        //             <option value="__custom__">➕ Nouveau client</option>
+        //             ${clients.map(client => `<option value="${client.full_name}">${client.full_name}</option>`).join("")}
+        //         `;
 
-            // Détruire l'ancien graphique s'il existe
-            if (globalChartInstance !== null) {
-                globalChartInstance.destroy();
+        //         // Ajout ou réajout du listener
+        //         fullNameSelect.addEventListener("change", () => toggleCustomClient(fullNameSelect));
+
+        //     } catch (error) {
+        //         console.error("Erreur lors du chargement des clients :", error);
+        //     }
+        // }
+
+            async function fetchClients() {
+            try {
+                const response = await fetch("http://localhost:5001/clients/crm");
+                const clients = await response.json();
+
+                if (!Array.isArray(clients)) {
+                    throw new Error("Données inattendues reçues de l'API");
+                }
+
+                  const select = document.getElementById("full_name");  // minuscule ici
+                 const clientSelectSummary = document.getElementById("clientSelect"); // vérifier si existe
+
+
+                // Vider les options existantes sauf le placeholder
+                select.innerHTML = `
+                    <option disabled selected>Choisissez un client</option>
+                    <option value="__custom__">➕ Nouveau client</option>
+                `;
+                clientSelectSummary.innerHTML = `<option value="">-- Choose a client --</option>`;
+
+                clients.forEach(client => {
+                    const option = document.createElement("option");
+                    option.value = client.full_name;
+                    option.textContent = client.full_name;
+                    select.appendChild(option);
+
+                    const optionSummary = document.createElement("option");
+                    optionSummary.value = client.full_name;
+                    optionSummary.textContent = client.full_name;
+                    clientSelectSummary.appendChild(optionSummary);
+                });
+            } catch (err) {
+                console.error("Erreur lors du chargement des clients :", err);
             }
+        }
 
-             // Créer un nouveau graphique
-            globalChartInstance = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: ['Validées', 'Annulées'],
-                    datasets: [{
-                        label: 'Statistiques Globales',
-                        data: [stats.negatives, stats.positives],
-                        backgroundColor: ['#10b981', '#ef4444']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { position: 'bottom' }
+
+        // function toggleCustomClient(selectElement) {
+        //     const customField = document.querySelector(".custom_client_name");
+        //     if (selectElement.value === "__custom__") {
+        //         customField.classList.remove("hidden");
+        //     } else {
+        //         customField.classList.add("hidden");
+        //     }
+        // }
+
+            function toggleCustomClient(selectElement) {
+            const customNameInput = document.querySelector(".custom_client_name");
+            if (selectElement.value === "__custom__") {
+                customNameInput.classList.remove("hidden");
+            } else {
+                customNameInput.classList.add("hidden");
+            }
+        }
+
+
+
+
+            let globalChartInstance = null;
+
+        async function fetchGlobalStats() {
+            try {
+                const res = await fetch("/api/prediction/stats/overview");
+                const raw = await res.text();
+                console.log("RAW:", raw);
+
+                const stats = JSON.parse(raw);
+                console.log("Parsed stats:", stats);
+
+                const ctx = document.getElementById('globalChart').getContext('2d');
+
+                // Détruire l'ancien graphique s'il existe
+                if (globalChartInstance !== null) {
+                    globalChartInstance.destroy();
+                }
+
+                 // Créer un nouveau graphique
+                globalChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Validées', 'Annulées'],
+                        datasets: [{
+                            label: 'Statistiques Globales',
+                            data: [stats.negatives, stats.positives],
+                            backgroundColor: ['#10b981', '#ef4444']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
                     }
-                }
-            });
-
-            
-
-           
-        } catch (error) {
-            console.error("Erreur lors de la récupération des statistiques :", error);
-        }
-    }
-
-    // Lancer la mise à jour automatique au chargement
-    window.addEventListener('load', () => {
-        fetchGlobalStats(); // Chargement initial
-        setInterval(fetchGlobalStats, 10000); // Rafraîchissement toutes les 10 secondes
-    });
+                });
 
 
 
-    async function fetchRecentPredictions() {
-        const res = await fetch("/api/prediction/recent");
 
-        if (!res.ok) {
-            console.error("Erreur lors de la récupération des prédictions récentes");
-            return;
+            } catch (error) {
+                console.error("Erreur lors de la récupération des statistiques :", error);
+            }
         }
 
-        const data = await res.json();
-        console.log(data);  // Pour voir la structure réelle
-
-        const container = document.getElementById("recentPredictions");
-        container.innerHTML = "";
-
-        data.forEach(item => {
-            const fullName = item.full_name || "Nom inconnu";
-            const industry = item.industry || "Industrie inconnue";
-            const prediction = item.prediction;  // suppose 0 ou 1
-            const prob = parseFloat(item.prob_class_1);
-            const probability = (!isNaN(prob) && prob >= 0 && prob <= 1) ? Math.round(prob * 100) : "?";
-            const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "Date inconnue";
-
-            const card = document.createElement("div");
-            card.className = "bg-white p-4 rounded-xl shadow hover:scale-105 transition-transform duration-300";
-            card.innerHTML = `
-                <h3 class="text-lg font-bold">${fullName}</h3>
-                <p class="text-sm text-gray-600">Secteur : ${industry}</p>
-                <p class="mt-1 text-gray-800 font-semibold">
-                    ${prediction === 1 ? '🚫 Annulée' : '✅ Validée'}
-                </p>
-                <div class="text-sm mt-1 text-gray-500">
-                    Probabilité : ${probability}% d'annulation
-                </div>
-                <div class="text-xs mt-2 text-gray-400">Le ${timestamp}</div>
-            `;
-            container.appendChild(card);
+        // Lancer la mise à jour automatique au chargement
+        window.addEventListener('load', () => {
+            fetchGlobalStats(); // Chargement initial
+            setInterval(fetchGlobalStats, 10000); // Rafraîchissement toutes les 10 secondes
         });
-    }
 
 
 
-               async function sendPrediction() {
-        try {
-                let fullName = document.getElementById("full_name").value;
-                if (fullName === "__custom__") {
-                fullName = document.querySelector(".custom_client_name input").value.trim();
-                }
+        async function fetchRecentPredictions() {
+            const res = await fetch("/api/prediction/recent");
 
-            const body = {
-                Full_Name: fullName,   // <=== ici on utilise la bonne variable
-                Industry: document.getElementById("Industry").value.trim(),
-                Order_Total: parseFloat(document.getElementById("Order_Total").value),
-                delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
-                Order_Month: parseInt(document.getElementById("Order_Month").value),
-                Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
-                Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
-                nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
-                quantite_totale: parseFloat(document.getElementById("quantite_totale").value),
-                prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
-                nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
-                prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
-                quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
-                prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
-            };
+            if (!res.ok) {
+                console.error("Erreur lors de la récupération des prédictions récentes");
+                return;
+            }
 
-            const response = await fetch("http://localhost:5001/predict", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(body)
+            const data = await res.json();
+            console.log(data);  // Pour voir la structure réelle
+
+            const container = document.getElementById("recentPredictions");
+            container.innerHTML = "";
+
+            data.forEach(item => {
+                const fullName = item.full_name || "Nom inconnu";
+                const industry = item.industry || "Industrie inconnue";
+                const prediction = item.prediction;  // suppose 0 ou 1
+                const prob = parseFloat(item.prob_class_1);
+                const probability = (!isNaN(prob) && prob >= 0 && prob <= 1) ? Math.round(prob * 100) : "?";
+                const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "Date inconnue";
+
+                const card = document.createElement("div");
+                card.className = "bg-white p-4 rounded-xl shadow hover:scale-105 transition-transform duration-300";
+                card.innerHTML = `
+                    <h3 class="text-lg font-bold">${fullName}</h3>
+                    <p class="text-sm text-gray-600">Secteur : ${industry}</p>
+                    <p class="mt-1 text-gray-800 font-semibold">
+                        ${prediction === 1 ? '🚫 Annulée' : '✅ Validée'}
+                    </p>
+                    <div class="text-sm mt-1 text-gray-500">
+                        Probabilité : ${probability}% d'annulation
+                    </div>
+                    <div class="text-xs mt-2 text-gray-400">Le ${timestamp}</div>
+                `;
+                container.appendChild(card);
             });
-
-            if (!response.ok) throw new Error("Échec de la prédiction");
-
-            const result = await response.json();
-            console.log("Résultat de la prédiction :", result);
-
-            const prob = parseFloat(result.probability_class_1);
-            const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
-
-            const msg = result.prediction === 1
-                ? `❌ Résultat : Annulation probable (${isValidProb ? Math.round(prob * 100) : "?"}%)`
-                : `✅ Résultat : Validation probable (${isValidProb ? Math.round((1 - prob) * 100) : "?"}%)`;
-
-            document.getElementById("predictionResult").innerText = msg;
-
-            await fetchRecentPredictions();
-            await fetchGlobalStats();
-            await fetchPredictionSummary();
-
-        } catch (error) {
-            console.error("Erreur lors de la prédiction :", error);
-            document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
         }
-    }
 
 
-    async function init() {
-        await fetchClients();
-        await fetchGlobalStats();
-        await fetchRecentPredictions();
-    }
 
-    window.onload = init;
-    document.addEventListener("DOMContentLoaded", fetchRecentPredictions);
-window.addEventListener('load', () => {
-    fetchClients();
-    fetchGlobalStats();
-    setInterval(fetchGlobalStats, 10000);
-    fetchRecentPredictions();
-    fetchPredictionSummary(); // 👈 Ajoute cette ligne
+                   async function sendPrediction() {
+            try {
+                    let fullName = document.getElementById("full_name").value;
+                    if (fullName === "__custom__") {
+                    fullName = document.querySelector(".custom_client_name input").value.trim();
+                    }
 
-});
+                const body = {
+                    Full_Name: fullName,   // <=== ici on utilise la bonne variable
+                    Industry: document.getElementById("Industry").value.trim(),
+                    Order_Total: parseFloat(document.getElementById("Order_Total").value),
+                    delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
+                    Order_Month: parseInt(document.getElementById("Order_Month").value),
+                    Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
+                    Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
+                    nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
+                    quantite_totale: parseFloat(document.getElementById("quantite_totale").value),
+                    prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
+                    nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
+                    prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
+                    quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
+                    prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
+                };
+
+                const response = await fetch("http://localhost:5001/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(body)
+                });
+
+                if (!response.ok) throw new Error("Échec de la prédiction");
+
+                const result = await response.json();
+                console.log("Résultat de la prédiction :", result);
+
+                const prob = parseFloat(result.probability_class_1);
+                const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
+
+                const msg = result.prediction === 1
+                    ? `❌ Résultat : Annulation probable (${isValidProb ? Math.round(prob * 100) : "?"}%)`
+                    : `✅ Résultat : Validation probable (${isValidProb ? Math.round((1 - prob) * 100) : "?"}%)`;
+
+                document.getElementById("predictionResult").innerText = msg;
+
+                await fetchRecentPredictions();
+                await fetchGlobalStats();
+                await fetchPredictionSummary();
+
+            } catch (error) {
+                console.error("Erreur lors de la prédiction :", error);
+                document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
+            }
+        }
+
+
+        async function init() {
+            await fetchClients();
+            await fetchGlobalStats();
+            await fetchRecentPredictions();
+        }
+
+        window.onload = init;
+        document.addEventListener("DOMContentLoaded", fetchRecentPredictions);
+    window.addEventListener('load', () => {
+        fetchClients();
+        fetchGlobalStats();
+        setInterval(fetchGlobalStats, 10000);
+        fetchRecentPredictions();
+        fetchPredictionSummary(); // 👈 Ajoute cette ligne
+
+    });
 
 </script>

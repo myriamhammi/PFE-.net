@@ -33,11 +33,12 @@ namespace TEST_PFE.Controllers
 
 
         }
-
+        [HttpGet("/Prediction/gain_opp")]
         public IActionResult gain_opp()
         {
             return View();
         }
+        [HttpGet("/Prediction/Sales_Total")]
 
         public IActionResult Sales_Total()
         {
@@ -50,7 +51,7 @@ namespace TEST_PFE.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("predict1")]
         public async Task<IActionResult> Predict([FromBody] PredictionInput input)
         {
             // Construction du json pour Flask API
