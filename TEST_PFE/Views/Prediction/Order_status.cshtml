@@ -142,7 +142,7 @@
     </section>
 
     <!-- Formulaire de prédiction -->
-        <form onsubmit="sendPrediction(); return false;" class="bg-white p-6 rounded-xl shadow mb-10">
+            <form id="formContainer" onsubmit="sendPrediction(); return false;" class="bg-white p-6 rounded-xl shadow mb-10">
             <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">🔮 Lancer une Prédiction</h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -233,16 +233,22 @@
             </div>
 
         </div>
-
+                <div>
         <button onclick="sendPrediction()"
                 class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300 w-full md:w-auto">
             ⚙️ Prédire
         </button>
-
+                <button onclick="removeForm(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Supprimer
+                </button>
+               </div>
         <div id="predictionResult" class="mt-5 text-lg font-semibold text-gray-900"></div>
     </form>
 
-
+            <!-- Bouton pour ajouter un formulaire -->
+            <button onclick="addForm()" class="bg-yellow-400 text-black font-bold px-4 py-2 rounded hover:bg-yellow-500">
+                Ajouter un formulaire
+            </button>
 
     <!-- Client selector -->
     <div class="mb-6">
@@ -311,6 +317,43 @@
 
 <script>
 
+
+         function addForm() {
+            // Récupère le formulaire de base
+            const originalForm = document.getElementById("formContainer");
+
+            // Clone le formulaire (deep clone pour copier tous les champs)
+            const clonedForm = originalForm.cloneNode(true);
+
+            // Supprime l'ancien id dupliqué
+            clonedForm.removeAttribute("id");
+
+            // Réinitialise les valeurs du formulaire cloné
+            const inputs = clonedForm.querySelectorAll("input, select");
+            inputs.forEach(input => {
+                if (input.type === "select-one") {
+                    input.selectedIndex = 0;
+                } else {
+                    input.value = "";
+                }
+            });
+
+            // Vide le résultat de prédiction
+            const resultDiv = clonedForm.querySelector("#predictionResult");
+            if (resultDiv) resultDiv.innerHTML = "";
+
+            // Ajoute le formulaire cloné avant le bouton "Ajouter un formulaire"
+            const addButton = document.querySelector("button[onclick='addForm()']");
+            addButton.parentNode.insertBefore(clonedForm, addButton);
+        }
+
+        function removeForm(button) {
+            const form = button.closest("form");
+            if (form) {
+                form.remove();
+            }
+        }
+
             async function fetchPredictionSummary() {
             try {
                 const res = await fetch("http://localhost:5001/api/prediction/summary");
@@ -328,30 +371,7 @@
 
 
 
-        //      async function fetchClients() {
-        //     try {
-        //         const response = await fetch("http://localhost:5001/clients/crm");
-        //         const clients = await response.json();
-
-        //         if (!Array.isArray(clients)) {
-        //             throw new Error("Données inattendues reçues de l'API");
-        //         }
-
-        //         const fullNameSelect = document.getElementById("full_name");
-
-        //         fullNameSelect.innerHTML = `
-        //             <option disabled selected>Choisissez un client</option>
-        //             <option value="__custom__">➕ Nouveau client</option>
-        //             ${clients.map(client => `<option value="${client.full_name}">${client.full_name}</option>`).join("")}
-        //         `;
-
-        //         // Ajout ou réajout du listener
-        //         fullNameSelect.addEventListener("change", () => toggleCustomClient(fullNameSelect));
-
-        //     } catch (error) {
-        //         console.error("Erreur lors du chargement des clients :", error);
-        //     }
-        // }
+       
 
             async function fetchClients() {
             try {
@@ -390,21 +410,24 @@
         }
 
 
-        // function toggleCustomClient(selectElement) {
-        //     const customField = document.querySelector(".custom_client_name");
+      
+        //     function toggleCustomClient(selectElement) {
+        //     const customNameInput = document.querySelector(".custom_client_name");
         //     if (selectElement.value === "__custom__") {
-        //         customField.classList.remove("hidden");
+        //         customNameInput.classList.remove("hidden");
         //     } else {
-        //         customField.classList.add("hidden");
+        //         customNameInput.classList.add("hidden");
         //     }
         // }
 
-            function toggleCustomClient(selectElement) {
-            const customNameInput = document.querySelector(".custom_client_name");
+
+        function toggleCustomClient(selectElement) {
+            const container = selectElement.closest("form");
+            const customField = container.querySelector(".custom_client_name");
             if (selectElement.value === "__custom__") {
-                customNameInput.classList.remove("hidden");
+                customField.classList.remove("hidden");
             } else {
-                customNameInput.classList.add("hidden");
+                customField.classList.add("hidden");
             }
         }
 
