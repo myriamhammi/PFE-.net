@@ -1,10 +1,204 @@
 ﻿
 @{
     ViewData["Title"] = "Prédiction d'opportunité";
-    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
+    // Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
 }
-<html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --ey-yellow: #ffe600;
+            --ey-yellow-dark: #e6d600;
+            --dark-bg: #333333;
+            --light-text: #ffffff;
+            --muted-gray: #cccccc;
+            --neutral: #999999;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--dark-bg);
+            padding-top: 80px; /* si tu as une navbar fixe en haut */
+        }
+
+        /* Conteneur principal centré avec largeur max */
+        .container {
+            flex: 1; /* prend tout l’espace disponible */
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .navbar-custom {
+            background-color: var(--light-text);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            color: var(--dark-bg);
+            font-weight: bold;
+        }
+
+        .nav-link {
+            color: var(--neutral);
+            font-weight: 600;
+        }
+
+            .nav-link:hover, .nav-link.active {
+                color: var(--ey-yellow);
+            }
+
+        .btn-profile {
+            background-color: var(--ey-yellow);
+            color: var(--dark-bg);
+            font-weight: bold;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+        }
+
+        footer.footer {
+            background-color: var(--dark-bg);
+            color: var(--muted-gray);
+            text-align: center;
+            padding: 1rem;
+            /* plus besoin de position fixed ou absolute */
+        }
+
+        .btn-social {
+            color: var(--muted-gray);
+            font-size: 1.3rem;
+            margin: 0 0.5rem;
+        }
+
+            .btn-social:hover {
+                color: var(--ey-yellow);
+            }
+   
+        progress::-webkit-progress-value {
+            transition: width 0.5s ease-in-out;
+        }
+
+        label {
+            font-weight: 600;
+            color: #222;
+        }
+
+        input.input-style, select.input-style {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .kpi-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            background: white;
+            text-align: center;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .kpi-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .kpi-card {
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            background: white;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .kpi-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        .kpi-icon {
+            font-size: 1.8rem;
+        }
+
+        /* Couleurs selon niveau */
+        .kpi-green {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .kpi-yellow {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .kpi-red {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .kpi-affichage {
+            margin-top: 20px; /* Ajustez la valeur selon ce que vous voulez */
+        }
+
+    </style>
+
+</head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand" href="~/index.html">BI 360°</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#kpis">KPIs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#etl">ETL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#crm">CRM</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboards</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#team">Notre équipe</a></li>
+                </ul>
+                <button class="btn btn-profile">Myriam HAMMI</button>
+            </div>
+        </div>
+    </nav>
+
     <section style="background: #f4f4f8; min-height: 100vh; font-family: 'Segoe UI', sans-serif; padding: 40px;">
         <div style="max-width: 1200px; margin: 0 auto; background: #ffffff; border-radius: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); padding: 40px; margin-top: 40px">
 
@@ -148,9 +342,28 @@
                 </tbody>
             </table>
         </div>
-    </section>
 
-    @section Scripts {
+        <footer style="background-color: #2c2c2c; color: white; padding: 10px 0; text-align: center;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                    <div class="col-lg-4 my-3 my-lg-0">
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-light text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-light text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
+    
+
+
+ 
         <script>
             let lastPrediction = null;
 
@@ -482,97 +695,6 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-
-        <style>
-            progress::-webkit-progress-value {
-                transition: width 0.5s ease-in-out;
-            }
-            label {
-                font-weight: 600;
-                color: #222;
-            }
-
-            input.input-style, select.input-style {
-                padding: 8px;
-                font-size: 16px;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .kpi-card {
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
-                padding: 1.5rem;
-                background: white;
-                text-align: center;
-            }
-
-            .kpi-value {
-                font-size: 2rem;
-                font-weight: 700;
-                margin-bottom: 0.3rem;
-            }
-
-            .kpi-label {
-                font-weight: 600;
-                color: #666;
-            }
-
-            .kpi-card {
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
-                padding: 1.5rem;
-                background: white;
-                text-align: center;
-                transition: background-color 0.3s ease;
-                cursor: default;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 0.5rem;
-            }
-
-            .kpi-value {
-                font-size: 2.5rem;
-                font-weight: 700;
-                display: flex;
-                align-items: center;
-                gap: 0.4rem;
-            }
-
-            .kpi-label {
-                font-weight: 600;
-                color: #555;
-                font-size: 1rem;
-            }
-
-            .kpi-icon {
-                font-size: 1.8rem;
-            }
-
-            /* Couleurs selon niveau */
-            .kpi-green {
-                background-color: #d4edda;
-                color: #155724;
-            }
-
-            .kpi-yellow {
-                background-color: #fff3cd;
-                color: #856404;
-            }
-
-            .kpi-red {
-                background-color: #f8d7da;
-                color: #721c24;
-            }
-
-            .kpi-affichage {
-                margin-top: 20px; /* Ajustez la valeur selon ce que vous voulez */
-            }
-
-        </style>
-    }
+    
 </body>
 </html>
