@@ -29,6 +29,318 @@
             position: relative;
             z-index: 1; /* au-dessus des particules */
         }
+
+
+        .assistant-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+
+        .assistant-bubble {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ffe600, #ffed33);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(255, 230, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .assistant-bubble::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, #ffe600, #ffed33);
+                border-radius: 50%;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .assistant-bubble:hover {
+                transform: scale(1.1);
+                box-shadow: 0 12px 35px rgba(255, 230, 0, 0.4);
+            }
+
+                .assistant-bubble:hover::before {
+                    opacity: 0.1;
+                }
+
+        .ai-icon {
+            width: 35px;
+            height: 35px;
+            fill: #333333;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+
+        .assistant-bubble:hover .ai-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 3px solid rgba(255, 230, 0, 0.4);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1.4);
+                opacity: 0;
+            }
+        }
+
+        .chat-panel {
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(30, 30, 40, 0.3);
+            transform: translateY(20px) scale(0.9);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            border: 2px solid #cccccc;
+        }
+
+            .chat-panel.active {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+                visibility: visible;
+            }
+
+        .chat-header {
+            background: linear-gradient(135deg, #333333 0%, #1e1e28 100%);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+            .chat-header h3 {
+                font-size: 18px;
+                font-weight: 600;
+                margin-bottom: 5px;
+            }
+
+            .chat-header p {
+                font-size: 14px;
+                opacity: 0.9;
+            }
+
+        .status-indicator {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: #ffe600;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+
+            51%, 100% {
+                opacity: 0.3;
+            }
+        }
+
+        .chat-content {
+            padding: 20px;
+            height: 350px;
+            overflow-y: auto;
+        }
+
+        .suggestion-card {
+            background: linear-gradient(135deg, #333333 0%, #1e1e28 100%);
+            color: #ffffff;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #999999;
+        }
+
+            .suggestion-card::before {
+                content: '';
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: linear-gradient(135deg, #ffe600 0%, #ffed33 100%);
+                border-radius: 15px;
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .suggestion-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(255, 230, 0, 0.3);
+                border-color: #ffe600;
+            }
+
+                .suggestion-card:hover::before {
+                    opacity: 1;
+                }
+
+            .suggestion-card h4 {
+                font-size: 16px;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+            }
+
+                .suggestion-card h4::before {
+                    content: '🤖';
+                    margin-right: 8px;
+                }
+
+            .suggestion-card p {
+                font-size: 14px;
+                opacity: 0.9;
+                line-height: 1.4;
+            }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quick-action {
+            background: rgba(255, 230, 0, 0.1);
+            color: #333333;
+            border: 1px solid rgba(255, 230, 0, 0.3);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+            .quick-action:hover {
+                background: #ffe600;
+                color: #333333;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 15px rgba(255, 230, 0, 0.3);
+            }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 230, 0, 0.2);
+            border: none;
+            color: #ffffff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+            .close-btn:hover {
+                background: rgba(255, 230, 0, 0.4);
+                transform: rotate(90deg);
+            }
+
+        /* Scrollbar personnalisée */
+        .chat-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-content::-webkit-scrollbar-track {
+            background: #cccccc;
+            border-radius: 3px;
+        }
+
+        .chat-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #333333, #1e1e28);
+            border-radius: 3px;
+        }
+
+            .chat-content::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(135deg, #ffe600, #ffed33);
+            }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #333333;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 3px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #333333;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+            .typing-dot:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+
+            .typing-dot:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
     </style>
 
 </head>
@@ -185,6 +497,59 @@
             color: #2c3e50; /* Couleur du texte pour un bon contraste */
         }
     </style>
+
+    
+    <div class="assistant-container">
+        <div class="pulse-ring"></div>
+        <div class="assistant-bubble" onclick="toggleChat()">
+            <svg class="ai-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg>
+        </div>
+
+        <div class="chat-panel" id="chatPanel">
+            <div class="chat-header">
+                <button class="close-btn" onclick="toggleChat()">✕</button>
+                <div class="status-indicator"></div>
+                <h3>Assistant IA</h3>
+                <p>Comment puis-je vous aider aujourd'hui ?</p>
+            </div>
+
+            <div class="chat-content">
+                <div class="suggestion-card" onclick="handleSuggestion('reports')">
+                    <h4>Consulter mes rapports</h4>
+                    <p>Accédez rapidement à vos derniers rapports et analyses de performance</p>
+                </div>
+
+                <div class="suggestion-card" onclick="handleSuggestion('data')">
+                    <h4>Analyser mes données</h4>
+                    <p>Obtenez des insights détaillés sur vos données business</p>
+                </div>
+
+                <div class="suggestion-card" onclick="handleSuggestion('kpi')">
+                    <h4>Prédire mes KPIs</h4>
+                    <p>Anticipez les tendances de vos indicateurs clés de performance</p>
+                </div>
+
+                <div class="quick-actions">
+                    <button class="quick-action" onclick="quickAction('help')">Aide</button>
+                    <button class="quick-action" onclick="quickAction('settings')">Paramètres</button>
+                    <button class="quick-action" onclick="quickAction('contact')">Contact</button>
+                </div>
+
+                <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                    <span>L'assistant réfléchit</span>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 
     <!-- ===== Section : KPIs ===== -->
@@ -432,10 +797,19 @@
                             <i class="fas fa-chart-bar fa-2x" style="color: #000000;"></i>
                         </div>
                         <h4 class="fw-bold">Automatisation & Reporting</h4>
-                        <p class="text-dark small">Automatisation des processus de vente et analyse des performances des campagnes marketing.</p>
-                        <a class="fw-bold text-dark text-decoration-none" href="#">Voir le rapport <i class="bi bi-arrow-right"></i></a>
+                        <p class="text-dark small">
+                            Automatisation des processus de vente et analyse des performances des campagnes marketing.
+                        </p>
+
+                        <!-- Lien vers rapport -->
+                        <a class="fw-bold text-dark text-decoration-none"
+                           href="https://app.powerbi.com/reportEmbed?reportId=377edfc5-5d3d-4052-902a-e5419cc0e62c&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730"
+                           target="_blank">
+                            Voir le rapport <i class="bi bi-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -613,7 +987,7 @@
                     <img src="assets/img/logos/ibm.svg" alt="Logo IBM" class="img-fluid client-logo" tabindex="0" />
                 </div>
                 <!-- Logo 5 -->
-               
+
             </div>
         </div>
     </section>
@@ -816,8 +1190,193 @@
             }
         });
     </script>
+   
+   
 
+    <script>
+        let isOpen = false;
 
+        // Affiche automatiquement l'assistant après 1 seconde avec animation
+        window.onload = function () {
+            setTimeout(() => {
+                const assistantBubble = document.querySelector('.assistant-bubble');
+                assistantBubble.style.animation = 'bounceIn 0.8s ease';
+            }, 1000);
+        };
+
+        function toggleChat() {
+            const panel = document.getElementById('chatPanel');
+            isOpen = !isOpen;
+
+            if (isOpen) {
+                panel.classList.add('active');
+            } else {
+                panel.classList.remove('active');
+            }
+        }
+
+        // Ferme l'assistant avec animation
+        function closeAssistant() {
+            const panel = document.getElementById('chatPanel');
+            panel.classList.remove('active');
+            isOpen = false;
+        }
+
+        // Fonction principale pour gérer les options de navigation
+        function sendOption(option) {
+            const typingIndicator = document.getElementById('typingIndicator');
+
+            // Afficher l'indicateur de frappe
+            typingIndicator.style.display = 'flex';
+
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+
+                if (option === 'Rapports' || option === 'reports') {
+                    const powerBiUrl = "https://app.powerbi.com/groups/me/reports/377edfc5-5d3d-4052-902a-e5419cc0e62c/113196a9a0dd884c8842?experience=power-bi";
+                    window.open(powerBiUrl, '_blank');
+                    showResponse("📊 Ouverture des rapports Power BI dans un nouvel onglet...");
+                    return;
+                }
+
+                if (option === 'Analyser' || option === 'data') {
+                    // Redirection vers la page ETL/Upload
+                    showResponse("🔍 Redirection vers l'analyse de données...");
+                    setTimeout(() => {
+                        window.location.href = '/ETL/Upload';
+                    }, 1500);
+                    return;
+                }
+
+                if (option === 'Predire' || option === 'kpi') {
+                    // Redirection vers la page Predictifs
+                    showResponse("📈 Redirection vers les prédictions KPI...");
+                    setTimeout(() => {
+                        window.location.href = '/SalesKPI/Predictifs';
+                    }, 1500);
+                    return;
+                }
+            }, 1000);
+        }
+
+        function handleSuggestion(type) {
+            sendOption(type);
+        }
+
+        function quickAction(action) {
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.style.display = 'flex';
+
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+
+                const responses = {
+                    'help': '❓ Centre d\'aide - Consultez notre documentation complète',
+                    'settings': '⚙️ Paramètres - Personnalisez votre expérience',
+                    'contact': '📞 Support - Notre équipe est là pour vous aider'
+                };
+
+                showResponse(responses[action]);
+            }, 800);
+        }
+
+        function showResponse(message) {
+            const chatContent = document.querySelector('.chat-content');
+            const responseDiv = document.createElement('div');
+            responseDiv.style.cssText = `
+                    background: linear-gradient(135deg, #333333, #1e1e28);
+                    color: #ffffff;
+                    padding: 12px 16px;
+                    border-radius: 18px;
+                    margin: 10px 0;
+                    font-size: 14px;
+                    box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
+                    animation: slideIn 0.3s ease;
+                    position: relative;
+                    max-width: 90%;
+                    word-wrap: break-word;
+                    border: 1px solid #999999;
+                `;
+
+            // Ajouter une icone de robot
+            const iconSpan = document.createElement('span');
+            iconSpan.innerHTML = '🤖 ';
+            iconSpan.style.marginRight = '8px';
+            iconSpan.style.color = '#ffe600';
+
+            responseDiv.appendChild(iconSpan);
+            responseDiv.appendChild(document.createTextNode(message));
+            chatContent.appendChild(responseDiv);
+
+            // Faire défiler vers le bas avec animation douce
+            chatContent.scrollTo({
+                top: chatContent.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Ajouter les animations CSS supplémentaires
+        const style = document.createElement('style');
+        style.textContent = `
+                @keyframes slideIn {
+                    from {
+                        opacity: 0;
+                        transform: translateY(10px) scale(0.95);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+
+                @keyframes bounceIn {
+                    0% {
+                        transform: scale(0.3);
+                        opacity: 0;
+                    }
+                    50% {
+                        transform: scale(1.05);
+                    }
+                    70% {
+                        transform: scale(0.9);
+                    }
+                    100% {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
+
+                .suggestion-card:active {
+                    transform: translateY(0) scale(0.98);
+                }
+
+                .quick-action:active {
+                    transform: translateY(0) scale(0.95);
+                }
+            `;
+        document.head.appendChild(style);
+
+        // Fermer le panel si on clique à l'extérieur
+        document.addEventListener('click', function (event) {
+            const container = document.querySelector('.assistant-container');
+            if (!container.contains(event.target) && isOpen) {
+                toggleChat();
+            }
+        });
+
+        // Gérer les raccourcis clavier
+        document.addEventListener('keydown', function (event) {
+            // Echap pour fermer l'assistant
+            if (event.key === 'Escape' && isOpen) {
+                toggleChat();
+            }
+            // Ctrl + H pour ouvrir/fermer l'assistant
+            if (event.ctrlKey && event.key === 'h') {
+                event.preventDefault();
+                toggleChat();
+            }
+        });
+    </script>
 
 </body>
 </html >

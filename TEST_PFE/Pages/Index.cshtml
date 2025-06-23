@@ -1,9 +1,26 @@
-﻿@* @{
-    ViewData["Title"] = "Page d'accueil";  // Titre spécifique pour cette page
+﻿<div id="assistant-box" class="assistant">
+    <p id="assistant-message">Bonjour 👋 ! Que souhaitez-vous faire aujourd’hui ?</p>
+    <button onclick="sendOption('Rapports')">📊 Consulter mes rapports</button>
+    <button onclick="sendOption('Analyser')">🧠 Analyser mes données</button>
+    <button onclick="sendOption('Alertes')">🚨 Voir les alertes</button>
+</div>
+
+<div id="assistant-response" class="response"></div>
+
+@section Scripts {
+    <script>
+        function sendOption(option) {
+            fetch('/api/assistant/respond', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ choice: option })
+            })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('assistant-response').innerText = data.response;
+            });
+        }
+    </script>
 }
-
-<h1>Bienvenue sur mon Application</h1>
-
-<!-- Utilisation de l'iframe pour afficher le fichier index.html -->
-<iframe src="https://localhost:44365/index.html" width="100%" height="800px" style="border: none;"></iframe>
- *@

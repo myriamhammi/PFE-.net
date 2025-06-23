@@ -36,6 +36,7 @@ builder.Services.AddScoped<IDataTransformationService, DataTransformationService
 builder.Services.AddScoped<DynamicsService>();
 builder.Services.AddScoped<DataSyncService>();
 builder.Services.AddScoped <OAuthHelper>();
+builder.Services.AddSingleton<IAssistantMemoryService, AssistantMemoryService>();
 
 builder.Services.AddSession();
 
