@@ -1,124 +1,479 @@
 ﻿@{
     ViewData["Title"] = "Upload ETL";
-    Layout = "~/Pages/Shared/_KPIsLayout.cshtml"; // Même layout que ta vue descriptive
+    Layout = "~/Pages/Shared/_KPIsLayout.cshtml";
 }
 
-<!-- Font Awesome -->
+<!-- Font Awesome & Animation CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
 
-<section class="py-5 bg-light" style="min-height: 100vh;">
-    <div class="container-fluid px-5">
-        <div class="text-center mb-5">
-            <h2 class="fw-bold text-uppercase">
-                <i class="fas fa-database me-2" style="color: #FFE600;"></i> Upload & Lancement du systeme ETL
-            </h2>
-            <p class="text-muted">Séléctionnez une table, importez un fichier CSV , et déclenchez le traitement.</p>
+<style>
+    :root {
+        --dark-bg: #1e1e28;
+        --dark-secondary: #333333;
+        --accent: #ffe600;
+        --white: #ffffff;
+        --light-gray: #cccccc;
+        --mid-gray: #999999;
+    }
+
+    body {
+        background-color: var(--dark-bg);
+        color: var(--white);
+    }
+
+    .etl-container {
+        min-height: 100vh;
+        background-color: var(--dark-bg);
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="20" height="20"><rect fill="%23333333" width="50" height="50" x="0" y="0" opacity="0.3"/></svg>');
+        padding: 3rem 0;
+    }
+
+    .etl-card {
+        background-color: var(--dark-secondary);
+        border-radius: 16px;
+        border: none;
+        overflow: hidden;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+    }
+
+        .etl-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+    .etl-header {
+        background-color: var(--dark-bg);
+        padding: 1.5rem;
+        border-bottom: 3px solid var(--accent);
+    }
+
+    .etl-title {
+        color: var(--white);
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin: 0;
+    }
+
+    .etl-subtitle {
+        color: var(--mid-gray);
+        font-size: 0.9rem;
+    }
+
+    .etl-icon {
+        color: var(--accent);
+        margin-right: 10px;
+    }
+
+    .etl-accent-text {
+        color: var(--accent);
+    }
+
+    .etl-btn {
+        background-color: var(--accent);
+        color: var(--dark-bg);
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 24px;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+        .etl-btn:hover {
+            background-color: var(--white);
+            color: var(--dark-bg);
+            transform: scale(1.03);
+            box-shadow: 0 5px 15px rgba(255, 230, 0, 0.4);
+        }
+
+        .etl-btn:disabled {
+            background-color: var(--mid-gray);
+            color: var(--dark-bg);
+            transform: none;
+            box-shadow: none;
+        }
+
+    .etl-input {
+        background-color: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        color: var(--white);
+        padding: 12px 15px;
+        transition: all 0.3s;
+    }
+
+        .etl-input:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(255, 230, 0, 0.2);
+            color: var(--white);
+        }
+
+        .etl-input::placeholder {
+            color: var(--mid-gray);
+        }
+
+    .etl-label {
+        color: var(--light-gray);
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    .etl-progress {
+        height: 8px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .etl-progress-bar {
+        background-color: var(--accent);
+        background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
+        background-size: 1rem 1rem;
+    }
+
+    .etl-alert {
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 1.5rem;
+        border-left: 4px solid;
+    }
+
+    .etl-alert-success {
+        background-color: rgba(40, 167, 69, 0.1);
+        border-left-color: #28a745;
+        color: #28a745;
+    }
+
+    .etl-alert-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        border-left-color: #dc3545;
+        color: #dc3545;
+    }
+
+    .etl-alert-info {
+        background-color: rgba(255, 230, 0, 0.1);
+        border-left-color: var(--accent);
+        color: var(--accent);
+    }
+
+    .etl-file-item {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        transition: all 0.3s;
+        border-left: 3px solid var(--accent);
+    }
+
+        .etl-file-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+    .etl-file-icon {
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 230, 0, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+    }
+
+    .etl-terminal {
+        background-color: var(--dark-bg);
+        border-radius: 8px;
+        padding: 1rem;
+        font-family: monospace;
+        color: var(--light-gray);
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .etl-step {
+        position: relative;
+        padding-left: 30px;
+        margin-bottom: 1.5rem;
+    }
+
+        .etl-step:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent);
+            border-radius: 50%;
+        }
+
+        .etl-step:after {
+            content: '';
+            position: absolute;
+            left: 9px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background-color: var(--accent);
+        }
+
+        .etl-step:last-child:after {
+            display: none;
+        }
+</style>
+
+<div class="etl-container animate__animated animate__fadeIn">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h1 class="fw-bold animate__animated animate__fadeInDown mb-3" style="font-size: 2rem; margin-top: 2rem;">
+                    <i class="fas fa-database etl-icon"></i> <span class="etl-accent-text">ETL</span> SYSTEM
+                </h1>
+                <p class="etl-subtitle animate__animated animate__fadeIn animate__delay-1s">Importez, transformez et chargez vos données en quelques clics</p>
+            </div>
         </div>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card shadow-sm border-0">
-                    <div class="card-body">
-                        <form method="post" enctype="multipart/form-data" action="/ETL/UploadFile">
+        <div class="row">
+            <!-- Colonne de gauche: Processus ETL -->
+            <div class="col-lg-4 mb-4 mb-lg-0 animate__animated animate__fadeInLeft animate__delay-1s">
+                <div class="etl-card mb-4">
+                    <div class="etl-header">
+                        <h4 class="etl-title"><i class="fas fa-info-circle etl-icon"></i>Processus ETL</h4>
+                    </div>
+                    <div class="p-4">
+                        <div class="etl-step">
+                            <h5 class="etl-accent-text">1. Extraction</h5>
+                            <p>Sélectionnez une table et importez vos données depuis un fichier CSV.</p>
+                        </div>
+                        <div class="etl-step">
+                            <h5 class="etl-accent-text">2. Transformation</h5>
+                            <p>Vos données sont automatiquement nettoyées et formatées selon les règles métier.</p>
+                        </div>
+                        <div class="etl-step">
+                            <h5 class="etl-accent-text">3. Chargement</h5>
+                            <p>Les données transformées sont chargées dans la base de données cible.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fichiers récents -->
+                @if (ViewBag.RecentFiles != null && (ViewBag.RecentFiles as List<string>).Any())
+                {
+                    <div class="etl-card animate__animated animate__fadeIn">
+                        <div class="etl-header">
+                            <h4 class="etl-title"><i class="fas fa-history etl-icon"></i>Fichiers récents</h4>
+                        </div>
+                        <div class="p-4">
+                            @foreach (var file in ViewBag.RecentFiles as List<string>)
+                            {
+                                <div class="etl-file-item d-flex justify-content-between align-items-center animate__animated animate__fadeInLeft">
+                                    <div class="d-flex align-items-center">
+                                        <div class="etl-file-icon me-3">
+                                            <i class="fas fa-file-csv"></i>
+                                        </div>
+                                        <div>
+                                            <span class="d-block text-white">@file</span>
+                                            <small class="text-muted">Fichier CSV</small>
+                                        </div>
+                                    </div>
+                                    <a href="@Url.Content("~/uploads/" + file)"
+                                       class="etl-btn btn-sm"
+                                       target="_blank">
+                                        <i class="fas fa-download"></i>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Colonne de droite: Formulaire -->
+            <div class="col-lg-8 animate__animated animate__fadeInRight animate__delay-1s">
+                <div class="etl-card">
+                    <div class="etl-header">
+                        <h4 class="etl-title"><i class="fas fa-upload etl-icon"></i>Importer des données</h4>
+                    </div>
+                    <div class="p-4">
+                        <form method="post" enctype="multipart/form-data" action="/ETL/UploadFile" id="etlForm">
                             @Html.AntiForgeryToken()
 
-                            <div class="mb-3">
-                                <label for="selectedTable" class="form-label fw-semibold">
-                                    <i class="fas fa-table me-1" style="color: #FFE600;"></i> Choisir la table :
-                                </label>
-                                <select id="selectedTable" name="selectedTable" class="form-select" required onchange="toggleFileInput()">
-                                    <option value="" disabled selected>-- Sélectionnez une table --</option>
-                                    <option value="Toutes">Toutes les tables</option>
-                                    <option value="Prospect">Prospect</option>
-                                    <option value="Compte">Account</option>
-                                    <option value="Contact">Contact</option>
-                                    <option value="Opportunity">Opportunities</option>
-                                    <option value="Quote">Devis</option>
-                                    <option value="Sales">Sales_Order</option>
-                                    <option value="QuoteProduct">Quote_Product</option>
-                                    <option value="OpportunityProduct">Opportunity_Product</option>
-                                    <option value="SalesProduct">Sales_Order_Product</option>
-                                </select>
-                            </div>
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-4 mb-md-0">
+                                    <label for="selectedTable" class="etl-label">
+                                        <i class="fas fa-table etl-icon"></i>Table cible
+                                    </label>
+                                    <select id="selectedTable" name="selectedTable" class="etl-input" required onchange="toggleFileInput()" style="appearance: none; -webkit-appearance: none; -moz-appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns=" http: //www.w3.org/2000/svg" width="16" height="16" fill="%23ffe600" viewBox="0 0 16 16">
+                                        <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" /></svg>'); background-repeat: no-repeat; background-position: calc(100% - 12px) center; padding-right: 35px;">
+                                        <option value="" disabled selected style="color: #999999; background-color: #1e1e28;">-- Sélectionnez une table --</option>
+                                        <option value="Toutes" style="color: #ffffff; background-color: #1e1e28;">Toutes les tables</option>
+                                        <option value="Prospect" style="color: #ffffff; background-color: #1e1e28;">Prospect</option>
+                                        <option value="Compte" style="color: #ffffff; background-color: #1e1e28;">Account</option>
+                                        <option value="Contact" style="color: #ffffff; background-color: #1e1e28;">Contact</option>
+                                        <option value="Opportunity" style="color: #ffffff; background-color: #1e1e28;">Opportunities</option>
+                                        <option value="Quote" style="color: #ffffff; background-color: #1e1e28;">Devis</option>
+                                        <option value="Sales" style="color: #ffffff; background-color: #1e1e28;">Sales_Order</option>
+                                        <option value="QuoteProduct" style="color: #ffffff; background-color: #1e1e28;">Quote_Product</option>
+                                        <option value="OpportunityProduct" style="color: #ffffff; background-color: #1e1e28;">Opportunity_Product</option>
+                                        <option value="SalesProduct" style="color: #ffffff; background-color: #1e1e28;">Sales_Order_Product</option>
+                                    </select>
+                                </div>
 
-                            <div class="mb-3">
-                                <label for="uploadedFile" class="form-label fw-semibold">
-                                    <i class="fas fa-file-csv me-1" style="color: #FFE600;"></i> Fichier CSV :
-                                </label>
-                                <input id="uploadedFile" type="file" name="uploadedFile" accept=".csv" class="form-control" required />
-                            </div>
-
-                            <div class="d-grid">
-                                <button id="submitBtn" type="submit" class="btn btn-warning text-dark fw-bold" disabled>
-                                    <span id="btnText"><i class="fas fa-play me-2"></i> Lancer l'ETL</span>
-                                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
-                                    <!-- Barre de progression en jaune -->
-                                    <div class="progress mt-2 d-none" id="progressBar" style="height: 5px;">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%; background-color: #FFE600;" id="progress"></div>
+                                <div class="col-md-6">
+                                    <label for="uploadedFile" class="etl-label">
+                                        <i class="fas fa-file-csv etl-icon"></i>Fichier source
+                                    </label>
+                                    <div class="custom-file-upload position-relative">
+                                        <input id="uploadedFile" type="file" name="uploadedFile" accept=".csv" class="etl-input" required style="padding-left: 40px;" />
+                                        <i class="fas fa-upload position-absolute" style="left: 15px; top: 50%; transform: translateY(-50%); color: #ffe600;"></i>
+                                        <small class="text-muted mt-2 d-block" style="color: #999999 !important;">Format accepté: CSV uniquement</small>
                                     </div>
-                                </button>
+                                </div>
                             </div>
 
+                            <div class="d-grid mt-5">
+                                <button id="submitBtn" type="submit" class="etl-btn py-3" disabled style="position: relative; overflow: hidden; border-radius: 30px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); transition: all 0.3s;">
+                                    <span id="btnText"><i class="fas fa-rocket me-2"></i>LANCER LE PROCESSUS ETL</span>
+                                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status" aria-hidden="true"></span>
+                                    <span class="position-absolute" style="width: 30px; height: 30px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; top: -10px; right: -10px;"></span>
+                                    <span class="position-absolute" style="width: 20px; height: 20px; background-color: rgba(255, 255, 255, 0.2); border-radius: 50%; bottom: -5px; left: 30%;"></span>
+                                </button>
+
+                                <div class="mt-4 d-none" id="progressBar" style="position: relative; height: 10px; background-color: rgba(255, 255, 255, 0.1); border-radius: 30px; overflow: hidden; box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);">
+                                    <div class="position-absolute" style="top: 0; left: 0; height: 100%; background-color: #ffe600; background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent); background-size: 1rem 1rem; width: 0%; transition: width 0.3s ease;" id="progress"></div>
+                                    <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%); color: #ffffff; font-size: 0.8rem; font-weight: bold; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5); z-index: 1;" id="progressText"></div>
+                                </div>
+                            </div>
                         </form>
 
-                        @if (ViewBag.Message != null)
-                        {
-                            <div class="alert mt-4 @(ViewBag.Message.Contains("Erreur") ? "alert-danger" : "alert-success") text-center fw-semibold">
-                                @ViewBag.Message
-                            </div>
-                        }
-
-                        @if (ViewBag.PackageOutput != null)
-                        {
-                            <div class="alert alert-secondary mt-3">
-                                <strong>Sortie du package :</strong>
-                                <pre>@ViewBag.PackageOutput</pre>
-                            </div>
-                        }
-
-                        @if (ViewBag.PackageError != null)
-                        {
-                            <div class="alert alert-danger mt-3">
-                                <strong>Erreurs du package :</strong>
-                                <pre>@ViewBag.PackageError</pre>
-                            </div>
-                        }
-
-                        @* FICHIERS RÉCENTS REUTILISABLES *@
-                        @if (ViewBag.RecentFiles != null && (ViewBag.RecentFiles as List<string>).Any())
-                        {
-                            <div class="card mt-4 shadow-sm border-0">
-                                <div class="card-header d-flex align-items-center" style="background-color: #FFE600;">
-                                    <i class="fas fa-folder-open me-2 text-dark"></i>
-                                    <h5 class="mb-0 text-dark fw-bold">Fichiers récemment téléchargés</h5>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    @foreach (var file in ViewBag.RecentFiles as List<string>)
+                        <!-- Messages et résultats -->
+                        <div id="results" class="mt-4">
+                            @if (ViewBag.Message != null)
+                            {
+                                <div class="etl-alert @(ViewBag.Message.Contains("Erreur") ? "etl-alert-danger" : "etl-alert-success") animate__animated animate__fadeIn">
+                                    <div class="d-flex align-items-center">
+                                        <i class="@(ViewBag.Message.Contains("Erreur") ? "fas fa-exclamation-circle" : "fas fa-check-circle") me-3 fa-lg"></i>
+                                        <div>@ViewBag.Message</div>
+                                    </div>
+                                    @if (!ViewBag.Message.Contains("Erreur") && ViewBag.ExecutionDetails != null)
                                     {
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div class="d-flex align-items-center">
-                                                <i class="fas fa-file-csv me-2 text-success"></i>
-                                                <span class="fw-semibold">@file</span>
+                                        <div class="mt-3 pt-3 border-top">
+                                            <h6 class="mb-2"><i class="fas fa-info-circle me-2"></i>Détails de l'exécution :</h6>
+                                            <div class="d-flex flex-wrap gap-3">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-clock text-warning me-2"></i>
+                                                    <span>Temps d'exécution : @ViewBag.ExecutionDetails.Duration</span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-database text-warning me-2"></i>
+                                                    <span>Lignes chargées : @ViewBag.ExecutionDetails.RowsProcessed</span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-check-circle text-warning me-2"></i>
+                                                    <span>Statut : @ViewBag.ExecutionDetails.Status</span>
+                                                </div>
                                             </div>
-                                            <a href="@Url.Content("~/uploads/" + file)"
-                                               class="btn btn-sm fw-bold text-dark"
-                                               style="background-color: #FFE600; border: none;"
-                                               target="_blank">
-                                                Télécharger
-                                            </a>
-                                        </li>
+                                        </div>
                                     }
-                                </ul>
-                            </div>
-                        }
+                                    @*   @if (!ViewBag.Message.Contains("Erreur") && ViewBag.ExecutionDetails != null)
+                                    {
+                                        <div class="mt-3 pt-3 border-top">
+                                            <h6 class="mb-2"><i class="fas fa-info-circle me-2"></i>Détails de l'exécution :</h6>
+                                            <div class="d-flex flex-wrap gap-3">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-clock text-warning me-2"></i>
+                                                    <span>Temps d'exécution : @ViewBag.ExecutionDetails.Duration</span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-database text-warning me-2"></i>
+                                                    <span>Lignes chargées : @ViewBag.ExecutionDetails.RowsProcessed</span>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-check-circle text-warning me-2"></i>
+                                                    <span>Statut : @ViewBag.ExecutionDetails.Status</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    } *@
+                                </div>
+                            }
 
+                            @if (ViewBag.PackageOutput != null)
+                            {
+                                <div class="etl-alert etl-alert-info mt-4 animate__animated animate__fadeIn">
+                                    <h5 class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-terminal me-2"></i>
+                                        <strong>Sortie du processus</strong>
+                                    </h5>
+                                    <div class="etl-terminal">@ViewBag.PackageOutput</div>
+                                </div>
+                            }
 
+                            @if (ViewBag.PackageError != null)
+                            {
+                                <div class="etl-alert etl-alert-danger mt-4 animate__animated animate__fadeIn">
+                                    <h5 class="d-flex align-items-center mb-3">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        <strong>Erreurs détectées</strong>
+                                    </h5>
+                                    <div class="etl-terminal">@ViewBag.PackageError</div>
+                                </div>
+                            }
+                        </div>
                     </div>
+
+
+
                 </div>
             </div>
         </div>
     </div>
-</section>
+    <div class="card shadow-sm mb-4" style="border-color: #333333;">
+        <div class="card-header d-flex align-items-center" style="background-color: #333333; color: #ffffff;">
+            <i class="fas fa-database me-2" style="color: #ffe600;"></i>
+            <h2 class="mb-0 h4">Liste des tables SQL Server</h2>
+        </div>
+        <div class="card-body" style="background-color: #ffffff;">
+            <div class="etl-header rounded p-3" style="background-color: #cccccc;">
+                <ul id="tableList" class="list-unstyled mb-0">
+                    <li class="text-muted"><i class="fas fa-spinner fa-spin me-2" style="color: #333333;"></i>Chargement des tables...</li>
+                </ul>
+            </div>
+
+            <div id="selectedTableSection" class="mt-4" style="display:none;">
+                <h3 id="selectedTableTitle" class="h5 mb-3" style="color: #333333;"></h3>
+
+                <div class="filter-form p-3 rounded mb-3" style="background-color: #cccccc;">
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label class="form-label" style="color: #333333;">Colonne pour filtrage :</label>
+                            <select id="columnSelect" class="form-select" style="border-color: #999999; background-color: #ffffff;">
+                                <option value="">-- Sélectionnez une colonne --</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label" style="color: #333333;">Valeur à rechercher</label>
+                            <input type="text" id="filterValue" class="form-control" placeholder="Entrez une valeur" style="border-color: #999999; background-color: #ffffff;">
+                        </div>
+                        <div class="col-md-4">
+                            <button onclick="filterRecords()" class="btn w-100" style="background-color: #ffe600; color: #333333; border: none;">
+                                <i class="fas fa-search me-2"></i>Rechercher
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="recordsTable" class="table-responsive"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
@@ -126,59 +481,428 @@
             const selectedTable = document.getElementById("selectedTable").value;
             const fileInput = document.getElementById("uploadedFile");
             const submitBtn = document.getElementById("submitBtn");
+            const fileInputContainer = fileInput.closest('.custom-file-upload');
 
             if (selectedTable === "Toutes") {
                 fileInput.disabled = true;
                 fileInput.removeAttribute("required");
+                fileInputContainer.classList.add('opacity-50');
             } else {
                 fileInput.disabled = false;
                 fileInput.setAttribute("required", "required");
+                fileInputContainer.classList.remove('opacity-50');
+
+                // Ajouter un effet de brillance sur le champ de fichier
+                fileInputContainer.style.transition = "all 0.5s ease";
+                fileInputContainer.style.boxShadow = "0 0 10px rgba(255, 230, 0, 0.5)";
+                setTimeout(() => {
+                    fileInputContainer.style.boxShadow = "none";
+                }, 1000);
             }
 
-            submitBtn.disabled = selectedTable === "";
+            if (selectedTable === "") {
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.5";
+                submitBtn.style.transform = "scale(0.98)";
+            } else {
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+                submitBtn.style.transform = "scale(1)";
+
+                // Ajouter un effet de pulsation au bouton
+                submitBtn.classList.add('animate__animated', 'animate__pulse');
+                setTimeout(() => {
+                    submitBtn.classList.remove('animate__animated', 'animate__pulse');
+                }, 1000);
+            }
         }
 
-         document.addEventListener("DOMContentLoaded", () => {
+        document.addEventListener("DOMContentLoaded", () => {
+            // Ajouter des animations d'entrée aux éléments de la page
+            setTimeout(() => {
+                document.querySelectorAll('.etl-file-item').forEach((item, index) => {
+                    setTimeout(() => {
+                        item.classList.add('animate__animated', 'animate__fadeInLeft');
+                    }, index * 100);
+                });
+            }, 1000);
+
             const form = document.querySelector("form");
             const btnText = document.getElementById("btnText");
             const btnSpinner = document.getElementById("btnSpinner");
             const submitBtn = document.getElementById("submitBtn");
             const progressBar = document.getElementById("progressBar");
             const progress = document.getElementById("progress");
+            const progressText = document.getElementById("progressText");
+
+            // Ajouter des animations aux champs du formulaire
+            const formElements = document.querySelectorAll('.etl-input');
+            formElements.forEach(element => {
+                element.addEventListener('focus', function() {
+                    const parentElement = this.closest('.col-md-6') || this.parentElement;
+                    parentElement.style.transition = "all 0.3s ease";
+                    parentElement.style.transform = "translateY(-5px)";
+
+                    // Ajouter un effet de brillance
+                    this.style.boxShadow = "0 0 0 3px rgba(255, 230, 0, 0.3)";
+
+                    setTimeout(() => {
+                        parentElement.style.transform = "translateY(0)";
+                    }, 300);
+                });
+
+                element.addEventListener('blur', function() {
+                    this.style.boxShadow = "none";
+                });
+            });
+
+            // Ajouter un effet de survol au bouton de soumission
+            submitBtn.addEventListener('mouseenter', function() {
+                if (!this.disabled) {
+                    this.style.transform = "translateY(-3px) scale(1.02)";
+                    this.style.boxShadow = "0 8px 20px rgba(0, 0, 0, 0.3)";
+                }
+            });
+
+            submitBtn.addEventListener('mouseleave', function() {
+                if (!this.disabled) {
+                    this.style.transform = "scale(1)";
+                    this.style.boxShadow = "0 5px 15px rgba(0, 0, 0, 0.2)";
+                }
+            });
 
             form.addEventListener("submit", function () {
-                btnText.innerText = "Traitement en cours...";
+                btnText.innerHTML = "<i class='fas fa-cog fa-spin me-2'></i>TRAITEMENT EN COURS...";
                 btnSpinner.classList.remove("d-none");
                 progressBar.classList.remove("d-none");
                 submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.8";
 
-                // Simuler une progression pour le test
+                // Ajouter une animation au bouton
+                submitBtn.style.transform = "scale(0.98)";
+
+                // Faire défiler jusqu'aux résultats
+                const resultsSection = document.getElementById('results');
+                if (resultsSection) {
+                    setTimeout(() => {
+                        resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    }, 500);
+                }
+
+                // Simuler une progression pour le test avec une animation plus fluide
                 let progressValue = 0;
                 let interval = setInterval(function () {
-                    progressValue += 10;
+                    progressValue += 2;
                     progress.style.width = progressValue + "%";
+                    progressText.textContent = progressValue + "%";
+
+                    // Ajouter des effets visuels pendant la progression
+                    if (progressValue % 10 === 0) {
+                        progress.style.opacity = "0.8";
+                        setTimeout(() => {
+                            progress.style.opacity = "1";
+                        }, 100);
+                    }
+
                     if (progressValue >= 100) {
                         clearInterval(interval);
+                        // Ajouter une animation de succès quand la progression est terminée
+                        progressBar.classList.add('animate__animated', 'animate__flash');
+                        progressText.textContent = "Terminé !";
+                        progressText.style.color = "#ffe600";
                     }
-                }, 1000);
+                }, 200);
             });
         });
 
         function prefillForm(fileName, tableName) {
-             const tableSelect = document.getElementById("selectedTable");
-             const fileInput = document.getElementById("uploadedFile");
+            const tableSelect = document.getElementById("selectedTable");
+            const fileInput = document.getElementById("uploadedFile");
 
-             for (let option of tableSelect.options) {
-                 if (option.value.toLowerCase() === tableName.toLowerCase()) {
-                     option.selected = true;
-                     break;
-                 }
-             }
+            for (let option of tableSelect.options) {
+                if (option.value.toLowerCase() === tableName.toLowerCase()) {
+                    option.selected = true;
+                    break;
+                }
+            }
 
-             toggleFileInput();
-             alert(`Veuillez sélectionner manuellement le fichier : ${fileName} dans votre système.`);
-             document.getElementById("submitBtn").disabled = false;
-         }
+            toggleFileInput();
+
+            // Créer une notification élégante dans le style du nouveau design
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'etl-alert etl-alert-info animate__animated animate__fadeIn';
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.width = '350px';
+            alertDiv.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+
+            alertDiv.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-info-circle me-3 fa-lg"></i>
+                    <div>
+                        <strong>Action requise</strong>
+                        <p class="mb-0 mt-1">Veuillez sélectionner manuellement le fichier : <strong>${fileName}</strong></p>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(alertDiv);
+
+            setTimeout(() => {
+                alertDiv.classList.remove('animate__fadeIn');
+                alertDiv.classList.add('animate__fadeOut');
+                setTimeout(() => {
+                    document.body.removeChild(alertDiv);
+                }, 1000);
+            }, 5000);
+
+            document.getElementById("submitBtn").disabled = false;
+        }
+
+
+
+
+        //     // Gestion du filtre
+        //     document.getElementById("applyFilter").addEventListener("click", () => {
+        //         const column = document.getElementById("filterColumn").value;
+        //         const value = document.getElementById("filterValue").value;
+        //         const [schema, table] = document.getElementById("selectedTable").textContent.split(".");
+        //         if (column && value) {
+        //             loadRecords(schema, table, column, value);
+        //         } else {
+        //             alert("Veuillez saisir la colonne et la valeur !");
+        //         }
+        //     });
+        // });
+
+        // function loadTables() {
+        //     fetch('/tables')
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             const ul = document.getElementById('tableList');
+        //             ul.innerHTML = "";
+        //             data.forEach(item => {
+        //                 const li = document.createElement('li');
+        //                 li.textContent = item;
+        //                 li.style.cursor = "pointer";
+        //                 li.addEventListener("click", () => {
+        //                     const [schema, table] = item.split(".");
+        //                     document.getElementById("selectedTable").textContent = item;
+        //                     loadRecords(schema, table);
+        //                 });
+        //                 ul.appendChild(li);
+        //             });
+        //         })
+        //         .catch(err => {
+        //             console.error('Erreur:', err);
+        //             document.getElementById('tableList').innerHTML = "<li>Erreur lors du chargement des tables.</li>";
+        //         });
+        // }
+
+        // function loadRecords(schema, table, column = null, value = null) {
+        //     let url = `/records/${schema}/${table}`;
+        //     if (column && value) {
+        //         url = `/records/${schema}/${table}/filter?column=${encodeURIComponent(column)}&value=${encodeURIComponent(value)}`;
+        //     }
+
+        //     fetch(url)
+        //         .then(res => res.json())
+        //         .then(data => {
+        //             document.getElementById("recordsSection").style.display = "block";
+
+        //             const head = document.getElementById("recordsHead");
+        //             const body = document.getElementById("recordsBody");
+
+        //             head.innerHTML = "";
+        //             body.innerHTML = "";
+
+        //             if (data.length === 0) {
+        //                 head.innerHTML = "<tr><th>Aucune donnée trouvée</th></tr>";
+        //                 return;
+        //             }
+
+        //             // Crée l'en-tête
+        //             const columns = Object.keys(data[0]);
+        //             let headRow = "<tr>";
+        //             columns.forEach(col => headRow += `<th>${col}</th>`);
+        //             headRow += "</tr>";
+        //             head.innerHTML = headRow;
+
+        //             // Crée les lignes
+        //             data.forEach(row => {
+        //                 let bodyRow = "<tr>";
+        //                 columns.forEach(col => bodyRow += `<td>${row[col]}</td>`);
+        //                 bodyRow += "</tr>";
+        //                 body.innerHTML += bodyRow;
+        //             });
+        //         })
+        //         .catch(err => {
+        //             console.error('Erreur:', err);
+        //             document.getElementById("recordsHead").innerHTML = "";
+        //             document.getElementById("recordsBody").innerHTML = "<tr><td>Erreur lors du chargement des enregistrements.</td></tr>";
+        //         });
+        // }
+
+
+               let selectedSchema = "";
+        let selectedTable = "";
+
+        async function loadTables() {
+            const tableList = document.getElementById('tableList');
+            tableList.innerHTML = '<li>Chargement...</li>';
+
+            try {
+                const response = await fetch(`/tables`);
+                if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+
+                const tables = await response.json();
+
+                tableList.innerHTML = "";
+                tables.forEach(fullName => {
+                    const li = document.createElement('li');
+                    li.textContent = fullName;
+                    li.style.cursor = 'pointer';
+                    li.onclick = () => {
+                        const [schema, table] = fullName.split('.');
+                        selectedSchema = schema;
+                        selectedTable = table;
+
+                        document.getElementById('selectedTableSection').style.display = 'block';
+                        document.getElementById('selectedTableTitle').textContent = fullName;
+
+                        loadColumns(schema, table);
+                        loadRecords(schema, table);
+                    };
+                    tableList.appendChild(li);
+                });
+
+                if(tables.length === 0) {
+                    tableList.innerHTML = '<li>Aucune table trouvée</li>';
+                }
+            } catch (error) {
+                console.error('Erreur chargement des tables:', error);
+                tableList.innerHTML = '<li>Erreur lors du chargement des tables.</li>';
+            }
+        }
+
+        async function loadColumns(schema, table) {
+            const columnSelect = document.getElementById('columnSelect');
+            columnSelect.innerHTML = '<option value="">-- Chargement... --</option>';
+
+            try {
+                const response = await fetch(`/columns/${schema}/${table}`);
+                if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+
+                const columns = await response.json();
+
+                columnSelect.innerHTML = '<option value="">-- Sélectionnez une colonne --</option>';
+                columns.forEach(col => {
+                    const option = document.createElement('option');
+                    option.value = col;
+                    option.textContent = col;
+                    columnSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Erreur chargement colonnes:", error);
+                columnSelect.innerHTML = '<option value="">Erreur lors du chargement</option>';
+            }
+        }
+
+        async function loadRecords(schema, table) {
+            const recordsTable = document.getElementById('recordsTable');
+            recordsTable.innerHTML = '<p>Chargement des enregistrements...</p>';
+
+            try {
+                const response = await fetch(`/records/${schema}/${table}`);
+                if (!response.ok) throw new Error(`Erreur HTTP ${response.status}`);
+
+                const data = await response.json();
+
+                if (!data.length) {
+                    recordsTable.innerHTML = '<p>Aucun enregistrement trouvé.</p>';
+                    return;
+                }
+
+                renderRecordsTable(data);
+            } catch (error) {
+                console.error('Erreur chargement des enregistrements:', error);
+                recordsTable.innerHTML = '<p>Erreur lors du chargement des données.</p>';
+            }
+        }
+
+        async function filterRecords() {
+            const column = document.getElementById('columnSelect').value;
+            const value = document.getElementById('filterValue').value.trim();
+
+            if (!column || !value) {
+                alert("Veuillez sélectionner une colonne et saisir une valeur !");
+                return;
+            }
+
+            const recordsTable = document.getElementById('recordsTable');
+            recordsTable.innerHTML = '<p>Filtrage en cours...</p>';
+
+            try {
+                const url = `/records/${selectedSchema}/${selectedTable}/filter?column=${encodeURIComponent(column)}&value=${encodeURIComponent(value)}`;
+                const response = await fetch(url);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    recordsTable.innerHTML = `<p style="color:red;">Erreur : ${errorText}</p>`;
+                    return;
+                }
+
+                const data = await response.json();
+
+                if (!data.length) {
+                    recordsTable.innerHTML = '<p>Aucun résultat trouvé pour ce filtre.</p>';
+                    return;
+                }
+
+                renderRecordsTable(data);
+            } catch (error) {
+                console.error('Erreur filtrage:', error);
+                recordsTable.innerHTML = '<p>Erreur lors du filtrage des données.</p>';
+            }
+        }
+
+        function renderRecordsTable(data) {
+            const recordsTable = document.getElementById('recordsTable');
+            const table = document.createElement('table');
+            table.border = '1';
+            table.classList.add('data-table');
+
+            // Header
+            const headerRow = document.createElement('tr');
+            Object.keys(data[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
+
+            // Data
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value ?? '';  // gérer les null
+                    tr.appendChild(td);
+                });
+                table.appendChild(tr);
+            });
+
+            recordsTable.innerHTML = '';
+            recordsTable.appendChild(table);
+        }
+
+        // Charger les tables au chargement de la page
+        window.onload = () => {
+            loadTables();
+        };
+
 
     </script>
 }

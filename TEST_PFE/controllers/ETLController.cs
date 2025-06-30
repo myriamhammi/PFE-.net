@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using TEST_PFE.Extensions;
+using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 //public class TableRequest
 //{
@@ -16,10 +18,15 @@ namespace TEST_PFE.Controllers
 {
     public class ETLController : Controller
     {
-        private readonly string _fileUploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+        private readonly string _fileUploadDirectory;
+        private readonly string _connectionString;
 
-        public ETLController()
+        public ETLController(IConfiguration configuration)
         {
+            _connectionString = configuration.GetConnectionString("SAConnection");
+
+            _fileUploadDirectory = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+
             if (!Directory.Exists(_fileUploadDirectory))
             {
                 Directory.CreateDirectory(_fileUploadDirectory);
@@ -300,6 +307,89 @@ namespace TEST_PFE.Controllers
 
 
 
+        //private bool RunSSISPackage(string selectedTable, string packageName)
+        //{
+        //    try
+        //    {
+        //        // Emplacement des SSIS Packages
+        //        var ssisPackagesPath = @"C:\Users\meria\source\repos\PFE_EY\PFE_EY";
+
+        //        // Chemin complet vers le package (LoadToSA ou TransformToDW)
+        //        var fullPackagePath = Path.Combine(ssisPackagesPath, $"{selectedTable}_{packageName}.dtsx");
+
+        //        // Vérification de l'existence du fichier
+        //        if (!System.IO.File.Exists(fullPackagePath))
+        //        {
+        //            Console.WriteLine($"Le fichier {selectedTable}_{packageName}.dtsx est introuvable.");
+        //            ViewBag.Message = $"Le fichier {selectedTable}_{packageName}.dtsx est introuvable.";
+        //            return false;
+        //        }
+
+        //        // Exécution du package sans option /LOG
+        //        var startInfo = new ProcessStartInfo
+        //        {
+        //            FileName = @"C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\DTExec.exe",
+        //            Arguments = $"/F \"{fullPackagePath}\" /Rep E",
+        //            RedirectStandardOutput = true,
+        //            RedirectStandardError = true,
+        //            UseShellExecute = false,
+        //            CreateNoWindow = true
+        //        };
+
+        //        //partie jdida
+        //        var startTime = DateTime.Now;
+        //        int rowsProcessed = 0;
+        //        string status = "Succès";
+
+
+        //        using (var process = Process.Start(startInfo))
+        //        {
+        //            // Lecture des flux de sortie et d'erreur
+        //            string output = process.StandardOutput.ReadToEnd();
+        //            string error = process.StandardError.ReadToEnd();
+        //            process.WaitForExit();
+
+        //            // Affichage des messages dans la console
+        //            Console.WriteLine($"{packageName} Sortie : {output}");
+        //            Console.WriteLine($"{packageName} Erreur : {error}");
+
+        //            //partie jdida
+        //            var rowsMatch = System.Text.RegularExpressions.Regex.Match(output, @"Processed (\d+) rows");
+        //            if (rowsMatch.Success)
+        //            {
+        //                rowsProcessed = int.Parse(rowsMatch.Groups[1].Value);
+        //            }
+        //            // Vérification du code de sortie du processus
+        //            if (process.ExitCode != 0)
+        //            {
+        //                //jdida
+        //                status = "Échec";
+        //                //kdima
+        //                ViewBag.Message = $"Erreur lors de l'exécution du package {packageName} : {error}";
+        //                return false;
+        //            }
+        //        }
+
+        //        //jdida
+        //        var executionTime = DateTime.Now - startTime;
+        //        ViewBag.ExecutionDetails = new
+        //        {
+        //            Duration = $"{executionTime.Minutes}m {executionTime.Seconds}s",
+        //            RowsProcessed = rowsProcessed,
+        //            Status = status
+        //        };
+        //        // Si le processus a réussi
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // En cas d'exception, gestion de l'erreur
+        //        Console.WriteLine($"Erreur lors de l'exécution du package {packageName}: {ex.Message}");
+        //        ViewBag.Message = $"Erreur lors de l'exécution du package {packageName}: {ex.Message}";
+        //        return false;
+        //    }
+        //}
+
         private bool RunSSISPackage(string selectedTable, string packageName)
         {
             try
@@ -307,7 +397,7 @@ namespace TEST_PFE.Controllers
                 // Emplacement des SSIS Packages
                 var ssisPackagesPath = @"C:\Users\meria\source\repos\PFE_EY\PFE_EY";
 
-                // Chemin complet vers le package (LoadToSA ou TransformToDW)
+                // Chemin complet vers le package
                 var fullPackagePath = Path.Combine(ssisPackagesPath, $"{selectedTable}_{packageName}.dtsx");
 
                 // Vérification de l'existence du fichier
@@ -318,7 +408,7 @@ namespace TEST_PFE.Controllers
                     return false;
                 }
 
-                // Exécution du package sans option /LOG
+                // Exécution du package
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = @"C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\DTExec.exe",
@@ -329,36 +419,194 @@ namespace TEST_PFE.Controllers
                     CreateNoWindow = true
                 };
 
+                DateTime startTime = DateTime.Now;
+                int rowsProcessed = -1;
+                string status;
+
                 using (var process = Process.Start(startInfo))
                 {
-                    // Lecture des flux de sortie et d'erreur
                     string output = process.StandardOutput.ReadToEnd();
                     string error = process.StandardError.ReadToEnd();
                     process.WaitForExit();
 
-                    // Affichage des messages dans la console
                     Console.WriteLine($"{packageName} Sortie : {output}");
                     Console.WriteLine($"{packageName} Erreur : {error}");
 
-                    // Vérification du code de sortie du processus
+                    var rowsMatch = Regex.Match(output, @"RowsProcessed:\s*(\d+)", RegexOptions.IgnoreCase);
+                    if (rowsMatch.Success)
+                    {
+                        rowsProcessed = int.Parse(rowsMatch.Groups[1].Value);
+                    }
+
                     if (process.ExitCode != 0)
                     {
+                        status = "Échec";
+                        var executionTime = DateTime.Now - startTime;
+                        ViewBag.ExecutionDetails = new
+                        {
+                            Duration = $"{executionTime.Minutes}m {executionTime.Seconds}s",
+                            RowsProcessed = rowsProcessed >= 0 ? rowsProcessed : 0,
+                            Status = status
+                        };
+
                         ViewBag.Message = $"Erreur lors de l'exécution du package {packageName} : {error}";
                         return false;
                     }
+
+                    status = "Succès";
                 }
 
-                // Si le processus a réussi
+                var totalExecutionTime = DateTime.Now - startTime;
+                ViewBag.ExecutionDetails = new
+                {
+                    Duration = $"{totalExecutionTime.Minutes}m {totalExecutionTime.Seconds}s",
+                    RowsProcessed = rowsProcessed >= 0 ? rowsProcessed : 0,
+                    Status = status
+                };
+
                 return true;
             }
             catch (Exception ex)
             {
-                // En cas d'exception, gestion de l'erreur
                 Console.WriteLine($"Erreur lors de l'exécution du package {packageName}: {ex.Message}");
                 ViewBag.Message = $"Erreur lors de l'exécution du package {packageName}: {ex.Message}";
                 return false;
             }
         }
+
+
+
+
+
+        [HttpGet("tables")]
+        public async Task<ActionResult<IEnumerable<string>>> GetTables()
+        {
+            var tables = new List<string>();
+
+            await using var conn = new SqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            // En option : log de la base courante pour débogage
+            var dbCmd = new SqlCommand("SELECT DB_NAME()", conn);
+            var dbName = (string)await dbCmd.ExecuteScalarAsync();
+            Console.WriteLine($"Connected to database: {dbName}");
+
+            var cmd = new SqlCommand(
+                "SELECT TABLE_SCHEMA, TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'",
+                conn
+            );
+
+            await using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                var schema = reader.GetString(0);
+                var table = reader.GetString(1);
+                tables.Add($"{schema}.{table}");
+            }
+
+            return Ok(tables);
+        }
+
+
+        //[HttpGet("records/{schema}/{table}")]
+        //public async Task<IActionResult> GetTableRecords(string schema, string table)
+        //{
+        //    var results = new List<Dictionary<string, object>>();
+
+        //    await using var conn = new SqlConnection(_connectionString);
+        //    await conn.OpenAsync();
+
+        //    // ⚠️ Attention à l'injection SQL - ici c'est très basique
+        //    var query = $"SELECT * FROM [{schema}].[{table}]";
+
+        //    using var cmd = new SqlCommand(query, conn);
+        //    using var reader = await cmd.ExecuteReaderAsync();
+
+        //    while (await reader.ReadAsync())
+        //    {
+        //        var row = new Dictionary<string, object>();
+
+        //        for (var i = 0; i < reader.FieldCount; i++)
+        //        {
+        //            row[reader.GetName(i)] = reader.GetValue(i);
+        //        }
+
+        //        results.Add(row);
+        //    }
+
+        //    return Ok(results);
+        //}
+
+
+
+        [HttpGet("records/{schema}/{table}/filter")]
+        public async Task<IActionResult> GetTableRecordsWithFilter(
+         string schema,
+         string table,
+         [FromQuery] string column,
+         [FromQuery] string value
+     )
+        {
+            var results = new List<Dictionary<string, object>>();
+
+            await using var conn = new SqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            var query = $"SELECT TOP 100 * FROM [{schema}].[{table}] WHERE [{column}] LIKE @value";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@value", $"%{value}%");
+
+            using var reader = await cmd.ExecuteReaderAsync();
+
+            while (await reader.ReadAsync())
+            {
+                var row = new Dictionary<string, object>();
+
+                for (var i = 0; i < reader.FieldCount; i++)
+                {
+                    row[reader.GetName(i)] = reader.GetValue(i);
+                }
+
+                results.Add(row);
+            }
+
+            return Ok(results);
+        }
+
+        [HttpGet("columns/{schema}/{table}")]
+        public async Task<IActionResult> GetTableColumns(string schema, string table)
+        {
+            var columns = new List<string>();
+
+            await using var conn = new SqlConnection(_connectionString);
+            await conn.OpenAsync();
+
+            var query = @"
+        SELECT COLUMN_NAME 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = @schema AND TABLE_NAME = @table 
+        ORDER BY ORDINAL_POSITION";
+
+            using var cmd = new SqlCommand(query, conn);
+            cmd.Parameters.AddWithValue("@schema", schema);
+            cmd.Parameters.AddWithValue("@table", table);
+
+            using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                columns.Add(reader.GetString(0));
+            }
+
+            return Ok(columns);
+        }
+
+
+
+
+
+
+
 
 
 

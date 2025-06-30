@@ -6,6 +6,10 @@
     <!-- Animation AOS CSS -->
     <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
 
     <style>
         header {
@@ -498,10 +502,10 @@
         }
     </style>
 
-    
+
     <div class="assistant-container">
         <div class="pulse-ring"></div>
-        <div class="assistant-bubble" onclick="toggleChat()">
+        <div class="assistant-bubble">
             <svg class="ai-icon" viewBox="0 0 24 24">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
             </svg>
@@ -509,24 +513,24 @@
 
         <div class="chat-panel" id="chatPanel">
             <div class="chat-header">
-                <button class="close-btn" onclick="toggleChat()">✕</button>
+                <button class="close-btn">✕</button>
                 <div class="status-indicator"></div>
                 <h3>Assistant IA</h3>
                 <p>Comment puis-je vous aider aujourd'hui ?</p>
             </div>
 
             <div class="chat-content">
-                <div class="suggestion-card" onclick="handleSuggestion('reports')">
+                <div class="suggestion-card" onclick="sendOption('reports')">
                     <h4>Consulter mes rapports</h4>
                     <p>Accédez rapidement à vos derniers rapports et analyses de performance</p>
                 </div>
 
-                <div class="suggestion-card" onclick="handleSuggestion('data')">
+                <div class="suggestion-card" onclick="sendOption('data')">
                     <h4>Analyser mes données</h4>
                     <p>Obtenez des insights détaillés sur vos données business</p>
                 </div>
 
-                <div class="suggestion-card" onclick="handleSuggestion('kpi')">
+                <div class="suggestion-card" onclick="sendOption('kpi')">
                     <h4>Prédire mes KPIs</h4>
                     <p>Anticipez les tendances de vos indicateurs clés de performance</p>
                 </div>
@@ -553,67 +557,64 @@
 
 
     <!-- ===== Section : KPIs ===== -->
-    <section id="kpis" class="py-6 position-relative overflow-hidden">
-        <!-- Liseré de séparation avec le header -->
-        <div class="w-100 position-absolute top-0 start-0" style="height:4px;background:#ffe600;"></div>
+    <!--<section id="kpis" class="py-6 position-relative overflow-hidden">-->
+    <!-- Liseré de séparation avec le header -->
+    <!--<div class="w-100 position-absolute top-0 start-0" style="height:4px;background:#ffe600;"></div>
 
-        <div class="container position-relative" style="z-index:1;">
-            <div class="text-center mb-5">
-                <h2 class="text-uppercase fw-bold text-white fst-italic">
-                    KPIs Descriptifs, Explicatifs et Prédictifs
-                </h2>
-                <h5 class="fst-italic mb-0" style="color:#d0d0d0;">
-                    Une lecture complète des données pour guider vos décisions stratégiques
-                </h5>
+    <div class="container position-relative" style="z-index:1;">
+        <div class="text-center mb-5">
+            <h2 class="text-uppercase fw-bold text-white fst-italic">
+                KPIs Descriptifs, Explicatifs et Prédictifs
+            </h2>
+            <h5 class="fst-italic mb-0" style="color:#d0d0d0;">
+                Une lecture complète des données pour guider vos décisions stratégiques
+            </h5>
+        </div>
+
+        <div class="row text-center gy-5">-->
+    <!-- KPI 1 -->
+    <!--<div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="kpi-card h-100">
+            <div class="icon-circle mb-4">
+                <i class="fas fa-chart-line"></i>
             </div>
-
-            <div class="row text-center gy-5">
-                <!-- KPI 1 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="kpi-card h-100">
-                        <div class="icon-circle mb-4">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h4 class="fw-semibold mb-3">KPIs Descriptifs</h4>
-                        <p class="small text-light opacity-75">
-                            Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.
-                        </p>
-                        <a class="stretched-link kpi-link" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
+            <h4 class="fw-semibold mb-3">KPIs Descriptifs</h4>
+            <p class="small text-light opacity-75">
+                Visualisation des performances passées à travers des indicateurs clés tels que le chiffre d'affaires et le taux de conversion.
+            </p>
+            <a class="stretched-link kpi-link" href="/SalesKPI/Descriptifs">Explorer <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>-->
+    <!-- KPI 2 -->
+    <!--<div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="kpi-card h-100">
+            <div class="icon-circle mb-4">
+                <i class="fas fa-project-diagram"></i>
+            </div>
+            <h4 class="fw-semibold mb-3">KPIs Explicatifs</h4>
+            <p class="small text-light opacity-75">
+                Compréhension des relations entre les variables pour expliquer les fluctuations de performance.
+            </p>
+            <a class="stretched-link kpi-link" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
+        </div>
+    </div>-->
+    <!-- KPI 3 -->
+    <!--<div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="kpi-card h-100">
+                    <div class="icon-circle mb-4">
+                        <i class="fas fa-brain"></i>
                     </div>
-                </div>
-
-                <!-- KPI 2 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="kpi-card h-100">
-                        <div class="icon-circle mb-4">
-                            <i class="fas fa-project-diagram"></i>
-                        </div>
-                        <h4 class="fw-semibold mb-3">KPIs Explicatifs</h4>
-                        <p class="small text-light opacity-75">
-                            Compréhension des relations entre les variables pour expliquer les fluctuations de performance.
-                        </p>
-                        <a class="stretched-link kpi-link" href="/SalesKPI/Explicatifs">Explorer <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- KPI 3 -->
-                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
-                    <div class="kpi-card h-100">
-                        <div class="icon-circle mb-4">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h4 class="fw-semibold mb-3">KPIs Prédictifs</h4>
-                        <p class="small text-light opacity-75">
-                            Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.
-                        </p>
-                        <a class="stretched-link kpi-link" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
-                    </div>
+                    <h4 class="fw-semibold mb-3">KPIs Prédictifs</h4>
+                    <p class="small text-light opacity-75">
+                        Utilisation de modèles prédictifs pour anticiper les évolutions futures et mieux piloter votre activité.
+                    </p>
+                    <a class="stretched-link kpi-link" href="/SalesKPI/Predictifs">Explorer <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </div>
-
-        <!-- Petit voile sombre par‑dessus le fond -->
-        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+    </div>-->
+    <!-- Petit voile sombre par‑dessus le fond -->
+    <!--<div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
     </section>
 
     <style>
@@ -663,7 +664,721 @@
             .kpi-link:hover {
                 text-decoration: underline;
             }
+    </style>-->
+
+
+    <section id="kpis" class="py-6 position-relative overflow-hidden">
+        <!-- Liseré de séparation animé -->
+        <div class="separator-line position-absolute top-0 start-0"></div>
+
+        <!-- Particules d'arrière-plan -->
+        <div class="particles-bg position-absolute top-0 start-0 w-100 h-100"></div>
+
+        <!-- Grid d'arrière-plan subtile -->
+        <div class="grid-bg position-absolute top-0 start-0 w-100 h-100"></div>
+
+        <div class="container position-relative" style="z-index:10;">
+            <!-- En-tête amélioré -->
+            <div class="text-center mb-5" data-aos="fade-down">
+                <div class="title-decoration mb-3">
+                    <div class="decoration-line"></div>
+                    <div class="decoration-dot"></div>
+                    <div class="decoration-line"></div>
+                </div>
+                <h2 class="main-title">
+                    <span class="highlight-text">Analytics</span> Prédictifs Avancés
+                </h2>
+                <p class="subtitle">
+                    Anticipez l'avenir avec nos modèles de prédiction
+                </p>
+            </div>
+
+            <!-- Section KPI et Statistiques -->
+            <div class="row mb-5">
+                <!-- Carte KPI Prédictif -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+                    <div class="kpi-card h-100 position-relative featured-card">
+                        <div class="card-glow"></div>
+                        <div class="featured-badge">
+                            <i class="fas fa-crown"></i>
+                            <span>Prédiction</span>
+                        </div>
+                        <div class="card-content text-center">
+                            <div class="icon-wrapper mb-4">
+                                <div class="icon-circle">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="icon-pulse"></div>
+                            </div>
+
+                            <div class="card-number">AI</div>
+
+                            <h4 class="card-title mb-3">Modèles Prédictifs ML</h4>
+                            <p class="card-description mb-4">
+                                Libérez le potentiel du machine learning pour détecter les tendances émergentes, booster votre efficacité et orienter vos choix stratégiques grâce à nos solutions intelligentes intégrées.
+                            </p>
+
+                            <div class="kpi-metrics mb-4">
+                                <div class="row text-center">
+                                    <div class="col-4">
+                                        <div class="metric-item">
+                                            <div class="metric-value">95%</div>
+                                            <div class="metric-label">Précision</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-8">
+                                        <div class="metric-item">
+                                            <div class="metric-value">Real-time</div>
+                                            <div class="metric-label">Analyse</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a class="kpi-link" href="/SalesKPI/Predictifs">
+                                <span>Découvrir</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section statistiques de l'application -->
+                <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+                    <div class="stats-section h-100">
+                        <div class="row text-center">
+                            <div class="col-sm-6 mb-4">
+                                <div class="stat-item">
+                                    <div class="stat-icon mb-3">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="+10">0</div>
+                                    <div class="stat-label">Statistiques Créés</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 mb-4">
+                                <div class="stat-item">
+                                    <div class="stat-icon mb-3">
+                                        <i class="fas fa-database"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="+30">0</div>
+                                    <div class="stat-label">TB de Données Analysées</div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 mb-4">
+                                <div class="stat-item">
+                                    <div class="stat-icon mb-3">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="stat-number" data-target="99">0</div>
+                                    <div class="stat-label">% Temps de Disponibilité</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Section avantages supplémentaires -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="features-grid" data-aos="fade-up" data-aos-delay="500">
+                            <div class="d-flex justify-content-around">
+                                <div class="feature-item text-center mx-3">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </div>
+                                    <h5>Synchronisation Automatique</h5>
+                                    <p>Mise à jour en temps réel de vos données prédictifs</p>
+                                </div>
+                                <div class="feature-item text-center mx-3">
+                                    <div class="feature-icon mb-3">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h5>Sécurité Renforcée</h5>
+                                    <p>Protection avancée de vos données sensibles</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </section>
+
+    <style>
+        /* Variables CSS */
+        :root {
+            --primary-color: #ffe600;
+            --secondary-color: #ffd700;
+            --accent-color: #00d4ff;
+            --dark-bg: #0a0e1a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b8c8;
+            --gradient-primary: linear-gradient(135deg, #203050 0%, #0d1520 55%, #06090f 100%);
+        }
+
+        /* Section principale */
+        #kpis {
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 0;
+        }
+
+        /* Liseré animé */
+        .separator-line {
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), var(--accent-color), var(--primary-color), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Particules d'arrière-plan */
+        .particles-bg::before,
+        .particles-bg::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .particles-bg::before {
+            top: 20%;
+            left: 10%;
+            animation-delay: -2s;
+        }
+
+        .particles-bg::after {
+            top: 60%;
+            right: 15%;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+                opacity: 1;
+            }
+        }
+
+        /* Grille d'arrière-plan */
+        .grid-bg {
+            background-image: linear-gradient(rgba(255, 230, 0, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 230, 0, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.3;
+        }
+
+        /* En-tête */
+        .title-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .decoration-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .decoration-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .highlight-text {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-style: italic;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Carte KPI */
+        .kpi-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.5rem;
+            padding: 0;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+            .kpi-card:hover {
+                transform: translateY(-12px) scale(1.02);
+                border-color: rgba(255, 230, 0, 0.3);
+            }
+
+            .kpi-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(255, 230, 0, 0.1), transparent);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .kpi-card:hover::before {
+                opacity: 1;
+            }
+
+        /* Lueur de carte */
+        .card-glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 230, 0, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .kpi-card:hover .card-glow {
+            opacity: 1;
+        }
+
+        /* Contenu de carte */
+        .card-content {
+            padding: 3rem 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Wrapper d'icône */
+        .icon-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .icon-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-size: 2.5rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .kpi-card:hover .icon-circle {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .icon-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Numéro de carte */
+        .card-number {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: rgba(255, 230, 0, 0.1);
+            font-family: 'Arial Black', sans-serif;
+        }
+
+        /* Titre et description */
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Métriques KPI */
+        .kpi-metrics .metric-item {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Lien Explorer */
+        .kpi-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            padding: 1rem 2rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+        }
+
+            .kpi-link::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: var(--primary-color);
+                transition: left 0.3s ease;
+                z-index: -1;
+            }
+
+            .kpi-link:hover {
+                color: #000;
+                transform: translateX(5px);
+            }
+
+                .kpi-link:hover::before {
+                    left: 0;
+                }
+
+        /* Carte mise en avant */
+        .featured-card {
+            border-color: rgba(255, 230, 0, 0.3);
+            background: linear-gradient(135deg, rgba(255, 230, 0, 0.05), var(--card-bg));
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary-color);
+            color: #000;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            z-index: 3;
+        }
+
+        /* Section statistiques */
+        .stats-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .stat-item:hover {
+                background: rgba(255, 255, 255, 0.05);
+                transform: translateY(-5px);
+            }
+
+        .stat-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Section fonctionnalités */
+        .features-grid {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 3rem;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+            .feature-item:hover {
+                background: rgba(255, 255, 255, 0.05);
+                transform: translateY(-5px);
+            }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+        }
+
+        .feature-item h5 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item p {
+            color: var(--text-secondary);
+            margin-bottom: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+
+            .card-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .icon-circle {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+
+            .card-number {
+                font-size: 2.5rem;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .kpi-link {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Animations d'entrée */
+        .kpi-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        // Initialisation AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-quart',
+            once: true
+        });
+
+        // Animation des compteurs
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const increment = target / 100;
+                let current = 0;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current);
+                }, 20);
+            });
+        }
+
+        // Observer pour déclencher l'animation des compteurs
+        const statsSection = document.querySelector('.stats-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    observer.unobserve(entry.target);
+                }
+            });
+        });
+
+        if (statsSection) {
+            observer.observe(statsSection);
+        }
+
+        // Effets de parallaxe légers
+        document.addEventListener('mousemove', (e) => {
+            const card = document.querySelector('.kpi-card');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            const x = (mouseX - 0.5) * 5;
+            const y = (mouseY - 0.5) * 5;
+
+            if (card) {
+                card.style.transform += ` translate(${x}px, ${y}px)`;
+            }
+        });
+
+        // Animation des particules supplémentaires
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles-bg');
+
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'floating-particle';
+                particle.style.cssText = `
+                                position: absolute;
+                                width: 3px;
+                                height: 3px;
+                                background: var(--accent-color);
+                                border-radius: 50%;
+                                opacity: 0.4;
+                                animation: floatRandom ${5 + Math.random() * 5}s ease-in-out infinite;
+                                top: ${Math.random() * 100}%;
+                                left: ${Math.random() * 100}%;
+                                animation-delay: -${Math.random() * 5}s;
+                            `;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Créer les particules au chargement
+        window.addEventListener('load', createParticles);
+
+        // Animation CSS pour les particules flottantes
+        const style = document.createElement('style');
+        style.textContent = `
+                        @keyframes floatRandom {
+                            0%, 100% {
+                                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+                                opacity: 0.2;
+                            }
+                            25% {
+                                transform: translateY(-15px) translateX(10px) rotate(90deg) scale(1.2);
+                                opacity: 0.6;
+                            }
+                            50% {
+                                transform: translateY(-30px) translateX(-5px) rotate(180deg) scale(0.8);
+                                opacity: 1;
+                            }
+                            75% {
+                                transform: translateY(-10px) translateX(-15px) rotate(270deg) scale(1.1);
+                                opacity: 0.4;
+                            }
+                        }
+                    `;
+        document.head.appendChild(style);
+    </script>
+
+
+
+
 
 
 
@@ -803,7 +1518,7 @@
 
                         <!-- Lien vers rapport -->
                         <a class="fw-bold text-dark text-decoration-none"
-                           href="https://app.powerbi.com/reportEmbed?reportId=377edfc5-5d3d-4052-902a-e5419cc0e62c&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730"
+                           href="https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730"
                            target="_blank">
                             Voir le rapport <i class="bi bi-arrow-right"></i>
                         </a>
@@ -1190,19 +1905,33 @@
             }
         });
     </script>
-   
-   
+
+
 
     <script>
         let isOpen = false;
 
         // Affiche automatiquement l'assistant après 1 seconde avec animation
         window.onload = function () {
+            // 1. Animation de la bulle d'assistant après 1 seconde
             setTimeout(() => {
                 const assistantBubble = document.querySelector('.assistant-bubble');
                 assistantBubble.style.animation = 'bounceIn 0.8s ease';
             }, 1000);
+
+            // 2. Ajouter les écouteurs d'événements dynamiquement
+            const assistantBubble = document.querySelector('.assistant-bubble');
+            const closeButton = document.querySelector('.close-btn');
+
+            if (assistantBubble) {
+                assistantBubble.addEventListener('click', toggleChat);
+            }
+
+            if (closeButton) {
+                closeButton.addEventListener('click', toggleChat);
+            }
         };
+
 
         function toggleChat() {
             const panel = document.getElementById('chatPanel');
@@ -1222,46 +1951,8 @@
             isOpen = false;
         }
 
-        // Fonction principale pour gérer les options de navigation
-        function sendOption(option) {
-            const typingIndicator = document.getElementById('typingIndicator');
+      
 
-            // Afficher l'indicateur de frappe
-            typingIndicator.style.display = 'flex';
-
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
-
-                if (option === 'Rapports' || option === 'reports') {
-                    const powerBiUrl = "https://app.powerbi.com/groups/me/reports/377edfc5-5d3d-4052-902a-e5419cc0e62c/113196a9a0dd884c8842?experience=power-bi";
-                    window.open(powerBiUrl, '_blank');
-                    showResponse("📊 Ouverture des rapports Power BI dans un nouvel onglet...");
-                    return;
-                }
-
-                if (option === 'Analyser' || option === 'data') {
-                    // Redirection vers la page ETL/Upload
-                    showResponse("🔍 Redirection vers l'analyse de données...");
-                    setTimeout(() => {
-                        window.location.href = '/ETL/Upload';
-                    }, 1500);
-                    return;
-                }
-
-                if (option === 'Predire' || option === 'kpi') {
-                    // Redirection vers la page Predictifs
-                    showResponse("📈 Redirection vers les prédictions KPI...");
-                    setTimeout(() => {
-                        window.location.href = '/SalesKPI/Predictifs';
-                    }, 1500);
-                    return;
-                }
-            }, 1000);
-        }
-
-        function handleSuggestion(type) {
-            sendOption(type);
-        }
 
         function quickAction(action) {
             const typingIndicator = document.getElementById('typingIndicator');
@@ -1284,19 +1975,19 @@
             const chatContent = document.querySelector('.chat-content');
             const responseDiv = document.createElement('div');
             responseDiv.style.cssText = `
-                    background: linear-gradient(135deg, #333333, #1e1e28);
-                    color: #ffffff;
-                    padding: 12px 16px;
-                    border-radius: 18px;
-                    margin: 10px 0;
-                    font-size: 14px;
-                    box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
-                    animation: slideIn 0.3s ease;
-                    position: relative;
-                    max-width: 90%;
-                    word-wrap: break-word;
-                    border: 1px solid #999999;
-                `;
+                                        background: linear-gradient(135deg, #333333, #1e1e28);
+                                        color: #ffffff;
+                                        padding: 12px 16px;
+                                        border-radius: 18px;
+                                        margin: 10px 0;
+                                        font-size: 14px;
+                                        box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
+                                        animation: slideIn 0.3s ease;
+                                        position: relative;
+                                        max-width: 90%;
+                                        word-wrap: break-word;
+                                        border: 1px solid #999999;
+                                    `;
 
             // Ajouter une icone de robot
             const iconSpan = document.createElement('span');
@@ -1318,42 +2009,42 @@
         // Ajouter les animations CSS supplémentaires
         const style = document.createElement('style');
         style.textContent = `
-                @keyframes slideIn {
-                    from {
-                        opacity: 0;
-                        transform: translateY(10px) scale(0.95);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0) scale(1);
-                    }
-                }
+                                    @keyframes slideIn {
+                                        from {
+                                            opacity: 0;
+                                            transform: translateY(10px) scale(0.95);
+                                        }
+                                        to {
+                                            opacity: 1;
+                                            transform: translateY(0) scale(1);
+                                        }
+                                    }
 
-                @keyframes bounceIn {
-                    0% {
-                        transform: scale(0.3);
-                        opacity: 0;
-                    }
-                    50% {
-                        transform: scale(1.05);
-                    }
-                    70% {
-                        transform: scale(0.9);
-                    }
-                    100% {
-                        transform: scale(1);
-                        opacity: 1;
-                    }
-                }
+                                    @keyframes bounceIn {
+                                        0% {
+                                            transform: scale(0.3);
+                                            opacity: 0;
+                                        }
+                                        50% {
+                                            transform: scale(1.05);
+                                        }
+                                        70% {
+                                            transform: scale(0.9);
+                                        }
+                                        100% {
+                                            transform: scale(1);
+                                            opacity: 1;
+                                        }
+                                    }
 
-                .suggestion-card:active {
-                    transform: translateY(0) scale(0.98);
-                }
+                                    .suggestion-card:active {
+                                        transform: translateY(0) scale(0.98);
+                                    }
 
-                .quick-action:active {
-                    transform: translateY(0) scale(0.95);
-                }
-            `;
+                                    .quick-action:active {
+                                        transform: translateY(0) scale(0.95);
+                                    }
+                                `;
         document.head.appendChild(style);
 
         // Fermer le panel si on clique à l'extérieur
@@ -1377,6 +2068,86 @@
             }
         });
     </script>
+    <script>
+        // Toggle panel visibility
+        const assistantBubble = document.querySelector('.assistant-bubble');
+        const chatPanel = document.getElementById('chatPanel');
+        const closeBtn = document.querySelector('.close-btn');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        assistantBubble.addEventListener('click', () => {
+            chatPanel.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            chatPanel.classList.remove('active');
+        });
+
+        // Suggestion card handlers
+        function handleSuggestion(type) {
+            typingIndicator.style.display = 'flex';
+
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                alert(`Fonction simulée pour : ${type}`);
+                // Tu peux ici déclencher une vraie logique (API call, UI update, etc.)
+            }, 1500);
+        }
+
+        // Quick action handlers
+        function quickAction(action) {
+            alert(`Action rapide : ${action}`);
+            // Tu peux ajouter ici tes vraies actions
+        }
+
+        // Rendre les fonctions accessibles globalement
+        window.handleSuggestion = handleSuggestion;
+        window.quickAction = quickAction;
+
+
+    </script>
+<script>
+    // Fonction principale pour gérer les options de navigation
+    window.sendOption = function (option) {
+        const typingIndicator = document.getElementById('typingIndicator');
+        typingIndicator.style.display = 'flex';
+
+        setTimeout(() => {
+            typingIndicator.style.display = 'none';
+
+            if (option === 'Rapports' || option === 'reports') {
+                const powerBiUrl = "https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730";
+                window.open(powerBiUrl, '_blank');
+                showResponse("📊 Ouverture des rapports Power BI...");
+                return;
+            }
+
+            if (option === 'Analyser' || option === 'data') {
+                showResponse("🔍 Redirection vers l'analyse de données...");
+                setTimeout(() => {
+                    window.location.href = '/ETL/Upload';
+                }, 1500);
+                return;
+            }
+
+            if (option === 'Predire' || option === 'kpi') {
+                showResponse("📈 Redirection vers les prédictions KPI...");
+                setTimeout(() => {
+                    window.location.href = '/SalesKPI/Predictifs';
+                }, 1500);
+                return;
+            }
+        }, 1000);
+    }
+
+    window.handleSuggestion = function (type) {
+        sendOption(type);
+    }
+
+    window.showResponse = function (text) {
+        alert(text); // à remplacer par ton affichage dans l’UI
+    }
+</script>
 
 </body>
 </html >
