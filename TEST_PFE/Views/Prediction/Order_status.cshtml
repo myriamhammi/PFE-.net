@@ -12,18 +12,19 @@
 
     <style>
         :root {
-            --ey-yellow: #ffe600;
-            --ey-yellow-dark: #e6d600;
-            --dark-bg: #333333;
-            --light-text: #ffffff;
-            --muted-gray: #cccccc;
-            --neutral: #999999;
-        }
-
-        html, body {
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            --primary-dark: #333333;
+            --primary-yellow: #ffe600;
+            --primary-white: #ffffff;
+            --primary-light-gray: #cccccc;
+            --primary-mid-gray: #999999;
+            --primary-yellow-hover: #e6d600;
+            --primary-dark-hover: #444444;
+            --primary-light-bg: #f8f8f8;
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
         }
 
         * {
@@ -32,14 +33,19 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--primary-light-bg);
+            color: var(--primary-dark);
+        }
+
         body {
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #f9f9f9;
-            font-family: 'Segoe UI', sans-serif;
-            color: var(--dark-bg);
             padding-top: 80px; /* navbar fixe */
+            line-height: 1.6;
         }
 
         .container {
@@ -54,53 +60,96 @@
             padding-top: 70px; /* espace pour ne pas cacher le contenu sous la navbar */
         }
 
+        /* Navbar styling */
         .navbar-custom {
-            background-color: var(--light-text);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background-color: var(--primary-white);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            border-bottom: 2px solid var(--primary-yellow);
         }
 
         .navbar-brand {
-            color: var(--dark-bg);
+            color: var(--primary-dark);
             font-weight: bold;
+            font-size: 1.5rem;
+            transition: color var(--transition-speed);
         }
 
+            .navbar-brand:hover {
+                color: var(--primary-yellow);
+            }
+
         .nav-link {
-            color: var(--neutral);
+            color: var(--primary-mid-gray);
             font-weight: 600;
+            position: relative;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            transition: color var(--transition-speed);
         }
 
             .nav-link:hover, .nav-link.active {
-                color: var(--ey-yellow);
+                color: var(--primary-dark);
             }
 
+                .nav-link.active::after {
+                    content: '';
+                    position: absolute;
+                    bottom: 0;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 30px;
+                    height: 3px;
+                    background-color: var(--primary-yellow);
+                    border-radius: 3px;
+                }
+
         .btn-profile {
-            background-color: var(--ey-yellow);
-            color: var(--dark-bg);
+            background-color: var(--primary-yellow);
+            color: var(--primary-dark);
             font-weight: bold;
             border: none;
             border-radius: 20px;
-            padding: 0.4rem 1.2rem;
+            padding: 0.5rem 1.5rem;
+            transition: all var(--transition-speed);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        footer.footer {
-            background-color: var(--dark-bg);
-            color: var(--muted-gray);
+            .btn-profile:hover {
+                background-color: var(--primary-yellow-hover);
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+
+        /* Footer styling */
+        footer {
+            background-color: var(--primary-dark) !important;
+            color: var(--primary-light-gray) !important;
             text-align: center;
-            padding: 1rem;
-            /* plus besoin de position fixed ou absolute */
+            padding: 1.5rem 0;
+            margin-top: 2rem;
         }
 
         .btn-social {
-            color: var(--muted-gray);
+            color: var(--primary-light-gray);
             font-size: 1.3rem;
             margin: 0 0.5rem;
+            transition: color var(--transition-speed);
         }
 
             .btn-social:hover {
-                color: var(--ey-yellow);
+                color: var(--primary-yellow);
             }
-      
 
+        /* Link styling in footer */
+        .link-light {
+            color: var(--primary-light-gray) !important;
+            transition: color var(--transition-speed);
+        }
+
+            .link-light:hover {
+                color: var(--primary-yellow) !important;
+                text-decoration: none;
+            }
     </style>
 </head>
 <body>
@@ -124,483 +173,577 @@
     </nav>
 
     <div class="content">
-    <div class="container bg-gray-50 p-6">
-        <h1 class="text-4xl font-extrabold mb-6 text-gray-900 flex items-center gap-3">
-            📊 Sales Prediction Dashboard
-        </h1>
+        <div class="container p-6">
+            <h1 class="text-4xl font-extrabold mb-6 text-center" style="color: var(--primary-dark); border-bottom: 3px solid var(--primary-yellow); padding-bottom: 15px; margin-bottom: 30px;">
+                📊 Sales Prediction Dashboard
+            </h1>
 
-    <!-- Section explicative -->
-    <section class="bg-white p-6 rounded-xl shadow mb-8">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-2">🔍 À propos de la prédiction</h2>
-        <p class="text-gray-700 leading-relaxed">
-            Ce tableau de bord vous permet de prédire la probabilité qu'une commande soit <strong>validée</strong> ou <strong>annulée</strong> en fonction de plusieurs critères commerciaux.
-            La prédiction s'appuie sur des données historiques pour vous aider à anticiper les résultats des commandes et optimiser la gestion de vos ventes.
-        </p>
-        <p class="mt-3 text-gray-600 italic text-sm">
-            ⚠️ Veuillez insérer des valeurs logiques et cohérentes dans chaque champ pour garantir la qualité de la prédiction.
-        </p>
-    </section>
+            <!-- Section explicative -->
+            <section style="background-color: var(--primary-white); padding: 1.5rem; border-radius: var(--border-radius-lg); box-shadow: var(--box-shadow); margin-bottom: 2rem; border-left: 4px solid var(--primary-yellow);">
+                <h2 style="color: var(--primary-dark); font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-yellow); color: var(--primary-dark); width: 30px; height: 30px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; margin-right: 10px;">🔍</span>
+                    À propos de la prédiction
+                </h2>
+                <p style="color: var(--primary-dark); line-height: 1.6;">
+                    Ce tableau de bord vous permet de prédire la probabilité qu'une commande soit <strong style="color: var(--primary-dark);">validée</strong> ou <strong style="color: var(--primary-dark);">annulée</strong> en fonction de plusieurs critères commerciaux.
+                    La prédiction s'appuie sur des données historiques pour vous aider à anticiper les résultats des commandes et optimiser la gestion de vos ventes.
+                </p>
+                <p style="margin-top: 1rem; font-style: italic; font-size: 0.875rem; color: var(--primary-mid-gray); background-color: rgba(255, 230, 0, 0.1); padding: 10px; border-radius: var(--border-radius-sm);">
+                    ⚠️ Veuillez insérer des valeurs logiques et cohérentes dans chaque champ pour garantir la qualité de la prédiction.
+                </p>
+            </section>
 
-    <!-- Formulaire de prédiction -->
-            <form id="formContainer" onsubmit="sendPrediction(); return false;" class="bg-white p-6 rounded-xl shadow mb-10">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">🔮 Lancer une Prédiction</h2>
+            <!-- Formulaire de prédiction -->
+            <form id="formContainer" onsubmit="sendPrediction(); return false;" style="background-color: var(--primary-white); padding: 1.5rem; border-radius: var(--border-radius-lg); box-shadow: var(--box-shadow); margin-bottom: 2rem; border-top: 4px solid var(--primary-yellow);">
+                <h2 style="color: var(--primary-dark); font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-yellow); color: var(--primary-dark); width: 32px; height: 32px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; margin-right: 10px;">🔮</span>
+                    Lancer une Prédiction
+                </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Nom du client</label>
-                        <select id="full_name" class="p-2 border rounded-lg w-full" onchange="toggleCustomClient(this)">
+                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 0.5rem;">Nom du client</label>
+                        <select id="full_name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" onchange="toggleCustomClient(this)">
                             <option disabled selected>Choisissez un client</option>
                             <option value="__custom__">➕ Nouveau client</option>
                         </select>
                         <div class="custom_client_name hidden mt-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nom du nouveau client</label>
-                            <input type="text" name="custom_client_name" class="p-2 border rounded-lg w-full" placeholder="Entrez un nom">
+                            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 0.5rem;">Nom du nouveau client</label>
+                            <input type="text" name="custom_client_name" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" placeholder="Entrez un nom">
                         </div>
-                        <small class="text-gray-500 text-xs mt-1 block">Exemple : Jean Dupont</small>
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Exemple : Jean Dupont</small>
                     </div>
 
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">🏭 Secteur</label>
-                <select id="Industry" class="p-2 border rounded-lg w-full">
-                    <option value="">-- Choisir un secteur --</option>
-                    <option value="Healthcare">Healthcare (Santé)</option>
-                    <option value="Finance">Finance</option>
-                    <option value="Retail">Retail (Commerce)</option>
-                    <option value="Technology">Technology (Technologie)</option>
-                </select>
-                <small class="text-gray-500 text-xs mt-1 block">Secteur d'activité du client</small>
-            </div>
+                    <div>
+                        <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 0.5rem;">🏭 Secteur</label>
+                        <select id="Industry" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;">
+                            <option value="">-- Choisir un secteur --</option>
+                            <option value="Healthcare">Healthcare (Santé)</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Retail">Retail (Commerce)</option>
+                            <option value="Technology">Technology (Technologie)</option>
+                        </select>
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Secteur d'activité du client</small>
+                    </div>
 
-            <div>
-                <input id="Order_Total" type="number" placeholder="Montant total de la commande" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Ex : 1200.50 TND</small>
-            </div>
+                    <div>
+                        <input id="Order_Total" type="number" placeholder="Montant total de la commande" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Ex : 1200.50 TND</small>
+                    </div>
 
-            <div>
-                <input id="delai_livraison_jours" type="number" placeholder="Délai de livraison (jours)" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Nombre de jours entre commande et livraison</small>
-            </div>
+                    <div>
+                        <input id="delai_livraison_jours" type="number" placeholder="Délai de livraison (jours)" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Nombre de jours entre commande et livraison</small>
+                    </div>
 
-            <div>
-                <input id="Order_Month" type="number" placeholder="Mois de commande (1-12)" min="1" max="12" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Valeur entre 1 (janvier) et 12 (décembre)</small>
-            </div>
+                    <div>
+                        <input id="Order_Month" type="number" placeholder="Mois de commande (1-12)" min="1" max="12" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Valeur entre 1 (janvier) et 12 (décembre)</small>
+                    </div>
 
-            <div>
-                <input id="Order_Weekday" type="number" placeholder="Jour de la semaine (0=dim, 6=sam)" min="0" max="6" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">0 = dimanche, 1 = lundi, ..., 6 = samedi</small>
-            </div>
+                    <div>
+                        <input id="Order_Weekday" type="number" placeholder="Jour de la semaine (0=dim, 6=sam)" min="0" max="6" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">0 = dimanche, 1 = lundi, ..., 6 = samedi</small>
+                    </div>
 
-            <div>
-                <input id="Order_Quarter" type="number" placeholder="Trimestre (1-4)" min="1" max="4" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">1 = 1er trimestre, ..., 4 = 4ème trimestre</small>
-            </div>
+                    <div>
+                        <input id="Order_Quarter" type="number" placeholder="Trimestre (1-4)" min="1" max="4" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">1 = 1er trimestre, ..., 4 = 4ème trimestre</small>
+                    </div>
 
-            <div>
-                <input id="nb_lignes_produits" type="number" placeholder="Nombre de lignes produits" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Nombre total de lignes différentes dans la commande</small>
-            </div>
+                    <div>
+                        <input id="nb_lignes_produits" type="number" placeholder="Nombre de lignes produits" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Nombre total de lignes différentes dans la commande</small>
+                    </div>
 
-            <div>
-                <input id="quantite_totale" type="number" placeholder="Quantité totale" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Somme des quantités de tous les produits</small>
-            </div>
+                    <div>
+                        <input id="quantite_totale" type="number" placeholder="Quantité totale" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Somme des quantités de tous les produits</small>
+                    </div>
 
-            <div>
-                <input id="prix_unitaire_moyen" type="number" step="0.01" placeholder="Prix unitaire moyen" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Prix moyen par unité vendue (TND)</small>
-            </div>
+                    <div>
+                        <input id="prix_unitaire_moyen" type="number" step="0.01" placeholder="Prix unitaire moyen" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Prix moyen par unité vendue (TND)</small>
+                    </div>
 
-            <div>
-                <input id="nb_produits_uniques" type="number" placeholder="Nombre de produits uniques" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Nombre de produits différents uniques dans la commande</small>
-            </div>
+                    <div>
+                        <input id="nb_produits_uniques" type="number" placeholder="Nombre de produits uniques" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Nombre de produits différents uniques dans la commande</small>
+                    </div>
 
-            <div>
-                <input id="prix_total_recalcule" type="number" step="0.01" placeholder="Prix total recalculé" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Prix total calculé (quantité x prix unitaire)</small>
-            </div>
+                    <div>
+                        <input id="prix_total_recalcule" type="number" step="0.01" placeholder="Prix total recalculé" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Prix total calculé (quantité x prix unitaire)</small>
+                    </div>
 
-            <div>
-                <input id="quantite_par_ligne" type="number" step="0.01" placeholder="Quantité par ligne" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Quantité moyenne par ligne de produit</small>
-            </div>
+                    <div>
+                        <input id="quantite_par_ligne" type="number" step="0.01" placeholder="Quantité par ligne" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Quantité moyenne par ligne de produit</small>
+                    </div>
 
-            <div>
-                <input id="prix_moyen_par_ligne" type="number" step="0.01" placeholder="Prix moyen par ligne" class="p-2 border rounded-lg w-full" />
-                <small class="text-gray-500 text-xs mt-1 block">Prix moyen d'une ligne de produit (TND)</small>
-            </div>
+                    <div>
+                        <input id="prix_moyen_par_ligne" type="number" step="0.01" placeholder="Prix moyen par ligne" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none;" />
+                        <small style="display: block; font-size: 0.75rem; color: var(--primary-mid-gray); margin-top: 0.5rem;">Prix moyen d'une ligne de produit (TND)</small>
+                    </div>
 
-        </div>
-                <div>
-        <button onclick="sendPrediction()"
-                class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300 w-full md:w-auto">
-            ⚙️ Prédire
-        </button>
-                <button onclick="removeForm(this)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-                    Supprimer
-                </button>
-               </div>
-        <div id="predictionResult" class="mt-5 text-lg font-semibold text-gray-900"></div>
-    </form>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button onclick="sendPrediction()"
+                            style="background-color: var(--primary-yellow); color: var(--primary-dark); font-weight: 600; padding: 0.75rem 1.5rem; border-radius: var(--border-radius-md); border: none; cursor: pointer; transition: all var(--transition-speed); box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex: 1;">
+                        ⚙️ Prédire
+                    </button>
+                    <button onclick="removeForm(this)" style="background-color: var(--primary-dark); color: var(--primary-white); padding: 0.75rem 1.5rem; border-radius: var(--border-radius-md); border: none; cursor: pointer; transition: all var(--transition-speed); box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        Supprimer
+                    </button>
+                </div>
+                <div id="predictionResult" style="margin-top: 1.5rem; font-size: 1.125rem; font-weight: 600; color: var(--primary-dark); padding: 1rem; border-radius: var(--border-radius-md); background-color: rgba(255, 230, 0, 0.1);"></div>
+            </form>
 
             <!-- Bouton pour ajouter un formulaire -->
-            <button onclick="addForm()" class="bg-yellow-400 text-black font-bold px-4 py-2 rounded hover:bg-yellow-500">
-                Ajouter un formulaire
+            <button onclick="addForm()" style="background-color: var(--primary-yellow); color: var(--primary-dark); font-weight: 600; padding: 0.75rem 1.5rem; border-radius: var(--border-radius-md); border: none; cursor: pointer; transition: all var(--transition-speed); box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 1.5rem; display: flex; align-items: center;">
+                <span style="margin-right: 0.5rem;">➕</span> Ajouter un formulaire
             </button>
 
-    <!-- Client selector -->
-    <div class="mb-6">
-        <label for="clientSelect" class="block text-lg font-medium text-gray-700">👤 Select a client</label>
-        <select id="clientSelect" class="mt-2 w-full p-2 border border-gray-300 rounded-lg">
-            <option value="">-- Choose a client --</option>
-        </select>
-    </div>
+            <!-- Client selector -->
+            <div style="margin-bottom: 1.5rem;">
+                <label for="clientSelect" style="display: block; font-size: 1.125rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 0.75rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-yellow); color: var(--primary-dark); width: 28px; height: 28px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; margin-right: 10px;">👤</span>
+                    Select a client
+                </label>
+                <select id="clientSelect" style="width: 100%; padding: 0.75rem; border: 1px solid var(--primary-light-gray); border-radius: var(--border-radius-md); background-color: var(--primary-white); color: var(--primary-dark); transition: all var(--transition-speed); outline: none; margin-top: 0.5rem;">
+                    <option value="">-- Choose a client --</option>
+                </select>
+            </div>
 
-            <div class="bg-white p-6 rounded shadow mb-6">
-                <h2 class="text-xl font-semibold mb-4">Résumé des Prédictions</h2>
-        <div id="summary" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-gray-700">
-            <div>
-                <p class="text-sm">Total</p>
-                <p class="text-xl font-bold" id="total_predictions">--</p>
+            <div style="background-color: var(--primary-white); padding: 1.5rem; border-radius: var(--border-radius-lg); box-shadow: var(--box-shadow); margin-bottom: 1.5rem; border-right: 4px solid var(--primary-yellow);">
+                <h2 style="color: var(--primary-dark); font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; border-bottom: 2px solid rgba(255, 230, 0, 0.3); padding-bottom: 0.5rem;">Résumé des Prédictions</h2>
+                <div id="summary" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; text-align: center; color: var(--primary-dark); margin-top: 1rem;">
+                    <div style="background-color: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--border-radius-md); box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s; border-left: 3px solid var(--primary-yellow);">
+                        <p style="font-size: 0.875rem; color: var(--primary-mid-gray);">Total</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-dark);" id="total_predictions">--</p>
+                    </div>
+                    <div style="background-color: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--border-radius-md); box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s; border-left: 3px solid #10b981;">
+                        <p style="font-size: 0.875rem; color: var(--primary-mid-gray);">Validées</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #10b981;" id="validations">--</p>
+                    </div>
+                    <div style="background-color: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--border-radius-md); box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s; border-left: 3px solid #ef4444;">
+                        <p style="font-size: 0.875rem; color: var(--primary-mid-gray);">Annulées</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: #ef4444;" id="annulations">--</p>
+                    </div>
+                    <div style="background-color: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--border-radius-md); box-shadow: 0 2px 5px rgba(0,0,0,0.05); transition: transform 0.3s; border-left: 3px solid var(--primary-dark);">
+                        <p style="font-size: 0.875rem; color: var(--primary-mid-gray);">Taux d'annulation</p>
+                        <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-dark);" id="taux_annulation">--%</p>
+                    </div>
+                </div>
             </div>
-            <div>
-                <p class="text-sm">Validées</p>
-                <p class="text-xl font-bold" id="validations">--</p>
+
+
+
+            <!-- Pie chart -->
+            <div style="margin-bottom: 1.5rem; background-color: var(--primary-white); border-radius: var(--border-radius-lg); box-shadow: var(--box-shadow); padding: 1.5rem; border-bottom: 4px solid var(--primary-yellow);">
+                <h2 style="color: var(--primary-dark); font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-yellow); color: var(--primary-dark); width: 30px; height: 30px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; margin-right: 10px;">📈</span>
+                    Global Prediction Stats
+                </h2>
+                <div style="background-color: rgba(255, 255, 255, 0.7); padding: 1rem; border-radius: var(--border-radius-md); box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <canvas id="globalChart" width="400" height="400"></canvas>
+                </div>
             </div>
-            <div>
-                <p class="text-sm">Annulées</p>
-                <p class="text-xl font-bold" id="annulations">--</p>
-            </div>
-            <div>
-                <p class="text-sm">Taux d'annulation</p>
-                <p class="text-xl font-bold text-red-600" id="taux_annulation">--%</p>
+            <!-- Latest predictions -->
+            <div style="margin-bottom: 2rem;">
+                <h2 style="color: var(--primary-dark); font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-yellow); color: var(--primary-dark); width: 30px; height: 30px; border-radius: 50%; display: inline-flex; justify-content: center; align-items: center; margin-right: 10px;">🕓</span>
+                    Recent Predictions
+                </h2>
+                <div id="recentPredictions" style="display: grid; grid-template-columns: repeat(1, 1fr); gap: 1rem; margin-top: 1rem;">
+                    <!-- JS fills this -->
+                </div>
             </div>
         </div>
     </div>
 
-
-
-    <!-- Pie chart -->
-    <div class="mb-6 bg-white rounded-xl shadow p-4">
-        <h2 class="text-xl font-semibold mb-2">📈 Global Prediction Stats</h2>
-        <canvas id="globalChart" width="400" height="400"></canvas>
-    </div>
-    <!-- Latest predictions -->
-    <div>
-        <h2 class="text-xl font-semibold mb-2 text-gray-800">🕓 Recent Predictions</h2>
-        <div id="recentPredictions" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            <!-- JS fills this -->
-        </div>
-    </div>
-</div>
-    </div>
-
-    <footer style="background-color: #2c2c2c; color: white; padding: 10px 0; text-align: center;">
+    <footer style="background-color: var(--primary-dark); color: var(--primary-white); padding: 2rem 0; text-align: center; margin-top: 3rem; border-top: 4px solid var(--primary-yellow);">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                <div class="col-lg-4 text-lg-start" style="color: var(--primary-light-gray); font-size: 0.9rem;">
+                    Copyright &copy; BI 360° 2023
+                </div>
                 <div class="col-lg-4 my-3 my-lg-0">
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a class="btn btn-dark btn-social mx-2" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a style="display: inline-flex; justify-content: center; align-items: center; width: 36px; height: 36px; border-radius: 50%; background-color: rgba(255, 230, 0, 0.2); color: var(--primary-yellow); margin: 0 0.5rem; transition: all var(--transition-speed);" href="#!" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a style="display: inline-flex; justify-content: center; align-items: center; width: 36px; height: 36px; border-radius: 50%; background-color: rgba(255, 230, 0, 0.2); color: var(--primary-yellow); margin: 0 0.5rem; transition: all var(--transition-speed);" href="#!" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a style="display: inline-flex; justify-content: center; align-items: center; width: 36px; height: 36px; border-radius: 50%; background-color: rgba(255, 230, 0, 0.2); color: var(--primary-yellow); margin: 0 0.5rem; transition: all var(--transition-speed);" href="#!" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
                 <div class="col-lg-4 text-lg-end">
-                    <a class="link-light text-decoration-none me-3" href="#!">Privacy Policy</a>
-                    <a class="link-light text-decoration-none" href="#!">Terms of Use</a>
+                    <a style="color: var(--primary-light-gray); text-decoration: none; margin-right: 1rem; transition: color var(--transition-speed);" href="#!">Privacy Policy</a>
+                    <a style="color: var(--primary-light-gray); text-decoration: none; transition: color var(--transition-speed);" href="#!">Terms of Use</a>
                 </div>
             </div>
         </div>
     </footer>
 
 
-<script>
+    <script>
 
 
-         function addForm() {
-            // Récupère le formulaire de base
-            const originalForm = document.getElementById("formContainer");
+             function addForm() {
+                // Récupère le formulaire de base
+                const originalForm = document.getElementById("formContainer");
 
-            // Clone le formulaire (deep clone pour copier tous les champs)
-            const clonedForm = originalForm.cloneNode(true);
+                // Clone le formulaire (deep clone pour copier tous les champs)
+                const clonedForm = originalForm.cloneNode(true);
 
-            // Supprime l'ancien id dupliqué
-            clonedForm.removeAttribute("id");
+                // Supprime l'ancien id dupliqué
+                clonedForm.removeAttribute("id");
 
-            // Réinitialise les valeurs du formulaire cloné
-            const inputs = clonedForm.querySelectorAll("input, select");
-            inputs.forEach(input => {
-                if (input.type === "select-one") {
-                    input.selectedIndex = 0;
-                } else {
-                    input.value = "";
-                }
-            });
-
-            // Vide le résultat de prédiction
-            const resultDiv = clonedForm.querySelector("#predictionResult");
-            if (resultDiv) resultDiv.innerHTML = "";
-
-            // Ajoute le formulaire cloné avant le bouton "Ajouter un formulaire"
-            const addButton = document.querySelector("button[onclick='addForm()']");
-            addButton.parentNode.insertBefore(clonedForm, addButton);
-        }
-
-        function removeForm(button) {
-            const form = button.closest("form");
-            if (form) {
-                form.remove();
-            }
-        }
-
-            async function fetchPredictionSummary() {
-            try {
-                const res = await fetch("http://localhost:5001/api/prediction/summary");
-                const summary = await res.json();
-
-                document.getElementById("total_predictions").textContent = summary.total_predictions;
-                document.getElementById("validations").textContent = summary.validations;
-                document.getElementById("annulations").textContent = summary.annulations;
-                document.getElementById("taux_annulation").textContent = (summary.taux_annulation * 100).toFixed(1) + " %";
-            } catch (err) {
-                console.error("Erreur lors de la récupération du résumé :", err);
-            }
-        }
-
-
-
-
-       
-
-            async function fetchClients() {
-            try {
-                const response = await fetch("http://localhost:5001/clients/crm");
-                const clients = await response.json();
-
-                if (!Array.isArray(clients)) {
-                    throw new Error("Données inattendues reçues de l'API");
-                }
-
-                  const select = document.getElementById("full_name");  // minuscule ici
-                 const clientSelectSummary = document.getElementById("clientSelect"); // vérifier si existe
-
-
-                // Vider les options existantes sauf le placeholder
-                select.innerHTML = `
-                    <option disabled selected>Choisissez un client</option>
-                    <option value="__custom__">➕ Nouveau client</option>
-                `;
-                clientSelectSummary.innerHTML = `<option value="">-- Choose a client --</option>`;
-
-                clients.forEach(client => {
-                    const option = document.createElement("option");
-                    option.value = client.full_name;
-                    option.textContent = client.full_name;
-                    select.appendChild(option);
-
-                    const optionSummary = document.createElement("option");
-                    optionSummary.value = client.full_name;
-                    optionSummary.textContent = client.full_name;
-                    clientSelectSummary.appendChild(optionSummary);
-                });
-            } catch (err) {
-                console.error("Erreur lors du chargement des clients :", err);
-            }
-        }
-
-
-      
-        //     function toggleCustomClient(selectElement) {
-        //     const customNameInput = document.querySelector(".custom_client_name");
-        //     if (selectElement.value === "__custom__") {
-        //         customNameInput.classList.remove("hidden");
-        //     } else {
-        //         customNameInput.classList.add("hidden");
-        //     }
-        // }
-
-
-        function toggleCustomClient(selectElement) {
-            const container = selectElement.closest("form");
-            const customField = container.querySelector(".custom_client_name");
-            if (selectElement.value === "__custom__") {
-                customField.classList.remove("hidden");
-            } else {
-                customField.classList.add("hidden");
-            }
-        }
-
-
-
-
-            let globalChartInstance = null;
-
-        async function fetchGlobalStats() {
-            try {
-                const res = await fetch("/api/prediction/stats/overview");
-                const raw = await res.text();
-                console.log("RAW:", raw);
-
-                const stats = JSON.parse(raw);
-                console.log("Parsed stats:", stats);
-
-                const ctx = document.getElementById('globalChart').getContext('2d');
-
-                // Détruire l'ancien graphique s'il existe
-                if (globalChartInstance !== null) {
-                    globalChartInstance.destroy();
-                }
-
-                 // Créer un nouveau graphique
-                globalChartInstance = new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: ['Validées', 'Annulées'],
-                        datasets: [{
-                            label: 'Statistiques Globales',
-                            data: [stats.negatives, stats.positives],
-                            backgroundColor: ['#10b981', '#ef4444']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
+                // Réinitialise les valeurs du formulaire cloné
+                const inputs = clonedForm.querySelectorAll("input, select");
+                inputs.forEach(input => {
+                    if (input.type === "select-one") {
+                        input.selectedIndex = 0;
+                    } else {
+                        input.value = "";
                     }
                 });
 
+                // Vide le résultat de prédiction
+                const resultDiv = clonedForm.querySelector("#predictionResult");
+                if (resultDiv) resultDiv.innerHTML = "";
 
-
-
-            } catch (error) {
-                console.error("Erreur lors de la récupération des statistiques :", error);
+                // Ajoute le formulaire cloné avant le bouton "Ajouter un formulaire"
+                const addButton = document.querySelector("button[onclick='addForm()']");
+                addButton.parentNode.insertBefore(clonedForm, addButton);
             }
-        }
 
-        // Lancer la mise à jour automatique au chargement
+            function removeForm(button) {
+                const form = button.closest("form");
+                if (form) {
+                    form.remove();
+                }
+            }
+
+                async function fetchPredictionSummary() {
+                try {
+                    const res = await fetch("http://localhost:5001/api/prediction/summary");
+                    const summary = await res.json();
+
+                    document.getElementById("total_predictions").textContent = summary.total_predictions;
+                    document.getElementById("validations").textContent = summary.validations;
+                    document.getElementById("annulations").textContent = summary.annulations;
+                    document.getElementById("taux_annulation").textContent = (summary.taux_annulation * 100).toFixed(1) + " %";
+                } catch (err) {
+                    console.error("Erreur lors de la récupération du résumé :", err);
+                }
+            }
+
+
+
+
+
+
+                async function fetchClients() {
+                try {
+                    const response = await fetch("http://localhost:5001/clients/crm");
+                    const clients = await response.json();
+
+                    if (!Array.isArray(clients)) {
+                        throw new Error("Données inattendues reçues de l'API");
+                    }
+
+                      const select = document.getElementById("full_name");  // minuscule ici
+                     const clientSelectSummary = document.getElementById("clientSelect"); // vérifier si existe
+
+
+                    // Vider les options existantes sauf le placeholder
+                    select.innerHTML = `
+                        <option disabled selected>Choisissez un client</option>
+                        <option value="__custom__">➕ Nouveau client</option>
+                    `;
+                    clientSelectSummary.innerHTML = `<option value="">-- Choose a client --</option>`;
+
+                    clients.forEach(client => {
+                        const option = document.createElement("option");
+                        option.value = client.full_name;
+                        option.textContent = client.full_name;
+                        select.appendChild(option);
+
+                        const optionSummary = document.createElement("option");
+                        optionSummary.value = client.full_name;
+                        optionSummary.textContent = client.full_name;
+                        clientSelectSummary.appendChild(optionSummary);
+                    });
+                } catch (err) {
+                    console.error("Erreur lors du chargement des clients :", err);
+                }
+            }
+
+
+
+            //     function toggleCustomClient(selectElement) {
+            //     const customNameInput = document.querySelector(".custom_client_name");
+            //     if (selectElement.value === "__custom__") {
+            //         customNameInput.classList.remove("hidden");
+            //     } else {
+            //         customNameInput.classList.add("hidden");
+            //     }
+            // }
+
+
+            function toggleCustomClient(selectElement) {
+                const container = selectElement.closest("form");
+                const customField = container.querySelector(".custom_client_name");
+                if (selectElement.value === "__custom__") {
+                    customField.classList.remove("hidden");
+                } else {
+                    customField.classList.add("hidden");
+                }
+            }
+
+
+
+
+                let globalChartInstance = null;
+
+            async function fetchGlobalStats() {
+                try {
+                    const res = await fetch("/api/prediction/stats/overview");
+                    const raw = await res.text();
+                    console.log("RAW:", raw);
+
+                    const stats = JSON.parse(raw);
+                    console.log("Parsed stats:", stats);
+
+                    const ctx = document.getElementById('globalChart').getContext('2d');
+
+                    // Détruire l'ancien graphique s'il existe
+                    if (globalChartInstance !== null) {
+                        globalChartInstance.destroy();
+                    }
+
+                     // Créer un nouveau graphique avec les couleurs de la charte graphique
+                    globalChartInstance = new Chart(ctx, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Validées', 'Annulées'],
+                            datasets: [{
+                                label: 'Statistiques Globales',
+                                data: [stats.negatives, stats.positives],
+                                backgroundColor: ['var(--primary-yellow)', 'var(--primary-dark)'],
+                                borderColor: ['#ffffff', '#ffffff'],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        font: {
+                                            family: "'Segoe UI', Arial, sans-serif",
+                                            size: 14,
+                                            weight: 'bold'
+                                        },
+                                        color: '#333333',
+                                        padding: 20,
+                                        usePointStyle: true,
+                                        pointStyle: 'circle'
+                                    }
+                                },
+                                tooltip: {
+                                    backgroundColor: 'rgba(51, 51, 51, 0.8)',
+                                    titleFont: {
+                                        family: "'Segoe UI', Arial, sans-serif",
+                                        size: 14,
+                                        weight: 'bold'
+                                    },
+                                    bodyFont: {
+                                        family: "'Segoe UI', Arial, sans-serif",
+                                        size: 13
+                                    },
+                                    padding: 15,
+                                    cornerRadius: 8,
+                                    displayColors: true,
+                                    borderColor: '#ffe600',
+                                    borderWidth: 2
+                                }
+                            },
+                            animation: {
+                                animateScale: true,
+                                animateRotate: true,
+                                duration: 1000,
+                                easing: 'easeOutQuart'
+                            }
+                        }
+                    });
+
+
+
+
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des statistiques :", error);
+                }
+            }
+
+            // Lancer la mise à jour automatique au chargement
+            window.addEventListener('load', () => {
+                fetchGlobalStats(); // Chargement initial
+                setInterval(fetchGlobalStats, 10000); // Rafraîchissement toutes les 10 secondes
+            });
+
+
+
+            async function fetchRecentPredictions() {
+                const res = await fetch("/api/prediction/recent");
+
+                if (!res.ok) {
+                    console.error("Erreur lors de la récupération des prédictions récentes");
+                    return;
+                }
+
+                const data = await res.json();
+                console.log(data);  // Pour voir la structure réelle
+
+                const container = document.getElementById("recentPredictions");
+                container.innerHTML = "";
+
+                data.forEach(item => {
+                    const fullName = item.full_name || "Nom inconnu";
+                    const industry = item.industry || "Industrie inconnue";
+                    const prediction = item.prediction;  // suppose 0 ou 1
+                    const prob = parseFloat(item.prob_class_1);
+                    const probability = (!isNaN(prob) && prob >= 0 && prob <= 1) ? Math.round(prob * 100) : "?";
+                    const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "Date inconnue";
+
+                    // Définir les couleurs selon la charte graphique
+                    const resultColor = prediction === 1 ? 'var(--primary-dark)' : 'var(--primary-yellow)';
+                    const resultIcon = prediction === 1 ? '🚫' : '✅';
+                    const resultText = prediction === 1 ? 'Annulée' : 'Validée';
+
+                    const card = document.createElement("div");
+                    card.style.padding = "1rem";
+                    card.style.marginBottom = "1rem";
+                    card.style.borderRadius = "var(--border-radius-md)";
+                    card.style.backgroundColor = "var(--primary-white)";
+                    card.style.boxShadow = "var(--box-shadow)";
+                    card.style.transition = "all var(--transition-speed)";
+                    card.style.borderLeft = `4px solid ${resultColor}`;
+
+                    card.innerHTML = `
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--primary-dark); margin: 0;">${fullName}</h3>
+                            <span style="color: ${resultColor}; font-weight: 600;">${resultIcon} ${resultText}</span>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--primary-mid-gray); margin-top: 0.25rem;">Secteur : ${industry}</p>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.75rem;">
+                            <div style="font-size: 0.875rem; color: var(--primary-mid-gray);">
+                                Probabilité : <span style="font-weight: 600;">${probability}%</span> d'annulation
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--primary-mid-gray);">Le ${timestamp}</div>
+                        </div>
+                    `;
+
+                    // Ajouter un effet hover
+                    card.onmouseover = function() {
+                        this.style.transform = "translateY(-3px)";
+                        this.style.boxShadow = "0 6px 15px rgba(0,0,0,0.1)";
+                    };
+                    card.onmouseout = function() {
+                        this.style.transform = "translateY(0)";
+                        this.style.boxShadow = "var(--box-shadow)";
+                    };
+
+                    container.appendChild(card);
+                });
+            }
+
+
+
+                       async function sendPrediction() {
+                try {
+                        let fullName = document.getElementById("full_name").value;
+                        if (fullName === "__custom__") {
+                        fullName = document.querySelector(".custom_client_name input").value.trim();
+                        }
+
+                    const body = {
+                        Full_Name: fullName,   // <=== ici on utilise la bonne variable
+                        Industry: document.getElementById("Industry").value.trim(),
+                        Order_Total: parseFloat(document.getElementById("Order_Total").value),
+                        delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
+                        Order_Month: parseInt(document.getElementById("Order_Month").value),
+                        Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
+                        Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
+                        nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
+                        quantite_totale: parseFloat(document.getElementById("quantite_totale").value),
+                        prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
+                        nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
+                        prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
+                        quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
+                        prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
+                    };
+
+                    const response = await fetch("http://localhost:5001/predict", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(body)
+                    });
+
+                    if (!response.ok) throw new Error("Échec de la prédiction");
+
+                    const result = await response.json();
+                    console.log("Résultat de la prédiction :", result);
+
+                    const prob = parseFloat(result.probability_class_1);
+                    const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
+
+                    // Créer un message stylisé selon la charte graphique
+                     const predictionText = result.prediction === 1 ? "Annulation probable" : "Validation probable";
+                     const percentage = isValidProb ? (result.prediction === 1 ? Math.round(prob * 100) : Math.round((1 - prob) * 100)) : "?";
+                     const icon = result.prediction === 1 ? "❌" : "✅";
+                     const msg = `${icon} Résultat : ${predictionText} (${percentage}%)`;
+
+                     // Appliquer le style au conteneur de résultat
+                     const resultDiv = document.getElementById("predictionResult");
+                     resultDiv.innerText = msg;
+                     resultDiv.style.padding = "1rem";
+                     resultDiv.style.borderRadius = "var(--border-radius-md)";
+                     resultDiv.style.backgroundColor = result.prediction === 1 ? "rgba(51, 51, 51, 0.1)" : "rgba(255, 230, 0, 0.1)";
+                     resultDiv.style.border = `2px solid ${result.prediction === 1 ? "var(--primary-dark)" : "var(--primary-yellow)"}`;
+                     resultDiv.style.color = result.prediction === 1 ? "var(--primary-dark)" : "#333333";
+                     resultDiv.style.fontWeight = "600";
+                     resultDiv.style.textAlign = "center";
+                     resultDiv.style.marginTop = "1rem";
+
+                    await fetchRecentPredictions();
+                    await fetchGlobalStats();
+                    await fetchPredictionSummary();
+
+                } catch (error) {
+                    console.error("Erreur lors de la prédiction :", error);
+                    document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
+                }
+            }
+
+
+            async function init() {
+                await fetchClients();
+                await fetchGlobalStats();
+                await fetchRecentPredictions();
+            }
+
+            window.onload = init;
+            document.addEventListener("DOMContentLoaded", fetchRecentPredictions);
         window.addEventListener('load', () => {
-            fetchGlobalStats(); // Chargement initial
-            setInterval(fetchGlobalStats, 10000); // Rafraîchissement toutes les 10 secondes
+            fetchClients();
+            fetchGlobalStats();
+            setInterval(fetchGlobalStats, 10000);
+            fetchRecentPredictions();
+            fetchPredictionSummary(); // 👈 Ajoute cette ligne
+
         });
 
-
-
-        async function fetchRecentPredictions() {
-            const res = await fetch("/api/prediction/recent");
-
-            if (!res.ok) {
-                console.error("Erreur lors de la récupération des prédictions récentes");
-                return;
-            }
-
-            const data = await res.json();
-            console.log(data);  // Pour voir la structure réelle
-
-            const container = document.getElementById("recentPredictions");
-            container.innerHTML = "";
-
-            data.forEach(item => {
-                const fullName = item.full_name || "Nom inconnu";
-                const industry = item.industry || "Industrie inconnue";
-                const prediction = item.prediction;  // suppose 0 ou 1
-                const prob = parseFloat(item.prob_class_1);
-                const probability = (!isNaN(prob) && prob >= 0 && prob <= 1) ? Math.round(prob * 100) : "?";
-                const timestamp = item.timestamp ? new Date(item.timestamp).toLocaleString() : "Date inconnue";
-
-                const card = document.createElement("div");
-                card.className = "bg-white p-4 rounded-xl shadow hover:scale-105 transition-transform duration-300";
-                card.innerHTML = `
-                    <h3 class="text-lg font-bold">${fullName}</h3>
-                    <p class="text-sm text-gray-600">Secteur : ${industry}</p>
-                    <p class="mt-1 text-gray-800 font-semibold">
-                        ${prediction === 1 ? '🚫 Annulée' : '✅ Validée'}
-                    </p>
-                    <div class="text-sm mt-1 text-gray-500">
-                        Probabilité : ${probability}% d'annulation
-                    </div>
-                    <div class="text-xs mt-2 text-gray-400">Le ${timestamp}</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-
-
-                   async function sendPrediction() {
-            try {
-                    let fullName = document.getElementById("full_name").value;
-                    if (fullName === "__custom__") {
-                    fullName = document.querySelector(".custom_client_name input").value.trim();
-                    }
-
-                const body = {
-                    Full_Name: fullName,   // <=== ici on utilise la bonne variable
-                    Industry: document.getElementById("Industry").value.trim(),
-                    Order_Total: parseFloat(document.getElementById("Order_Total").value),
-                    delai_livraison_jours: parseInt(document.getElementById("delai_livraison_jours").value),
-                    Order_Month: parseInt(document.getElementById("Order_Month").value),
-                    Order_Weekday: parseInt(document.getElementById("Order_Weekday").value),
-                    Order_Quarter: parseInt(document.getElementById("Order_Quarter").value),
-                    nb_lignes_produits: parseInt(document.getElementById("nb_lignes_produits").value),
-                    quantite_totale: parseFloat(document.getElementById("quantite_totale").value),
-                    prix_unitaire_moyen: parseFloat(document.getElementById("prix_unitaire_moyen").value),
-                    nb_produits_uniques: parseInt(document.getElementById("nb_produits_uniques").value),
-                    prix_total_recalcule: parseFloat(document.getElementById("prix_total_recalcule").value),
-                    quantite_par_ligne: parseFloat(document.getElementById("quantite_par_ligne").value),
-                    prix_moyen_par_ligne: parseFloat(document.getElementById("prix_moyen_par_ligne").value)
-                };
-
-                const response = await fetch("http://localhost:5001/predict", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(body)
-                });
-
-                if (!response.ok) throw new Error("Échec de la prédiction");
-
-                const result = await response.json();
-                console.log("Résultat de la prédiction :", result);
-
-                const prob = parseFloat(result.probability_class_1);
-                const isValidProb = !isNaN(prob) && prob >= 0 && prob <= 1;
-
-                const msg = result.prediction === 1
-                    ? `❌ Résultat : Annulation probable (${isValidProb ? Math.round(prob * 100) : "?"}%)`
-                    : `✅ Résultat : Validation probable (${isValidProb ? Math.round((1 - prob) * 100) : "?"}%)`;
-
-                document.getElementById("predictionResult").innerText = msg;
-
-                await fetchRecentPredictions();
-                await fetchGlobalStats();
-                await fetchPredictionSummary();
-
-            } catch (error) {
-                console.error("Erreur lors de la prédiction :", error);
-                document.getElementById("predictionResult").innerText = "Erreur : " + error.message;
-            }
-        }
-
-
-        async function init() {
-            await fetchClients();
-            await fetchGlobalStats();
-            await fetchRecentPredictions();
-        }
-
-        window.onload = init;
-        document.addEventListener("DOMContentLoaded", fetchRecentPredictions);
-    window.addEventListener('load', () => {
-        fetchClients();
-        fetchGlobalStats();
-        setInterval(fetchGlobalStats, 10000);
-        fetchRecentPredictions();
-        fetchPredictionSummary(); // 👈 Ajoute cette ligne
-
-    });
-
-</script>
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>

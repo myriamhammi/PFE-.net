@@ -365,7 +365,7 @@
                         <li class="nav-item"><a class="nav-link nav-colored" href="#kpis">KPIs</a></li>
                         <li class="nav-item"><a class="nav-link nav-colored" href="#etl">ETL</a></li>
                         <li class="nav-item"><a class="nav-link nav-colored" href="#crm">CRM</a></li>
-                        <li class="nav-item"><a class="nav-link nav-colored" href="#dashboard">Dashboards</a></li>
+                        <li class="nav-item"><a class="nav-link nav-colored" href="#reporting">Reporting</a></li>
                         <li class="nav-item"><a class="nav-link nav-colored" href="#team">Notre équipe</a></li>
                     </ul>
                     <a href="#login" class="btn btn-warning ms-4 fw-bold shadow-sm">Myriam HAMMI</a>
@@ -1333,17 +1333,17 @@
                 const particle = document.createElement('div');
                 particle.className = 'floating-particle';
                 particle.style.cssText = `
-                                position: absolute;
-                                width: 3px;
-                                height: 3px;
-                                background: var(--accent-color);
-                                border-radius: 50%;
-                                opacity: 0.4;
-                                animation: floatRandom ${5 + Math.random() * 5}s ease-in-out infinite;
-                                top: ${Math.random() * 100}%;
-                                left: ${Math.random() * 100}%;
-                                animation-delay: -${Math.random() * 5}s;
-                            `;
+                                    position: absolute;
+                                    width: 3px;
+                                    height: 3px;
+                                    background: var(--accent-color);
+                                    border-radius: 50%;
+                                    opacity: 0.4;
+                                    animation: floatRandom ${5 + Math.random() * 5}s ease-in-out infinite;
+                                    top: ${Math.random() * 100}%;
+                                    left: ${Math.random() * 100}%;
+                                    animation-delay: -${Math.random() * 5}s;
+                                `;
                 particlesContainer.appendChild(particle);
             }
         }
@@ -1354,25 +1354,25 @@
         // Animation CSS pour les particules flottantes
         const style = document.createElement('style');
         style.textContent = `
-                        @keyframes floatRandom {
-                            0%, 100% {
-                                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
-                                opacity: 0.2;
+                            @keyframes floatRandom {
+                                0%, 100% {
+                                    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+                                    opacity: 0.2;
+                                }
+                                25% {
+                                    transform: translateY(-15px) translateX(10px) rotate(90deg) scale(1.2);
+                                    opacity: 0.6;
+                                }
+                                50% {
+                                    transform: translateY(-30px) translateX(-5px) rotate(180deg) scale(0.8);
+                                    opacity: 1;
+                                }
+                                75% {
+                                    transform: translateY(-10px) translateX(-15px) rotate(270deg) scale(1.1);
+                                    opacity: 0.4;
+                                }
                             }
-                            25% {
-                                transform: translateY(-15px) translateX(10px) rotate(90deg) scale(1.2);
-                                opacity: 0.6;
-                            }
-                            50% {
-                                transform: translateY(-30px) translateX(-5px) rotate(180deg) scale(0.8);
-                                opacity: 1;
-                            }
-                            75% {
-                                transform: translateY(-10px) translateX(-15px) rotate(270deg) scale(1.1);
-                                opacity: 0.4;
-                            }
-                        }
-                    `;
+                        `;
         document.head.appendChild(style);
     </script>
 
@@ -1382,17 +1382,20 @@
 
 
 
-    <section class="py-5" id="etl" style="background-color: #1C1C1C;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="text-uppercase fw-bold text-white fst-italic">Système ETL</h2>
-                <h5 class="fst-italic" style="color: #B7B7B7;">De la donnée brute à la valeur décisionnelle</h5>
+    <section class="py-5" id="etl" style="background: linear-gradient(135deg, #1C1C1C 0%, #2C2C2C 100%); position: relative; overflow: hidden;">
+        <div class="etl-particles"></div>
+
+        <div class="container position-relative">
+            <div class="text-center mb-5" data-aos="fade-down">
+                <span class="badge bg-warning text-dark mb-3 px-3 py-2 rounded-pill fw-bold">ETL System</span>
+                <h2 class="display-4 fw-bold text-white mb-3">Système ETL</h2>
+                <h5 class="fw-light" style="color: #FFE600;">De la donnée brute à la valeur décisionnelle</h5>
             </div>
 
             <div class="row">
                 <!-- Colonne 1 : Carte ETL Complet -->
-                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="100">
-                    <div class="etl-feature-card p-5 text-center text-dark position-relative h-100">
+                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
+                    <div class="etl-feature-card p-5 text-center text-dark position-relative h-100" style="margin-top: 15px;">
                         <div class="etl-icon-circle position-absolute top-0 start-50 translate-middle">
                             <i class="fas fa-database fa-2x" style="color: #000000;"></i>
                         </div>
@@ -1405,8 +1408,8 @@
                 </div>
 
                 <!-- Colonne 2 : Timeline verticale -->
-                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="etl-timeline ps-3 border-start border-2 border-warning">
+                <div class="col-lg-6 mb-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
+                    <div class="etl-timeline ps-4 border-start border-3 border-warning" style="margin-top: 15px;">
                         <div class="mb-5 position-relative">
                             <span class="etl-step-dot bg-warning"></span>
                             <h5 class="text-white fw-bold ms-4">Extract</h5>
@@ -1429,47 +1432,123 @@
     </section>
 
     <style>
-        /* EY-inspired root vars */
-        :root {
-            --ey-yellow: #FFE600;
-            --ey-black: #1C1C1C;
-            --ey-gray: #CCCCCC;
+        /* Styles ETL améliorés */
+        .etl-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 230, 0, 0.1) 0%, transparent 50%);
         }
 
-        /* Carte ETL Complet */
         .etl-feature-card {
-            background-color: var(--ey-gray);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             position: relative;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 230, 0, 0.3);
         }
 
-        /* Icône flottante */
+            .etl-feature-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+                border-color: #FFE600;
+            }
+
         .etl-icon-circle {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            background-color: var(--ey-yellow);
+            background: linear-gradient(145deg, #FFE600 0%, #FFD700 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(255, 230, 0, 0.25);
+            transition: all 0.4s ease;
         }
 
-        /* Timeline */
+        .etl-feature-card:hover .etl-icon-circle {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 15px 30px rgba(255, 230, 0, 0.4);
+        }
+
+        .etl-icon-circle i {
+            color: #1C1C1C;
+            transition: all 0.4s ease;
+        }
+
+        .btn-etl {
+            background: linear-gradient(145deg, #FFE600 0%, #FFD700 100%);
+            color: #1C1C1C;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-etl:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 12px 25px rgba(255, 230, 0, 0.4);
+                color: #000000;
+                filter: brightness(1.05);
+            }
+
+            .btn-etl::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+                transform: translateX(-100%);
+                transition: transform 0.6s ease;
+            }
+
+            .btn-etl:hover::before {
+                transform: translateX(0);
+            }
+
+        /* Timeline améliorée */
         .etl-timeline {
             position: relative;
+            padding: 20px 0;
         }
+
+        .etl-step {
+            position: relative;
+            padding-left: 50px;
+            transition: all 0.3s ease;
+        }
+
+            .etl-step:hover {
+                transform: translateX(12px);
+                transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
 
         .etl-step-dot {
             position: absolute;
             left: -11px;
             top: 4px;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            border: 2px solid white;
+            border: 3px solid white;
             z-index: 1;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .etl-step:hover .etl-step-dot {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.5);
         }
     </style>
 
@@ -1494,7 +1573,8 @@
 
             <div class="row text-center">
                 <!-- Carte 1 : Gestion des clients -->
-                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <!-- Carte de gestion des clients pleine largeur -->
+                <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="200">
                     <div class="crm-feature-card p-4 h-100 text-dark position-relative">
                         <div class="crm-icon-circle bg-warning mb-4 mx-auto">
                             <i class="fas fa-user-check fa-2x" style="color: #000000;"></i>
@@ -1502,26 +1582,6 @@
                         <h4 class="fw-bold">Gestion des clients</h4>
                         <p class="text-dark small">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
                         <a class="fw-bold text-dark text-decoration-none" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                </div>
-
-                <!-- Carte 2 : Automatisation & Reporting -->
-                <div class="col-md-6 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="crm-feature-card p-4 h-100 text-dark position-relative">
-                        <div class="crm-icon-circle bg-warning mb-4 mx-auto">
-                            <i class="fas fa-chart-bar fa-2x" style="color: #000000;"></i>
-                        </div>
-                        <h4 class="fw-bold">Automatisation & Reporting</h4>
-                        <p class="text-dark small">
-                            Automatisation des processus de vente et analyse des performances des campagnes marketing.
-                        </p>
-
-                        <!-- Lien vers rapport -->
-                        <a class="fw-bold text-dark text-decoration-none"
-                           href="https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730"
-                           target="_blank">
-                            Voir le rapport <i class="bi bi-arrow-right"></i>
-                        </a>
                     </div>
                 </div>
 
@@ -1534,11 +1594,13 @@
             background-color: #ffffff;
             border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            transition: transform 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
         }
 
             .crm-feature-card:hover {
                 transform: translateY(-5px);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             }
 
         .crm-icon-circle {
@@ -1550,9 +1612,115 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
         }
+
+        .crm-feature-card:hover .crm-icon-circle {
+            transform: scale(1.1);
+        }
+
+        .report-preview {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .report-preview:hover {
+                transform: scale(1.02);
+            }
+
+            .report-preview iframe {
+                background-color: #f8f9fa;
+                transition: all 0.3s ease;
+            }
+
+        .btn-warning {
+            background-color: #FFE600;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .btn-warning:hover {
+                background-color: #FFD700;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
     </style>
 
+
+    <!-- Automatisation & Reporting -->
+    <section class="page-section" id="reporting" style="background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%); padding: 6rem 0;">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-5 mb-lg-0" data-aos="fade-right">
+                    <h2 class="fw-bold display-4 mb-4" style="color: #333;">Automatisation & Reporting</h2>
+                    <p class="lead mb-4" style="color: #333;">
+                        Découvrez nos tableaux de bord interactifs Power BI pour une analyse approfondie
+                        de vos performances commerciales et marketing.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730"
+                           class="btn btn-dark btn-lg" target="_blank">
+                            <i class="fas fa-external-link-alt me-2"></i>Voir en plein écran
+                        </a>
+                        <button class="btn btn-outline-dark btn-lg" onclick="refreshDashboard()">
+                            <i class="fas fa-sync-alt me-2"></i>Actualiser
+                        </button>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="dashboard-container">
+                        <iframe title="Tableau de bord Power BI"
+                                width="800"
+                                height="500"
+                                src="https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730"
+                                frameborder="0"
+                                allowfullscreen="true"
+                                style="border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.2);">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .dashboard-container {
+            position: relative;
+            transition: all 0.3s ease;
+            transform: perspective(1000px) rotateY(-5deg);
+        }
+
+            .dashboard-container:hover {
+                transform: perspective(1000px) rotateY(0deg);
+            }
+
+        .btn-dark, .btn-outline-dark {
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-dark:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+            .btn-outline-dark:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+    </style>
+
+    <script>
+        function refreshDashboard() {
+            const iframe = document.querySelector('.dashboard-container iframe');
+            iframe.src = iframe.src;
+        }
+    </script>
 
     <!-- Team -->
     <section class="page-section" id="team" style="background-color: #f8f9fa; padding-top: 5rem; padding-bottom: 5rem;">
@@ -1951,7 +2119,7 @@
             isOpen = false;
         }
 
-      
+
 
 
         function quickAction(action) {
@@ -1975,19 +2143,19 @@
             const chatContent = document.querySelector('.chat-content');
             const responseDiv = document.createElement('div');
             responseDiv.style.cssText = `
-                                        background: linear-gradient(135deg, #333333, #1e1e28);
-                                        color: #ffffff;
-                                        padding: 12px 16px;
-                                        border-radius: 18px;
-                                        margin: 10px 0;
-                                        font-size: 14px;
-                                        box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
-                                        animation: slideIn 0.3s ease;
-                                        position: relative;
-                                        max-width: 90%;
-                                        word-wrap: break-word;
-                                        border: 1px solid #999999;
-                                    `;
+                                            background: linear-gradient(135deg, #333333, #1e1e28);
+                                            color: #ffffff;
+                                            padding: 12px 16px;
+                                            border-radius: 18px;
+                                            margin: 10px 0;
+                                            font-size: 14px;
+                                            box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
+                                            animation: slideIn 0.3s ease;
+                                            position: relative;
+                                            max-width: 90%;
+                                            word-wrap: break-word;
+                                            border: 1px solid #999999;
+                                        `;
 
             // Ajouter une icone de robot
             const iconSpan = document.createElement('span');
@@ -2009,42 +2177,42 @@
         // Ajouter les animations CSS supplémentaires
         const style = document.createElement('style');
         style.textContent = `
-                                    @keyframes slideIn {
-                                        from {
-                                            opacity: 0;
-                                            transform: translateY(10px) scale(0.95);
+                                        @keyframes slideIn {
+                                            from {
+                                                opacity: 0;
+                                                transform: translateY(10px) scale(0.95);
+                                            }
+                                            to {
+                                                opacity: 1;
+                                                transform: translateY(0) scale(1);
+                                            }
                                         }
-                                        to {
-                                            opacity: 1;
-                                            transform: translateY(0) scale(1);
-                                        }
-                                    }
 
-                                    @keyframes bounceIn {
-                                        0% {
-                                            transform: scale(0.3);
-                                            opacity: 0;
+                                        @keyframes bounceIn {
+                                            0% {
+                                                transform: scale(0.3);
+                                                opacity: 0;
+                                            }
+                                            50% {
+                                                transform: scale(1.05);
+                                            }
+                                            70% {
+                                                transform: scale(0.9);
+                                            }
+                                            100% {
+                                                transform: scale(1);
+                                                opacity: 1;
+                                            }
                                         }
-                                        50% {
-                                            transform: scale(1.05);
-                                        }
-                                        70% {
-                                            transform: scale(0.9);
-                                        }
-                                        100% {
-                                            transform: scale(1);
-                                            opacity: 1;
-                                        }
-                                    }
 
-                                    .suggestion-card:active {
-                                        transform: translateY(0) scale(0.98);
-                                    }
+                                        .suggestion-card:active {
+                                            transform: translateY(0) scale(0.98);
+                                        }
 
-                                    .quick-action:active {
-                                        transform: translateY(0) scale(0.95);
-                                    }
-                                `;
+                                        .quick-action:active {
+                                            transform: translateY(0) scale(0.95);
+                                        }
+                                    `;
         document.head.appendChild(style);
 
         // Fermer le panel si on clique à l'extérieur
@@ -2106,48 +2274,48 @@
 
 
     </script>
-<script>
-    // Fonction principale pour gérer les options de navigation
-    window.sendOption = function (option) {
-        const typingIndicator = document.getElementById('typingIndicator');
-        typingIndicator.style.display = 'flex';
+    <script>
+        // Fonction principale pour gérer les options de navigation
+        window.sendOption = function (option) {
+            const typingIndicator = document.getElementById('typingIndicator');
+            typingIndicator.style.display = 'flex';
 
-        setTimeout(() => {
-            typingIndicator.style.display = 'none';
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
 
-            if (option === 'Rapports' || option === 'reports') {
-                const powerBiUrl = "https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730";
-                window.open(powerBiUrl, '_blank');
-                showResponse("📊 Ouverture des rapports Power BI...");
-                return;
-            }
+                if (option === 'Rapports' || option === 'reports') {
+                    const powerBiUrl = "https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730";
+                    window.open(powerBiUrl, '_blank');
+                    showResponse("📊 Ouverture des rapports Power BI...");
+                    return;
+                }
 
-            if (option === 'Analyser' || option === 'data') {
-                showResponse("🔍 Redirection vers l'analyse de données...");
-                setTimeout(() => {
-                    window.location.href = '/ETL/Upload';
-                }, 1500);
-                return;
-            }
+                if (option === 'Analyser' || option === 'data') {
+                    showResponse("🔍 Redirection vers l'analyse de données...");
+                    setTimeout(() => {
+                        window.location.href = '/ETL/Upload';
+                    }, 1500);
+                    return;
+                }
 
-            if (option === 'Predire' || option === 'kpi') {
-                showResponse("📈 Redirection vers les prédictions KPI...");
-                setTimeout(() => {
-                    window.location.href = '/SalesKPI/Predictifs';
-                }, 1500);
-                return;
-            }
-        }, 1000);
-    }
+                if (option === 'Predire' || option === 'kpi') {
+                    showResponse("📈 Redirection vers les prédictions KPI...");
+                    setTimeout(() => {
+                        window.location.href = '/SalesKPI/Predictifs';
+                    }, 1500);
+                    return;
+                }
+            }, 1000);
+        }
 
-    window.handleSuggestion = function (type) {
-        sendOption(type);
-    }
+        window.handleSuggestion = function (type) {
+            sendOption(type);
+        }
 
-    window.showResponse = function (text) {
-        alert(text); // à remplacer par ton affichage dans l’UI
-    }
-</script>
+        window.showResponse = function (text) {
+            alert(text); // à remplacer par ton affichage dans l’UI
+        }
+    </script>
 
 </body>
-</html >
+</html>

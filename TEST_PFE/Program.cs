@@ -5,7 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.SqlServer.Management.Smo.Wmi;
 using System.ComponentModel;
 using TEST_PFE.Models;  
-using TEST_PFE.Ser;    
+using TEST_PFE.Ser;
+using TEST_PFE.Middleware;
+
 
 
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -81,9 +83,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// Ajouter le middleware d'authentification personnalisé
+app.UseAuthenticationMiddleware();
+
 // Mappe les routes des contrôleurs MVC
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Auth}/{action=Login}/{id?}");
 
 app.Run();
