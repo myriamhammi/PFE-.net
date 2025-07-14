@@ -1,0 +1,585 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Utilisateur - Application ETL & CRM</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Styles pour la barre de progression */
+        .reading-progress-container {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .reading-progress-bar {
+            height: 4px;
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        .reading-sections {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+
+        .section-marker {
+            position: relative;
+            padding-top: 15px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .section-marker::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 8px;
+                height: 8px;
+                background: #FFE600;
+                border-radius: 50%;
+            }
+
+            .section-marker.active {
+                color: #000;
+                font-weight: 500;
+            }
+
+        .reading-time {
+            position: fixed;
+            right: 30px;
+            bottom: 80px;
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            color: #000;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        body {
+            scroll-padding-top: 80px;
+        }
+
+        .navbar {
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+            .navbar-nav .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background: #FFE600;
+                transition: all 0.3s ease;
+                transform: translateX(-50%);
+            }
+
+            .navbar-nav .nav-link:hover::after {
+                width: 80%;
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: #000 !important;
+            }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .guide-section {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-bottom: 50px;
+            padding: 35px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            scroll-margin-top: 100px;
+        }
+
+            .guide-section:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            }
+
+        .guide-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 230, 0, 0.2);
+        }
+
+        .guide-section:hover .guide-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 8px 20px rgba(255, 230, 0, 0.3);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            color: #000;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 230, 0, 0.2);
+        }
+
+            .step-number:hover {
+                transform: scale(1.1);
+                box-shadow: 0 5px 15px rgba(255, 230, 0, 0.3);
+            }
+
+        .scroll-top-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+            .scroll-top-btn:hover {
+                transform: translateY(-5px) !important;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                color: #000;
+            }
+
+        .faq-search {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+            .faq-search input {
+                width: 100%;
+                padding: 15px 20px;
+                border: 2px solid #eee;
+                border-radius: 10px;
+                font-size: 16px;
+                transition: all 0.3s ease;
+            }
+
+                .faq-search input:focus {
+                    border-color: #FFE600;
+                    box-shadow: 0 0 15px rgba(255, 230, 0, 0.1);
+                    outline: none;
+                }
+
+            .faq-search i {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #666;
+            }
+
+        .accordion-button:not(.collapsed) {
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            color: #000;
+        }
+
+        .accordion-button:focus {
+            border-color: #FFE600;
+            box-shadow: 0 0 15px rgba(255, 230, 0, 0.1);
+        }
+
+        .accordion-item {
+            border: none;
+            margin-bottom: 15px;
+            border-radius: 10px !important;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .accordion-button {
+            border-radius: 10px;
+            padding: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Barre de progression de lecture -->
+    <div class="reading-progress-container">
+        <div class="reading-progress-bar"></div>
+        <div class="reading-sections">
+            <div class="section-marker" data-section="objectif">Objectif</div>
+            <div class="section-marker" data-section="etl">ETL</div>
+            <div class="section-marker" data-section="crm">CRM</div>
+            <div class="section-marker" data-section="tableaux">Tableaux</div>
+            <div class="section-marker" data-section="predictions">Prédictions</div>
+            <div class="section-marker" data-section="aide">Aide</div>
+            <div class="section-marker" data-section="faq">FAQ</div>
+        </div>
+    </div>
+    <div class="reading-time">
+        <i class="fas fa-clock me-2"></i>
+        <span id="time-remaining">Temps de lecture restant: -- min</span>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <span style="color: #333;">BI</span> <span style="color: #FFE600;">360°</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#objectif">Objectif</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#etl">ETL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#crm">CRM</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tableaux">Tableaux de Bord</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#predictions">Prédictions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#aide">Aide</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#faq">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold">Guide Utilisateur</h1>
+            <p class="lead">Votre assistant pour la gestion des données et la relation client</p>
+        </div>
+
+        <!-- Objectif de l'Application -->
+        <div id="objectif" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-bullseye fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Objectif de l'Application</h2>
+            <p>Notre application est conçue pour simplifier la gestion de vos données d'entreprise et améliorer votre relation client. Elle combine trois fonctionnalités essentielles :</p>
+            <ul class="list-unstyled">
+                <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Un système ETL pour traiter vos données efficacement</li>
+                <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Système d'analyse prédictive pour les ventes</li>
+                <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Un CRM pour gérer vos relations clients</li>
+                <li class="mb-3"><i class="fas fa-check-circle text-success me-2"></i>Des tableaux de bord pour visualiser vos KPIs</li>
+            </ul>
+        </div>
+
+        <!-- Comment Utiliser l'ETL -->
+        <div id="etl" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-database fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Utilisation du Système ETL</h2>
+            <div class="mb-4">
+                <div class="step-number">1</div>
+                <strong>Chargement des Données</strong>
+                <p class="ms-5">Cliquez sur "Lancer le système ETL" et sélectionnez vos fichiers de données (CSV)</p>
+            </div>
+            <div class="mb-4">
+                <div class="step-number">2</div>
+                <strong>Transformation</strong>
+                <p class="ms-5">Vos données sont automatiquement nettoyées et standardisées</p>
+            </div>
+            <div class="mb-4">
+                <div class="step-number">3</div>
+                <strong>Résultats</strong>
+                <p class="ms-5">Consultez vos données transformées dans la base de données cible</p>
+            </div>
+        </div>
+
+        <!-- Gestion CRM -->
+        <div id="crm" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-users fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Utilisation du CRM</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <h5><i class="fas fa-address-card me-2 text-primary"></i>Gestion des Clients</h5>
+                    <p>Accédez à la liste complète de vos clients et leurs informations</p>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <h5><i class="fas fa-chart-line me-2 text-primary"></i>Suivi des Opportunités</h5>
+                    <p>Surveillez l'évolution de vos opportunités commerciales</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tableaux de Bord -->
+        <div id="tableaux" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-chart-pie fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Consultation des Tableaux de Bord</h2>
+            <p>Visualisez vos indicateurs clés de performance :</p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fas fa-chart-bar me-2 text-warning"></i>Performances commerciales</li>
+                <li class="list-group-item"><i class="fas fa-funnel-dollar me-2 text-warning"></i>Conversion des prospects</li>
+                <li class="list-group-item"><i class="fas fa-user-check me-2 text-warning"></i>Satisfaction client</li>
+            </ul>
+        </div>
+
+        <!-- Prédictions -->
+        <div id="predictions" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-brain fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Système de Prédiction</h2>
+            <p>Notre système de prédiction utilise l'intelligence artificielle pour vous aider à anticiper les tendances et prendre des décisions éclairées :</p>
+
+            <div class="row mb-4">
+                <div class="col-md-6 mb-4">
+                    <h5><i class="fas fa-chart-line me-2 text-primary"></i>Prédiction des Ventes</h5>
+                    <p>Anticipez vos performances commerciales futures basées sur l'historique des données :</p>
+                    <ul class="list-unstyled ms-4">
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Analyse des tendances historiques</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Prévisions à court et moyen terme</li>
+                        <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Identification des facteurs clés</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="alert alert-info">
+                <h5 class="mb-3"><i class="fas fa-lightbulb me-2"></i>Comment utiliser les prédictions</h5>
+                <ol class="mb-0">
+                    <li class="mb-2">Accédez à la section "Prédictions" depuis le menu principal</li>
+                    <li class="mb-2">Sélectionnez le type de prédiction souhaité</li>
+                    <li class="mb-2">Configurez les paramètres selon vos besoins</li>
+                    <li class="mb-2">Analysez les résultats dans les graphiques interactifs</li>
+                    <li>Exportez les rapports pour un partage facile</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Aide et Support -->
+        <div id="aide" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-life-ring fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Besoin d'Aide ?</h2>
+            <p>Notre équipe est là pour vous accompagner :</p>
+            <div class="d-flex align-items-center mb-3">
+                <i class="fas fa-envelope me-3 text-primary"></i>
+                <span>support@application.com</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <i class="fas fa-phone me-3 text-primary"></i>
+                <span>01 23 45 67 89</span>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div id="faq" class="guide-section">
+            <div class="guide-icon">
+                <i class="fas fa-question-circle fa-lg text-dark"></i>
+            </div>
+            <h2 class="mb-4">Questions Fréquentes</h2>
+
+            <div class="faq-search">
+                <input type="text" id="faqSearch" placeholder="Rechercher une question..." class="form-control">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse1">
+                            Comment puis-je commencer avec le système ETL ?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Pour débuter avec le système ETL, suivez ces étapes simples :
+                            <ol>
+                                <li>Accédez à la section ETL depuis le menu principal</li>
+                                <li>Cliquez sur "Lancer le système ETL"</li>
+                                <li>Sélectionnez vos fichiers de données (CSV)</li>
+                                <li>Laissez le système traiter vos données</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse2">
+                            Quels types de fichiers sont acceptés par le système ?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Le système accepte actuellement les formats suivants :
+                            <ul>
+                                <li>Fichiers CSV (.csv)</li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapse3">
+                            Comment puis-je suivre mes opportunités dans le CRM ?
+                        </button>
+                    </h2>
+                    <div id="faqCollapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Pour suivre vos opportunités :
+                            <ol>
+                                <li>Accédez à la section CRM</li>
+                                <li>Cliquez sur l'entité "Opportunités" par exemple</li>
+                                <li>Utilisez les filtres pour affiner votre vue</li>
+                                <li>Consultez les statistiques</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="#" id="scroll-top" class="scroll-top-btn">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Calcul du temps de lecture total
+            const wordsPerMinute = 200;
+            const totalWords = document.body.innerText.trim().split(/\s+/).length;
+            const totalMinutes = Math.ceil(totalWords / wordsPerMinute);
+            let remainingMinutes = totalMinutes;
+
+            // Récupération des sections
+            const sections = document.querySelectorAll('.guide-section');
+            const sectionMarkers = document.querySelectorAll('.section-marker');
+            const progressBar = document.querySelector('.reading-progress-bar');
+            const timeRemaining = document.getElementById('time-remaining');
+
+            // Fonction pour mettre à jour la barre de progression
+            function updateReadingProgress() {
+                const windowHeight = window.innerHeight;
+                const documentHeight = document.documentElement.scrollHeight - windowHeight;
+                const scrolled = window.scrollY;
+                const progress = (scrolled / documentHeight) * 100;
+                progressBar.style.width = `${progress}%`;
+
+                // Mise à jour du temps de lecture restant
+                remainingMinutes = Math.ceil((1 - (scrolled / documentHeight)) * totalMinutes);
+                timeRemaining.textContent = `Temps de lecture restant: ${remainingMinutes} min`;
+
+                // Mise à jour des marqueurs de section
+                sections.forEach((section, index) => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= windowHeight / 2 && rect.bottom >= windowHeight / 2) {
+                        sectionMarkers.forEach(marker => marker.classList.remove('active'));
+                        sectionMarkers[index].classList.add('active');
+                    }
+                });
+            }
+
+            // Gestionnaire de défilement
+            window.addEventListener('scroll', () => {
+                updateReadingProgress();
+                // Afficher/masquer le bouton de retour en haut
+                if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                    document.getElementById('scroll-top').style.opacity = '1';
+                    document.getElementById('scroll-top').style.transform = 'translateY(0)';
+                } else {
+                    document.getElementById('scroll-top').style.opacity = '0';
+                    document.getElementById('scroll-top').style.transform = 'translateY(20px)';
+                }
+            });
+
+            // Navigation par clic sur les marqueurs de section
+            sectionMarkers.forEach(marker => {
+                marker.addEventListener('click', () => {
+                    const sectionId = marker.getAttribute('data-section');
+                    const section = document.getElementById(sectionId);
+                    section.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Initialisation de la barre de progression
+            updateReadingProgress();
+
+            // Fonction de recherche FAQ
+            $("#faqSearch").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $(".accordion-item").filter(function () {
+                    var text = $(this).text().toLowerCase();
+                    $(this).toggle(text.indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

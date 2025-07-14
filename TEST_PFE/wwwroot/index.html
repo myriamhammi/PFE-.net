@@ -367,6 +367,7 @@
                         <li class="nav-item"><a class="nav-link nav-colored" href="#crm">CRM</a></li>
                         <li class="nav-item"><a class="nav-link nav-colored" href="#reporting">Reporting</a></li>
                         <li class="nav-item"><a class="nav-link nav-colored" href="#team">Notre équipe</a></li>
+                        <li class="nav-item"><a class="nav-link nav-colored" href="guide-utilisateur.html"><i class="fas fa-book me-1"></i>Guide</a></li>
                     </ul>
                     <a href="#login" class="btn btn-warning ms-4 fw-bold shadow-sm">Myriam HAMMI</a>
                 </div>
@@ -382,6 +383,14 @@
             color: #333 !important;
             transition: color 0.2s ease;
         }
+
+            .navbar-nav .nav-link i {
+                transition: transform 0.3s ease;
+            }
+
+            .navbar-nav .nav-link:hover i {
+                transform: translateY(-2px);
+            }
 
             .navbar-nav .nav-link:hover,
             .navbar-nav .nav-link.active {
@@ -1333,17 +1342,17 @@
                 const particle = document.createElement('div');
                 particle.className = 'floating-particle';
                 particle.style.cssText = `
-                                    position: absolute;
-                                    width: 3px;
-                                    height: 3px;
-                                    background: var(--accent-color);
-                                    border-radius: 50%;
-                                    opacity: 0.4;
-                                    animation: floatRandom ${5 + Math.random() * 5}s ease-in-out infinite;
-                                    top: ${Math.random() * 100}%;
-                                    left: ${Math.random() * 100}%;
-                                    animation-delay: -${Math.random() * 5}s;
-                                `;
+                                position: absolute;
+                                width: 3px;
+                                height: 3px;
+                                background: var(--accent-color);
+                                border-radius: 50%;
+                                opacity: 0.4;
+                                animation: floatRandom ${5 + Math.random() * 5}s ease-in-out infinite;
+                                top: ${Math.random() * 100}%;
+                                left: ${Math.random() * 100}%;
+                                animation-delay: -${Math.random() * 5}s;
+                            `;
                 particlesContainer.appendChild(particle);
             }
         }
@@ -1354,25 +1363,25 @@
         // Animation CSS pour les particules flottantes
         const style = document.createElement('style');
         style.textContent = `
-                            @keyframes floatRandom {
-                                0%, 100% {
-                                    transform: translateY(0) translateX(0) rotate(0deg) scale(1);
-                                    opacity: 0.2;
-                                }
-                                25% {
-                                    transform: translateY(-15px) translateX(10px) rotate(90deg) scale(1.2);
-                                    opacity: 0.6;
-                                }
-                                50% {
-                                    transform: translateY(-30px) translateX(-5px) rotate(180deg) scale(0.8);
-                                    opacity: 1;
-                                }
-                                75% {
-                                    transform: translateY(-10px) translateX(-15px) rotate(270deg) scale(1.1);
-                                    opacity: 0.4;
-                                }
+                        @keyframes floatRandom {
+                            0%, 100% {
+                                transform: translateY(0) translateX(0) rotate(0deg) scale(1);
+                                opacity: 0.2;
                             }
-                        `;
+                            25% {
+                                transform: translateY(-15px) translateX(10px) rotate(90deg) scale(1.2);
+                                opacity: 0.6;
+                            }
+                            50% {
+                                transform: translateY(-30px) translateX(-5px) rotate(180deg) scale(0.8);
+                                opacity: 1;
+                            }
+                            75% {
+                                transform: translateY(-10px) translateX(-15px) rotate(270deg) scale(1.1);
+                                opacity: 0.4;
+                            }
+                        }
+                    `;
         document.head.appendChild(style);
     </script>
 
@@ -2143,19 +2152,19 @@
             const chatContent = document.querySelector('.chat-content');
             const responseDiv = document.createElement('div');
             responseDiv.style.cssText = `
-                                            background: linear-gradient(135deg, #333333, #1e1e28);
-                                            color: #ffffff;
-                                            padding: 12px 16px;
-                                            border-radius: 18px;
-                                            margin: 10px 0;
-                                            font-size: 14px;
-                                            box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
-                                            animation: slideIn 0.3s ease;
-                                            position: relative;
-                                            max-width: 90%;
-                                            word-wrap: break-word;
-                                            border: 1px solid #999999;
-                                        `;
+                                        background: linear-gradient(135deg, #333333, #1e1e28);
+                                        color: #ffffff;
+                                        padding: 12px 16px;
+                                        border-radius: 18px;
+                                        margin: 10px 0;
+                                        font-size: 14px;
+                                        box-shadow: 0 4px 15px rgba(30, 30, 40, 0.3);
+                                        animation: slideIn 0.3s ease;
+                                        position: relative;
+                                        max-width: 90%;
+                                        word-wrap: break-word;
+                                        border: 1px solid #999999;
+                                    `;
 
             // Ajouter une icone de robot
             const iconSpan = document.createElement('span');
@@ -2177,42 +2186,42 @@
         // Ajouter les animations CSS supplémentaires
         const style = document.createElement('style');
         style.textContent = `
-                                        @keyframes slideIn {
-                                            from {
-                                                opacity: 0;
-                                                transform: translateY(10px) scale(0.95);
-                                            }
-                                            to {
-                                                opacity: 1;
-                                                transform: translateY(0) scale(1);
-                                            }
+                                    @keyframes slideIn {
+                                        from {
+                                            opacity: 0;
+                                            transform: translateY(10px) scale(0.95);
                                         }
+                                        to {
+                                            opacity: 1;
+                                            transform: translateY(0) scale(1);
+                                        }
+                                    }
 
-                                        @keyframes bounceIn {
-                                            0% {
-                                                transform: scale(0.3);
-                                                opacity: 0;
-                                            }
-                                            50% {
-                                                transform: scale(1.05);
-                                            }
-                                            70% {
-                                                transform: scale(0.9);
-                                            }
-                                            100% {
-                                                transform: scale(1);
-                                                opacity: 1;
-                                            }
+                                    @keyframes bounceIn {
+                                        0% {
+                                            transform: scale(0.3);
+                                            opacity: 0;
                                         }
+                                        50% {
+                                            transform: scale(1.05);
+                                        }
+                                        70% {
+                                            transform: scale(0.9);
+                                        }
+                                        100% {
+                                            transform: scale(1);
+                                            opacity: 1;
+                                        }
+                                    }
 
-                                        .suggestion-card:active {
-                                            transform: translateY(0) scale(0.98);
-                                        }
+                                    .suggestion-card:active {
+                                        transform: translateY(0) scale(0.98);
+                                    }
 
-                                        .quick-action:active {
-                                            transform: translateY(0) scale(0.95);
-                                        }
-                                    `;
+                                    .quick-action:active {
+                                        transform: translateY(0) scale(0.95);
+                                    }
+                                `;
         document.head.appendChild(style);
 
         // Fermer le panel si on clique à l'extérieur
@@ -2275,46 +2284,46 @@
 
     </script>
     <script>
-        // Fonction principale pour gérer les options de navigation
-        window.sendOption = function (option) {
-            const typingIndicator = document.getElementById('typingIndicator');
-            typingIndicator.style.display = 'flex';
+    // Fonction principale pour gérer les options de navigation
+    window.sendOption = function (option) {
+        const typingIndicator = document.getElementById('typingIndicator');
+        typingIndicator.style.display = 'flex';
 
-            setTimeout(() => {
-                typingIndicator.style.display = 'none';
+        setTimeout(() => {
+            typingIndicator.style.display = 'none';
 
-                if (option === 'Rapports' || option === 'reports') {
-                    const powerBiUrl = "https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730";
-                    window.open(powerBiUrl, '_blank');
-                    showResponse("📊 Ouverture des rapports Power BI...");
-                    return;
-                }
+            if (option === 'Rapports' || option === 'reports') {
+                const powerBiUrl = "https://app.powerbi.com/reportEmbed?reportId=efef675d-ae63-4d35-aad1-3d13d206672b&autoAuth=true&ctid=604f1a96-cbe8-43f8-abbf-f8eaf5d85730";
+                window.open(powerBiUrl, '_blank');
+                showResponse("📊 Ouverture des rapports Power BI...");
+                return;
+            }
 
-                if (option === 'Analyser' || option === 'data') {
-                    showResponse("🔍 Redirection vers l'analyse de données...");
-                    setTimeout(() => {
-                        window.location.href = '/ETL/Upload';
-                    }, 1500);
-                    return;
-                }
+            if (option === 'Analyser' || option === 'data') {
+                showResponse("🔍 Redirection vers l'analyse de données...");
+                setTimeout(() => {
+                    window.location.href = '/ETL/Upload';
+                }, 1500);
+                return;
+            }
 
-                if (option === 'Predire' || option === 'kpi') {
-                    showResponse("📈 Redirection vers les prédictions KPI...");
-                    setTimeout(() => {
-                        window.location.href = '/SalesKPI/Predictifs';
-                    }, 1500);
-                    return;
-                }
-            }, 1000);
-        }
+            if (option === 'Predire' || option === 'kpi') {
+                showResponse("📈 Redirection vers les prédictions KPI...");
+                setTimeout(() => {
+                    window.location.href = '/SalesKPI/Predictifs';
+                }, 1500);
+                return;
+            }
+        }, 1000);
+    }
 
-        window.handleSuggestion = function (type) {
-            sendOption(type);
-        }
+    window.handleSuggestion = function (type) {
+        sendOption(type);
+    }
 
-        window.showResponse = function (text) {
-            alert(text); // à remplacer par ton affichage dans l’UI
-        }
+    window.showResponse = function (text) {
+        alert(text); // à remplacer par ton affichage dans l’UI
+    }
     </script>
 
 </body>
