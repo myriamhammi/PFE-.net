@@ -1,50 +1,242 @@
-﻿@model Microsoft.Xrm.Sdk.Entity
+﻿@model dynamic
 
 @{
-    ViewData["Title"] = "Mettre à jour l'Enregistrement";
+    ViewData["Title"] = "Mettre à jour l'enregistrement";
 }
 
-<h2>Mettre à jour l'Enregistrement</h2>
+<style>
+    .update-form-container {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1), 0 5px 15px rgba(0,0,0,0.05);
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255,255,255,0.18);
+        position: relative;
+        overflow: hidden;
+    }
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <form asp-action="UpdateRecord" method="post">
-                <!-- Champ caché pour l'ID de l'enregistrement -->
-                <input type="hidden" asp-for="Id" />
+        .update-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        }
 
-                <!-- Champ caché pour le nom de l'entité -->
-                <input type="hidden" name="entityName" value="@ViewData["EntityName"]" />
+    .form-floating {
+        margin-bottom: 1.5rem;
+    }
 
-                <div class="form-group">
-                    <label for="name">Nom</label>
-                    <input type="text" class="form-control" id="name" name="name" value="@(Model.Attributes.TryGetValue("name", out var nameValue) ? nameValue : "")" required />
+        .form-floating > label {
+            padding: 0.75rem 0.75rem;
+            color: #6c757d;
+        }
+
+        .form-floating > .form-control {
+            padding: 0.75rem 0.75rem;
+            height: calc(3.5rem + 2px);
+            line-height: 1.25;
+            border-radius: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: rgba(255,255,255,0.9);
+            transition: all 0.2s ease-in-out;
+        }
+
+            .form-floating > .form-control:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.25);
+            }
+
+            .form-floating > .form-control:read-only {
+                background-color: rgba(0,0,0,0.03);
+            }
+
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #495057;
+    }
+
+    .btn-update {
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+        .btn-update:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+    .btn-cancel {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        color: #495057;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-cancel:hover {
+            background-color: #e9ecef;
+            color: #212529;
+        }
+
+    .form-header {
+        position: relative;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+        .form-header h2 {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .form-header .entity-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 30px;
+            color: white;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+            margin-top: 0.5rem;
+        }
+
+    .field-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        color: #6c757d;
+        opacity: 0.5;
+    }
+
+    .readonly-field {
+        position: relative;
+    }
+
+        .readonly-field::after {
+            content: '🔒';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+</style>
+
+<div class="container py-5 animate-fade-in">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="update-form-container">
+                <div class="form-header text-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <div class="entity-badge">@Model.EntityName</div>
                 </div>
 
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea class="form-control" id="description" name="description">@(Model.Attributes.TryGetValue("description", out var descriptionValue) ? descriptionValue : "")</textarea>
-                </div>
+                <form method="post" action="/record/@Model.EntityName/@Model.Id" class="needs-validation" novalidate>
+                    <input type="hidden" name="EntityName" value="@Model.EntityName" />
+                    <input type="hidden" name="RecordId" value="@Model.Id" />
 
-                <div class="form-group">
-                    <label for="createdon">Créé le</label>
-                    <input type="text" class="form-control" id="createdon" name="createdon" value="@(Model.Attributes.TryGetValue("createdon", out var createdOnValue) ? ((DateTime)createdOnValue).ToString("yyyy-MM-dd") : "")" readonly />
-                </div>
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="name" name="Fields[name]"
+                               value="@(Model.Fields.ContainsKey("name") ? Model.Fields["name"] : "")"
+                               placeholder="Nom" required />
+                        <label for="name">Nom</label>
+                        <div class="invalid-feedback">Veuillez saisir un nom.</div>
+                    </div>
 
-                <div class="form-group">
-                    <label for="modifiedon">Modifié le</label>
-                    <input type="text" class="form-control" id="modifiedon" name="modifiedon" value="@(Model.Attributes.TryGetValue("modifiedon", out var modifiedOnValue) ? ((DateTime)modifiedOnValue).ToString("yyyy-MM-dd") : "")" readonly />
-                </div>
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="description" name="Fields[description]"
+                               value="@(Model.Fields.ContainsKey("description") ? Model.Fields["description"] : "")"
+                               placeholder="Description" />
+                        <label for="description">Description</label>
+                    </div>
 
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Enregistrer les modifications
-                    </button>
-                    <a href="@Url.Action("GetRecords", "Crm", new { entityName = ViewData["EntityName"] })" class="btn btn-secondary">
-                        <i class="fas fa-arrow-left"></i> Annuler
-                    </a>
-                </div>
-            </form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-4 readonly-field">
+                                <input type="text" class="form-control" id="createdon" name="Fields[createdon]"
+                                       value="@(Model.Fields.ContainsKey("createdon") ? Model.Fields["createdon"] : "")"
+                                       placeholder="Créé le" readonly />
+                                <label for="createdon">Créé le</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-4 readonly-field">
+                                <input type="text" class="form-control" id="modifiedon" name="Fields[modifiedon]"
+                                       value="@(Model.Fields.ContainsKey("modifiedon") ? Model.Fields["modifiedon"] : "")"
+                                       placeholder="Modifié le" readonly />
+                                <label for="modifiedon">Modifié le</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-4 mt-4">
+                        <button type="submit" class="btn btn-update">Enregistrer</button>
+                        <a href="@Url.Action("GetRecords", "Crm", new { entityName = Model.EntityName })" class="btn btn-cancel">Annuler</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    // Validation du formulaire
+    (function() {
+        'use strict';
+
+        const forms = document.querySelectorAll('.needs-validation');
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>

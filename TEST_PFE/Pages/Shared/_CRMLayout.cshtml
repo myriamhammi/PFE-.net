@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    
+
 
     @RenderSection("Scripts", required: false)
 
@@ -46,7 +46,7 @@
  *@
 
 
-   
+
 @{
     Layout = null;
 }
@@ -89,31 +89,22 @@
             min-height: 100vh;
         }
 
-        .sidebar {
-            background-color: var(--ey-dark) !important;
-        }
-
-            .sidebar .nav-link {
-                color: var(--ey-light) !important;
-                font-weight: 500;
-                transition: background-color 0.2s ease;
-            }
-
-                .sidebar .nav-link:hover {
-                    background-color: var(--ey-yellow) !important;
-                    color: var(--ey-dark) !important;
-                }
-
         .navbar {
-            background-color: #fff;
-            border-bottom: 1px solid var(--ey-gray);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            background-color: var(--ey-dark);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0.75rem 1.5rem;
         }
 
             .navbar .nav-link {
-                color: var(--ey-dark);
+                color: var(--ey-light);
                 font-weight: 500;
+                padding: 0.5rem 1rem;
+                transition: all 0.3s ease;
             }
+
+                .navbar .nav-link:hover {
+                    color: var(--ey-yellow) !important;
+                }
 
         .btn-primary {
             background-color: var(--ey-yellow);
@@ -130,10 +121,11 @@
 
         .content-wrapper {
             background-color: var(--ey-light);
+            padding-top: 70px; /* Espace pour la navbar fixe */
         }
 
         .container-fluid {
-            padding-top: 2.5rem;
+            padding: 2rem;
         }
 
         body.dark-mode {
@@ -146,23 +138,8 @@
             color: #fff;
         }
 
-            body.dark-mode .sidebar {
-                background-color: #121212 !important;
-            }
-
-                body.dark-mode .sidebar .nav-link {
-                    color: #ccc !important;
-                }
-
-                    body.dark-mode .sidebar .nav-link:hover,
-                    body.dark-mode .sidebar .nav-item.active > .nav-link {
-                        background-color: var(--ey-yellow);
-                        color: var(--ey-dark) !important;
-                    }
-
             body.dark-mode .navbar {
-                background-color: #1f1f1f;
-                border-color: #2c2c2c;
+                background-color: #121212;
             }
 
                 body.dark-mode .navbar .nav-link {
@@ -173,8 +150,63 @@
                 background-color: #1e1e1e;
             }
 
-    </style>
+        .nav-hover {
+            position: relative;
+            transition: color 0.3s ease;
+        }
 
+            .nav-hover::after {
+                content: '';
+                position: absolute;
+                bottom: -6px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background-color: #ffe600;
+                transition: width 0.3s ease;
+            }
+
+            .nav-hover:hover::after {
+                width: 100%;
+            }
+
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Animation pour les éléments de contenu */
+        .fade-in {
+            -webkit-animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @@-webkit-keyframes fadeIn {
+            from {
+                opacity: 0;
+                -webkit-transform: translateY(10px);
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                -webkit-transform: translateY(0);
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -183,35 +215,81 @@
 
 <body id="page-top">
     <div id="wrapper">
-        @Html.Partial("~/Pages/Shared/_SidebarCRM.cshtml")
+        <!-- Navbar améliorée et élargie -->
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top px-4">
+            <a class="navbar-brand d-flex align-items-center me-4" href="/Home/Index">
+                <img src="/images/logo-4.png" alt="Logo" style="width: 40px; height: 40px; border-radius: 50%;" class="me-2">
+                <span class="fw-bold fs-4">BI 360°</span>
+            </a>
 
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                @Html.Partial("~/Pages/Shared/_TopbarCRM.cshtml")
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarMenu" aria-controls="topbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
+            <div class="collapse navbar-collapse justify-content-between" id="topbarMenu">
+                <ul class="navbar-nav flex-nowrap align-items-center mb-2 mb-lg-0">
+                    <li class="nav-item px-2"><a class="nav-link nav-hover" href="/Home/Index">Accueil</a></li>
+                    <li class="nav-item px-2"><a class="nav-link nav-hover" href="#kpis">KPIs</a></li>
+                    <li class="nav-item px-2"><a class="nav-link nav-hover" href="#etl">Système ETL</a></li>
+                    <li class="nav-item px-2"><a class="nav-link nav-hover" href="/Crm/EntitiesList">CRM</a></li>
+                    <li class="nav-item px-2"><a class="nav-link nav-hover" href="#team">Notre équipe</a></li>
+                </ul>
+
+                <ul class="navbar-nav flex-nowrap align-items-center mb-2 mb-lg-0">
+                    <!-- Mode nuit -->
+                    <li class="nav-item d-flex align-items-center px-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="themeToggle">
+                            <label class="form-check-label text-light ms-2" for="themeToggle">🌙</label>
+                        </div>
+                    </li>
+
+                    <!-- Notification -->
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#"><i class="fas fa-bell"></i></a>
+                    </li>
+
+                    <!-- Profil utilisateur -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="/images/user.png" class="rounded-circle me-2" width="32" height="32" alt="Utilisateur" />
+                            <span class="d-none d-lg-inline small">Mon Compte</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="#">Profil</a></li>
+                            <li><a class="dropdown-item" href="#">Paramètres</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#">Déconnexion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Contenu principal avec plus d'espace -->
+        <div id="content-wrapper" class="content-wrapper d-flex flex-column w-100">
+            <div id="content" class="fade-in">
                 <div class="container-fluid">
                     @RenderBody()
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        const toggle = document.getElementById("themeToggle");
-        const root = document.documentElement;
 
-        // Appliquer thème en fonction du localStorage au chargement
-        if (localStorage.getItem("eyTheme") === "dark") {
-            document.body.classList.add("dark-mode");
-            toggle.checked = true;
+    <script>
+        // Gestion du thème clair/sombre
+        const toggle = document.getElementById("themeToggle");
+        if (toggle) {
+            toggle.addEventListener("change", function() {
+                document.body.classList.toggle("dark-mode");
+            });
         }
 
-        toggle.addEventListener("change", () => {
-            if (toggle.checked) {
-                document.body.classList.add("dark-mode");
-                localStorage.setItem("eyTheme", "dark");
-            } else {
-                document.body.classList.remove("dark-mode");
-                localStorage.setItem("eyTheme", "light");
+        // Animation des éléments au chargement
+        document.addEventListener("DOMContentLoaded", function() {
+            const mainContent = document.getElementById("content");
+            if (mainContent) {
+                mainContent.classList.add("fade-in");
             }
         });
     </script>

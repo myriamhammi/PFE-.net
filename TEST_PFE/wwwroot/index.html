@@ -1572,61 +1572,203 @@
     </script>
 
 
-    <!-- Section CRM - Harmonisée avec charte EY -->
-    <section class="py-5" id="crm" style="background-color: #CCCCCC;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="text-uppercase fw-bold text-black fst-italic">CRM - Gestion de la Relation Client</h2>
-                <h5 class="fst-italic" style="color: #4a4a4a;">Optimisez vos interactions clients et automatisez vos processus de vente</h5>
+    <!-- Section CRM - Design moderne et dynamique -->
+    <section class="py-5" id="crm" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); position: relative; overflow: hidden;">
+        <!-- Éléments de design d'arrière-plan -->
+        <div class="position-absolute w-100 h-100" style="background: radial-gradient(circle at 30% 70%, rgba(255, 230, 0, 0.1) 0%, transparent 50%);"></div>
+        <div class="position-absolute w-100 h-100" style="background: radial-gradient(circle at 70% 30%, rgba(255, 230, 0, 0.1) 0%, transparent 50%);"></div>
+
+        <div class="container position-relative">
+            <!-- En-tête de section amélioré -->
+            <div class="text-center mb-5" data-aos="fade-down">
+                <span class="badge bg-warning text-dark px-4 py-2 rounded-pill fw-bold mb-3">CRM System</span>
+                <h2 class="display-4 fw-bold text-dark mb-3">Gestion de la Relation Client</h2>
+                <p class="lead text-muted">Optimisez vos interactions clients et automatisez vos processus de vente</p>
             </div>
 
-            <div class="row text-center">
-                <!-- Carte 1 : Gestion des clients -->
-                <!-- Carte de gestion des clients pleine largeur -->
-                <div class="col-12 mb-4" data-aos="fade-up" data-aos-delay="200">
-                    <div class="crm-feature-card p-4 h-100 text-dark position-relative">
-                        <div class="crm-icon-circle bg-warning mb-4 mx-auto">
-                            <i class="fas fa-user-check fa-2x" style="color: #000000;"></i>
+            <div class="row g-4 justify-content-center">
+                <!-- Carte principale : Gestion des clients -->
+                <div class="col-lg-8" data-aos="fade-up">
+                    <div class="crm-feature-card p-5 h-100 position-relative overflow-hidden">
+                        <!-- Effet de brillance -->
+                        <div class="card-shine"></div>
+
+                        <!-- Icône et contenu -->
+                        <div class="d-flex flex-column align-items-center text-center">
+                            <div class="crm-icon-wrapper mb-4">
+                                <div class="crm-icon-circle">
+                                    <i class="fas fa-user-check fa-2x"></i>
+                                </div>
+                                <div class="crm-icon-pulse"></div>
+                            </div>
+
+                            <h3 class="fw-bold mb-4">Gestion des clients</h3>
+                            <p class="lead mb-4">Centralisez et optimisez la gestion de vos relations clients avec notre solution CRM intuitive.</p>
+
+                            <!-- Statistiques -->
+                            <div class="row mb-4 w-100">
+                                <div class="col-md-4">
+                                    <div class="crm-stat p-3">
+                                        <h4 class="fw-bold mb-0">360°</h4>
+                                        <p class="small text-muted mb-0">Vue client</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="crm-stat p-3">
+                                        <h4 class="fw-bold mb-0">100%</h4>
+                                        <p class="small text-muted mb-0">Automatisé</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="crm-stat p-3">
+                                        <h4 class="fw-bold mb-0">24/7</h4>
+                                        <p class="small text-muted mb-0">Disponible</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bouton d'action -->
+                            <a href="/entities" class="btn btn-warning btn-lg px-5 py-3 fw-bold shadow-lg">
+                                <i class="fas fa-external-link-alt me-2"></i>Accéder au CRM
+                            </a>
                         </div>
-                        <h4 class="fw-bold">Gestion des clients</h4>
-                        <p class="text-dark small">Suivi des interactions clients, gestion des opportunités et amélioration de l'engagement.</p>
-                        <a class="fw-bold text-dark text-decoration-none" href="/entities">Voir les clients <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
     <style>
+        /* Styles pour la section CRM */
         .crm-feature-card {
-            background-color: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease-in-out;
-            overflow: hidden;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 230, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
             .crm-feature-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+                transform: translateY(-10px);
+                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+                border-color: rgba(255, 230, 0, 0.3);
             }
 
+        /* Effet de brillance */
+        .card-shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 230, 0, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .crm-feature-card:hover .card-shine {
+            opacity: 1;
+        }
+
+        /* Icône et animation */
+        .crm-icon-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
         .crm-icon-circle {
-            width: 70px;
-            height: 70px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            background-color: #FFE600;
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 230, 0, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .crm-icon-pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90px;
+            height: 90px;
+            border: 2px solid #FFE600;
+            border-radius: 50%;
+            animation: crm-pulse 2s infinite;
+        }
+
+        @keyframes crm-pulse {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
         }
 
         .crm-feature-card:hover .crm-icon-circle {
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 35px rgba(255, 230, 0, 0.4);
         }
+
+        /* Statistiques */
+        .crm-stat {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 230, 0, 0.1);
+        }
+
+            .crm-stat:hover {
+                background: rgba(255, 255, 255, 0.8);
+                transform: translateY(-5px);
+                border-color: rgba(255, 230, 0, 0.3);
+            }
+
+            .crm-stat h4 {
+                color: #333;
+                font-size: 1.8rem;
+            }
+
+        /* Bouton d'action */
+        .btn-warning {
+            background: linear-gradient(135deg, #FFE600 0%, #FFD700 100%);
+            border: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-warning:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 30px rgba(255, 230, 0, 0.3);
+            }
+
+            .btn-warning::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+                transform: translateX(-100%);
+                transition: transform 0.6s ease;
+            }
+
+            .btn-warning:hover::before {
+                transform: translateX(0);
+            }
 
         .report-preview {
             position: relative;

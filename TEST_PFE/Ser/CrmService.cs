@@ -156,34 +156,22 @@ namespace TEST_PFE.Ser
 
         public Guid CreateRecord(string entityName, Dictionary<string, object> fields)
         {
+            if (string.IsNullOrWhiteSpace(entityName) || fields == null || fields.Count == 0)
+                throw new ArgumentException("Le nom de l'entité ou les champs sont invalides.");
             try
             {
-                if (fields == null || fields.Count == 0)
-                {
-                    throw new ArgumentException("Aucun champ à créer.");
-                }
-
                 Entity newRecord = new Entity(entityName);
-
                 foreach (var field in fields)
                 {
-                    if (newRecord.Attributes.ContainsKey(field.Key))
-                    {
-                        newRecord[field.Key] = field.Value;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Avertissement : Le champ {field.Key} n'existe pas pour l'entité {entityName}.");
-                    }
+                    newRecord[field.Key] = field.Value;
                 }
-
                 Guid recordId = _serviceClient.Create(newRecord);
-                Console.WriteLine($"✅ {entityName} créé avec ID : {recordId}");
+                _logger?.LogInformation($"✅ {entityName} créé avec ID : {recordId}");
                 return recordId;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur lors de la création de {entityName}: " + ex.Message);
+                _logger?.LogError(ex, $"Erreur lors de la création de {entityName}");
                 throw new InvalidOperationException("Erreur lors de la création de l'enregistrement.", ex);
             }
         }
@@ -213,6 +201,8 @@ namespace TEST_PFE.Ser
 
         public void UpdateRecord(string entityName, Guid recordId, Dictionary<string, object> fields)
         {
+            if (string.IsNullOrWhiteSpace(entityName) || recordId == Guid.Empty || fields == null || fields.Count == 0)
+                throw new ArgumentException("Paramètres de mise à jour invalides.");
             try
             {
                 Entity updatedRecord = new Entity(entityName, recordId);
@@ -220,27 +210,28 @@ namespace TEST_PFE.Ser
                 {
                     updatedRecord[field.Key] = field.Value;
                 }
-
                 _serviceClient.Update(updatedRecord);
-                Console.WriteLine($"✅ {entityName} mis à jour !");
+                _logger?.LogInformation($"✅ {entityName} mis à jour !");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur lors de la mise à jour de {entityName} avec ID {recordId}: " + ex.Message);
+                _logger?.LogError(ex, $"Erreur lors de la mise à jour de {entityName} avec ID {recordId}");
                 throw;
             }
         }
 
         public void DeleteRecord(string entityName, Guid recordId)
         {
+            if (string.IsNullOrWhiteSpace(entityName) || recordId == Guid.Empty)
+                throw new ArgumentException("Paramètres de suppression invalides.");
             try
             {
                 _serviceClient.Delete(entityName, recordId);
-                Console.WriteLine($"✅ {entityName} supprimé avec succès !");
+                _logger?.LogInformation($"✅ {entityName} supprimé avec succès !");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erreur lors de la suppression de {entityName} avec ID {recordId}: " + ex.Message);
+                _logger?.LogError(ex, $"Erreur lors de la suppression de {entityName} avec ID {recordId}");
                 throw;
             }
         }

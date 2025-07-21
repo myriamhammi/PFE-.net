@@ -8,7 +8,9 @@
 
 <p>Êtes-vous sûr de vouloir supprimer l'enregistrement avec ID : @Model.Id ?</p>
 
-<form method="post" action="@Url.Action("DeleteRecord", "Crm", new { entityName = Model.EntityName, id = Model.Id })">
+<form method="post" action="@Url.Action("DeleteRecord", "Crm")">
+    <input type="hidden" name="EntityName" value="@Model.EntityName" />
+    <input type="hidden" name="Id" value="@Model.Id" />
     <button type="submit" class="btn btn-danger">Supprimer</button>
     <a href="@Url.Action("GetRecords", "Crm", new { entityName = Model.EntityName })" class="btn btn-secondary">Annuler</a>
 </form>

@@ -6,16 +6,15 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form method="post" action="@Url.Action("CreateRecord", "Crm", new { entityName = Model.EntityName })">
+<form method="post" action="@Url.Action("CreateRecord", "Crm")">
+    <input type="hidden" name="EntityName" value="@Model.EntityName" />
     <div class="form-group">
         <label for="name">Nom</label>
-        <input type="text" class="form-control" id="name" name="name" required />
+        <input type="text" class="form-control" id="name" name="Fields[name]" required />
     </div>
-
     <div class="form-group">
         <label for="createdon">Date de création</label>
-        <input type="text" class="form-control" id="createdon" name="createdon" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
+        <input type="text" class="form-control" id="createdon" name="Fields[createdon]" value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly />
     </div>
-
     <button type="submit" class="btn btn-primary">Créer</button>
 </form>

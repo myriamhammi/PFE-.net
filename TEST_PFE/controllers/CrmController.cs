@@ -49,18 +49,25 @@ namespace TEST_PFE.controllers
 
 
         [HttpGet("records/{entityName}")]
-
         public IActionResult GetRecords(string entityName)
         {
-            var entities = _crmService.GetEntitiesByLogicalName(entityName);
+            try
+            {
+                var entities = _crmService.GetEntitiesByLogicalName(entityName);
 
-            // Convertir en liste de dictionnaires
-            var records = entities.Select(entity =>
-                entity.Attributes.ToDictionary(attr => attr.Key, attr => attr.Value)
-            ).ToList();
+                // Convertir en liste de dictionnaires
+                var records = entities.Select(entity =>
+                    entity.Attributes.ToDictionary(attr => attr.Key, attr => attr.Value)
+                ).ToList();
 
-            ViewData["EntityName"] = entityName;
-            return View("~/Views/Data/Records.cshtml", records);
+                ViewData["EntityName"] = entityName;
+                return View("~/Views/Data/Records.cshtml", records);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erreur lors de la récupération des enregistrements de l'entité {entityName}");
+                return StatusCode(500, new { message = "Erreur lors de la récupération des enregistrements", error = ex.Message });
+            }
         }
 
 
@@ -69,40 +76,39 @@ namespace TEST_PFE.controllers
 
 
 
-        //[HttpGet("record/{entityName}/{id}")]
-        //public async Task<IActionResult> GetRecordForUpdate(string entityName, Guid id)
-        //{
-        //    try
-        //    {
-        //        if (string.IsNullOrWhiteSpace(entityName))
-        //        {
-        //            return BadRequest("Le nom de l'entité est requis.");
-        //        }
-
-        //        if (id == Guid.Empty)
-        //        {
-        //            return BadRequest("L'ID de l'enregistrement est invalide.");
-        //        }
-
-        //        var fields = new List<string> { "name", "description", "createdon", "modifiedon" };
-        //        var record = _crmService.GetRecord(entityName, id, fields);
-
-        //        if (record == null)
-        //        {
-        //            return NotFound($"Enregistrement non trouvé pour l'ID {id} dans l'entité {entityName}.");
-        //        }
-
-        //        // Passer entityName à la vue
-        //        ViewData["EntityName"] = entityName;
-
-        //        return View("~/Views/Data/UpdateRecordForm.cshtml", record);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, $"Erreur lors de la récupération de l'enregistrement {id} pour l'entité {entityName}");
-        //        return StatusCode(500, "Erreur serveur lors de la récupération de l'enregistrement.");
-        //    }
-        //}
+        [HttpGet("record/{entityName}/{id}")]
+        public IActionResult GetRecordForUpdate(string entityName, Guid id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(entityName))
+                {
+                    return BadRequest("Le nom de l'entité est requis.");
+                }
+                if (id == Guid.Empty)
+                {
+                    return BadRequest("L'ID de l'enregistrement est invalide.");
+                }
+                var record = _crmService.GetRecord(entityName, id, new List<string> { "name", "description", "createdon", "modifiedon" });
+                if (record == null)
+                {
+                    return NotFound($"Enregistrement non trouvé pour l'ID {id} dans l'entité {entityName}.");
+                }
+                var model = new
+                {
+                    EntityName = entityName,
+                    Id = id,
+                    Fields = record.Attributes
+                };
+                ViewData["EntityName"] = entityName;
+                return View("~/Views/Data/UpdateRecordForm.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Erreur lors de la récupération de l'enregistrement {id} pour l'entité {entityName}");
+                return StatusCode(500, "Erreur serveur lors de la récupération de l'enregistrement.");
+            }
+        }
 
 
 
@@ -228,77 +234,81 @@ namespace TEST_PFE.controllers
         //        return RedirectToAction("GetRecords", new { entityName = entityName });
         //    }
         //}
-        // Action pour créer un enregistrement
-        [HttpPost("create")]
-        public IActionResult CreateRecord([FromBody] CrmRecordDto recordDto)
+        [HttpPost]
+        public IActionResult CreateRecord(string EntityName, [FromForm] Dictionary<string, string> Fields)
         {
+            if (string.IsNullOrWhiteSpace(EntityName) || Fields == null || Fields.Count == 0)
+            {
+                TempData["ErrorMessage"] = "Les données de l'enregistrement sont incomplètes.";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
+            }
             try
             {
-                var fields = new Dictionary<string, object>();
-                foreach (var field in recordDto.Fields)
-                {
-                    fields.Add(field.Key, field.Value);
-                }
-
-                var recordId = _crmService.CreateRecord(recordDto.EntityName, fields);
-                return Ok(new { message = "Enregistrement créé avec succès", id = recordId });
+                var fields = Fields.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
+                var recordId = _crmService.CreateRecord(EntityName, fields);
+                TempData["SuccessMessage"] = $"Enregistrement créé avec succès (ID : {recordId}).";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erreur lors de la création de l'enregistrement");
-                return StatusCode(500, "Erreur interne du serveur");
+                TempData["ErrorMessage"] = $"Erreur lors de la création : {ex.Message}";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
             }
         }
 
-        // Action pour supprimer un enregistrement
-        [HttpDelete("delete/{entityName}/{recordId}")]
-        public IActionResult DeleteRecord(string entityName, Guid recordId)
+        [HttpPost("record/{EntityName}/{RecordId}")]
+        public IActionResult UpdateRecord(string EntityName, string RecordId, [FromForm] Dictionary<string, string> Fields)
         {
+            if (string.IsNullOrWhiteSpace(EntityName) || string.IsNullOrWhiteSpace(RecordId) || Fields == null || Fields.Count == 0)
+            {
+                TempData["ErrorMessage"] = "Les données de mise à jour sont incomplètes.";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
+            }
             try
             {
-                _crmService.DeleteRecord(entityName, recordId);
-                return Ok(new { message = "Enregistrement supprimé avec succès" });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erreur lors de la suppression de l'enregistrement");
-                return StatusCode(500, "Erreur interne du serveur");
-            }
-        }
-
-        // Action pour mettre à jour un enregistrement
-        [HttpPut("update/{entityName}/{recordId}")]
-        public IActionResult UpdateRecord(string entityName, Guid recordId, [FromBody] CrmRecordDto recordDto)
-        {
-            try
-            {
-                var fields = new Dictionary<string, object>();
-                foreach (var field in recordDto.Fields)
-                {
-                    fields.Add(field.Key, field.Value);
-                }
-
-                _crmService.UpdateRecord(entityName, recordId, fields);
-                return Ok(new { message = "Enregistrement mis à jour avec succès" });
+                var fields = Fields.ToDictionary(kvp => kvp.Key, kvp => (object)kvp.Value);
+                fields["modifiedon"] = DateTime.UtcNow;
+                _crmService.UpdateRecord(EntityName, Guid.Parse(RecordId), fields);
+                TempData["SuccessMessage"] = $"L'enregistrement {RecordId} a été mis à jour avec succès.";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Erreur lors de la mise à jour de l'enregistrement");
-                return StatusCode(500, "Erreur interne du serveur");
+                TempData["ErrorMessage"] = $"Erreur lors de la mise à jour : {ex.Message}";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
             }
         }
+
+        [HttpPost]
+        public IActionResult DeleteRecord(string EntityName, string Id)
+        {
+            if (string.IsNullOrWhiteSpace(EntityName) || string.IsNullOrWhiteSpace(Id))
+            {
+                TempData["ErrorMessage"] = "Paramètres de suppression invalides.";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
+            }
+            try
+            {
+                _crmService.DeleteRecord(EntityName, Guid.Parse(Id));
+                TempData["SuccessMessage"] = $"L'enregistrement {Id} a été supprimé avec succès.";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erreur lors de la suppression de l'enregistrement");
+                TempData["ErrorMessage"] = $"Erreur lors de la suppression : {ex.Message}";
+                return RedirectToAction("GetRecords", new { entityName = EntityName });
+            }
+        }
+
+
+
+
+
+
+
     }
-    // DTO pour l'enregistrement CRM
-    public class CrmRecordDto
-    {
-        public string EntityName { get; set; }
-        public Dictionary<string, object> Fields { get; set; }
-    }
-
-
-
-
-
-
-
 }
+
