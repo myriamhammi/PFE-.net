@@ -165,6 +165,14 @@
             <a href="@Url.Action("GetEntities", "Crm")" class="btn btn-outline-secondary me-2">
                 <i class="fas fa-arrow-left"></i> Retour
             </a>
+
+            <button class="btn btn-outline-primary shadow-sm me-2 rounded" id="exportCSV">
+                <i class="fas fa-file-csv"></i> Export CSV
+            </button>
+            <button class="btn btn-outline-success shadow-sm rounded" id="exportExcel">
+                <i class="fas fa-file-excel"></i> Export Excel
+            </button>
+
             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addRecordModal">
                 <i class="fas fa-plus"></i> Nouvel enregistrement
             </button>
@@ -453,6 +461,26 @@
             cb.dispatchEvent(new Event('change'));
         });
     }
+
+
+    //Export Excel
+        const entityName = '@ViewData["EntityName"]';
+
+        document.getElementById("exportExcel").addEventListener("click", () => {
+            const table = document.getElementById("recordsTable");
+            const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
+
+            XLSX.writeFile(wb, `${entityName}.xlsx`);
+        });
+
+        // Export CSV
+        document.getElementById("exportCSV").addEventListener("click", () => {
+            const table = document.getElementById("recordsTable");
+            const wb = XLSX.utils.table_to_book(table, { sheet: "Enregistrements" });
+
+            XLSX.writeFile(wb, `${entityName}.csv`);
+        });
+
 </script>
 <!-- Add Modal and other modals can be updated similarly if needed -->
 <div class="modal fade" id="addRecordModal" tabindex="-1" aria-labelledby="addRecordModalLabel" aria-hidden="true">
